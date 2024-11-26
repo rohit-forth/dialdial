@@ -14,7 +14,7 @@ import { useGlobalContext } from '@/components/providers/Provider';
 import AccountModal from '@/components/modal/account-and-password';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Bell, Delete, EarthIcon, HelpCircle, Lock, Shield, Trash } from 'lucide-react';
-import Page from '../(auth)/(signin)/page';
+
 import PageContainer from '@/components/layout/page-container';
 import PasswordChangeDialog from '@/components/modal/passwordmodal';
 import henceforthApi from '@/utils/henceforthApi';
