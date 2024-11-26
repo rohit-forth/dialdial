@@ -282,8 +282,10 @@ const handleSubmit = (e: React.FormEvent) => {
       </CardContent>
     </Card>
     <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-    <DialogContent className="sm:max-w-[500px] p-10">
-        <DialogHeader>
+    <DialogContent  onInteractOutside={(e) => {
+          e.preventDefault();
+        }} className="sm:max-w-[500px] p-10">
+        <DialogHeader >
             <DialogTitle>Contact Information</DialogTitle>
             <DialogDescription>
                 Please fill in your contact details below.
