@@ -245,6 +245,7 @@ const handleSubmit = (e: React.FormEvent) => {
 
           {/* Loading Indicator */}
           {isLoading && (
+            
             <div className="flex justify-start mb-4">
               <div className="bg-gray-200 p-3 rounded-lg flex items-center">
                 <Loader2 className="h-5 w-5 mr-2 animate-spin text-gray-600" />
