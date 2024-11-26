@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* @use "typography" as *; */
+
+
+
+@layer base {
+  :root {
+    --scrollbar-width: 12px;
+    --scrollbar-thumb-color: theme('colors.blue.500');
+    --scrollbar-track-color: theme('colors.gray.200');
+    --scrollbar-track-radius: theme('borderRadius.lg');
+    --background: 0, 0%, 100%, 1;
+    --foreground: 20 51% 4%;
+    --muted: 43deg 18.99% 16.33% / 14%;
+    --muted-foreground: 20 7% 25%;
+    --popover: hsla(217, 100%, 97%, 1);
+    --popover-foreground: 20 51% 3%;
+    --card: 0, 0%, 100%, 1;
+    --card-foreground: 20 51% 3%;
+    --border: 20 15% 94%;
+    --input: 217, 54%, 92%, 1;
+    --primary: 20 48% 72%;
+    --primary-foreground: 20 48% 12%;
+    --secondary: 20 12% 92%;
+    --secondary-foreground: 20 12% 32%;
+    --accent: hsla(217, 100%, 97%, 1);
+    --accent-foreground: 20 12% 32%;
+    --destructive: 11 80% 22%;
+    --destructive-foreground: 11 80% 82%;
+    --ring: hsla(217, 100%, 97%, 1);
+    --radius: 0.5rem;
+    --chart-1: 217, 93%, 56%, 1;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --sidebar-background: 0, 0%, 100%, 1;
+    --sidebar-foreground: 236, 24%, 26%, 1;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 217, 93%, 56%, 1;
+    --sidebar-accent: 217, 100%, 97%, 1;
+    --sidebar-accent-foreground: 217, 93%, 56%, 1;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* --sidebar-foreground: 240 5.3% 26.1%; */
+    --sidebar-primary-foreground: 0 0% 98%;
+
+
+  }
+
+  .dark {
+    --background: 253 43% 3%;
+    --foreground: 253 31% 98%;
+    --muted: 253 7% 13%;
+    --muted-foreground: 253 13% 63%;
+    --popover: 253 43% 3%;
+    --popover-foreground: 253 31% 98%;
+    --card: 253 43% 4%;
+    --card-foreground: 253 31% 99%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --primary: 253 91% 58%;
+    --primary-foreground: 253 91% 98%;
+    --secondary: 253 7% 9%;
+    --secondary-foreground: 253 7% 69%;
+    --accent: 253 13% 14%;
+    --accent-foreground: 253 13% 74%;
+    --destructive: 339.2 90.36% 51.18%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 253 91% 58%;
+    --chart-1: 253 91% 58%;
+    --chart-2: 253 13% 74%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply box-border bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .min-h-screen {
+    min-height: 100vh;
+    /* Fallback */
+    min-height: 100dvh;
+  }
+
+  .h-screen {
+    height: 100vh;
+    /* Fallback */
+    height: 100dvh;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+
+/* ...............typography................ */
+.header {
+  background-color: hsla(236, 24%, 26%, 1);
+}
+
+.bg-card {
+  border-color: hsla(217, 54%, 92%, 1);
+}
+
+.grey {
+  color: #BBBBBB;
+}
+
+.bg-primary {
+  background-color: #F1F6FF;
+}
+
+.common-bg {
+  background-color: #2878F7;
+}
+.border-primary {
+  border-color: #2878F7
+}
+
+.border-common {
+  border-color: #E1E9F6;
+}
+
+
+.text-primary {
+  color: #2878F7;
+}
+
+.text-gray {
+  color: #808080;
+}
+
+.light-black {
+  color: #333333;
+}
+
+.text-danger{
+  color: #FF4545 ;
+}
+
+.heading {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1C1D22;
+}
+
+.fs-10{
+  font-size: 10px;
+}
+
+/* ....................sidebar-layout................... */
+
+.common-btn{
+  background-color:  hsla(236, 24%, 26%, 1);
+}
+
+
+/* profile card */
+.profile-card {
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 34px;
+}
+
+.profile-card-1 {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 34px;
+}
+
+.status-pill {
+  border: 1px solid green;
+  color: green;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-weight: 500;
+  display: inline-block;
+}
+body {
+  pointer-events: auto !important;
+  }
+
+.auth-page {
+  background-image: url("../public/images/background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+main {
+  height: 100%;
+}
+
+.theme-color {
+  color: #323452;
+}
+
+.theme-background {
+  background-color: #323452;
+}
+
+/* Global styles */
+
+
+/* Customize the scrollbar */
+
+input[type="file"] {
+  padding-top: 6px;
+  padding-right: 5.7rem !important;
+}

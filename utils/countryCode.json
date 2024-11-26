@@ -1,0 +1,1478 @@
+[
+    {
+        "name": "Afghanistan",
+        "flagClass": "fi fi-af",
+        "code": "AF",
+        "dial_code": "+93"
+    },
+    {
+        "name": "Åland Islands",
+        "flagClass": "fi fi-ax",
+        "code": "AX",
+        "dial_code": "+358"
+    },
+    {
+        "name": "Albania",
+        "flagClass": "fi fi-al",
+        "code": "AL",
+        "dial_code": "+355"
+    },
+    {
+        "name": "Algeria",
+        "flagClass": "fi fi-dz",
+        "code": "DZ",
+        "dial_code": "+213"
+    },
+    {
+        "name": "American Samoa",
+        "flagClass": "fi fi-as",
+        "code": "AS",
+        "dial_code": "+1684"
+    },
+    {
+        "name": "Andorra",
+        "flagClass": "fi fi-ad",
+        "code": "AD",
+        "dial_code": "+376"
+    },
+    {
+        "name": "Angola",
+        "flagClass": "fi fi-ao",
+        "code": "AO",
+        "dial_code": "+244"
+    },
+    {
+        "name": "Anguilla",
+        "flagClass": "fi fi-ai",
+        "code": "AI",
+        "dial_code": "+1264"
+    },
+    {
+        "name": "Antarctica",
+        "flagClass": "fi fi-aq",
+        "code": "AQ",
+        "dial_code": "+672"
+    },
+    {
+        "name": "Antigua and Barbuda",
+        "flagClass": "fi fi-ag",
+        "code": "AG",
+        "dial_code": "+1268"
+    },
+    {
+        "name": "Argentina",
+        "flagClass": "fi fi-ar",
+        "code": "AR",
+        "dial_code": "+54"
+    },
+    {
+        "name": "Armenia",
+        "flagClass": "fi fi-am",
+        "code": "AM",
+        "dial_code": "+374"
+    },
+    {
+        "name": "Aruba",
+        "flagClass": "fi fi-aw",
+        "code": "AW",
+        "dial_code": "+297"
+    },
+    {
+        "name": "Australia",
+        "flagClass": "fi fi-au",
+        "code": "AU",
+        "dial_code": "+61"
+    },
+    {
+        "name": "Austria",
+        "flagClass": "fi fi-at",
+        "code": "AT",
+        "dial_code": "+43"
+    },
+    {
+        "name": "Azerbaijan",
+        "flagClass": "fi fi-az",
+        "code": "AZ",
+        "dial_code": "+994"
+    },
+    {
+        "name": "Bahamas",
+        "flagClass": "fi fi-bs",
+        "code": "BS",
+        "dial_code": "+1242"
+    },
+    {
+        "name": "Bahrain",
+        "flagClass": "fi fi-bh",
+        "code": "BH",
+        "dial_code": "+973"
+    },
+    {
+        "name": "Bangladesh",
+        "flagClass": "fi fi-bd",
+        "code": "BD",
+        "dial_code": "+880"
+    },
+    {
+        "name": "Barbados",
+        "flagClass": "fi fi-bb",
+        "code": "BB",
+        "dial_code": "+1246"
+    },
+    {
+        "name": "Belarus",
+        "flagClass": "fi fi-by",
+        "code": "BY",
+        "dial_code": "+375"
+    },
+    {
+        "name": "Belgium",
+        "flagClass": "fi fi-be",
+        "code": "BE",
+        "dial_code": "+32"
+    },
+    {
+        "name": "Belize",
+        "flagClass": "fi fi-bz",
+        "code": "BZ",
+        "dial_code": "+501"
+    },
+    {
+        "name": "Benin",
+        "flagClass": "fi fi-bj",
+        "code": "BJ",
+        "dial_code": "+229"
+    },
+    {
+        "name": "Bermuda",
+        "flagClass": "fi fi-bm",
+        "code": "BM",
+        "dial_code": "+1441"
+    },
+    {
+        "name": "Bhutan",
+        "flagClass": "fi fi-bt",
+        "code": "BT",
+        "dial_code": "+975"
+    },
+    {
+        "name": "Bolivia, Plurinational State of Bolivia",
+        "flagClass": "fi fi-bo",
+        "code": "BO",
+        "dial_code": "+591"
+    },
+    {
+        "name": "Bosnia and Herzegovina",
+        "flagClass": "fi fi-ba",
+        "code": "BA",
+        "dial_code": "+387"
+    },
+    {
+        "name": "Botswana",
+        "flagClass": "fi fi-bw",
+        "code": "BW",
+        "dial_code": "+267"
+    },
+    {
+        "name": "Bouvet Island",
+        "flagClass": "fi fi-bv",
+        "code": "BV",
+        "dial_code": "+47"
+    },
+    {
+        "name": "Brazil",
+        "flagClass": "fi fi-br",
+        "code": "BR",
+        "dial_code": "+55"
+    },
+    {
+        "name": "British Indian Ocean Territory",
+        "flagClass": "fi fi-io",
+        "code": "IO",
+        "dial_code": "+246"
+    },
+    {
+        "name": "Brunei Darussalam",
+        "flagClass": "fi fi-bn",
+        "code": "BN",
+        "dial_code": "+673"
+    },
+    {
+        "name": "Bulgaria",
+        "flagClass": "fi fi-bg",
+        "code": "BG",
+        "dial_code": "+359"
+    },
+    {
+        "name": "Burkina Faso",
+        "flagClass": "fi fi-bf",
+        "code": "BF",
+        "dial_code": "+226"
+    },
+    {
+        "name": "Burundi",
+        "flagClass": "fi fi-bi",
+        "code": "BI",
+        "dial_code": "+257"
+    },
+    {
+        "name": "Cambodia",
+        "flagClass": "fi fi-kh",
+        "code": "KH",
+        "dial_code": "+855"
+    },
+    {
+        "name": "Cameroon",
+        "flagClass": "fi fi-cm",
+        "code": "CM",
+        "dial_code": "+237"
+    },
+    {
+        "name": "Canada",
+        "flagClass": "fi fi-ca",
+        "code": "CA",
+        "dial_code": "+1"
+    },
+    {
+        "name": "Cape Verde",
+        "flagClass": "fi fi-cv",
+        "code": "CV",
+        "dial_code": "+238"
+    },
+    {
+        "name": "Cayman Islands",
+        "flagClass": "fi fi-ky",
+        "code": "KY",
+        "dial_code": "+345"
+    },
+    {
+        "name": "Central African Republic",
+        "flagClass": "fi fi-cf",
+        "code": "CF",
+        "dial_code": "+236"
+    },
+    {
+        "name": "Chad",
+        "flagClass": "fi fi-td",
+        "code": "TD",
+        "dial_code": "+235"
+    },
+    {
+        "name": "Chile",
+        "flagClass": "fi fi-cl",
+        "code": "CL",
+        "dial_code": "+56"
+    },
+    {
+        "name": "China",
+        "flagClass": "fi fi-cn",
+        "code": "CN",
+        "dial_code": "+86"
+    },
+    {
+        "name": "Christmas Island",
+        "flagClass": "fi fi-cx",
+        "code": "CX",
+        "dial_code": "+61"
+    },
+    {
+        "name": "Cocos (Keeling) Islands",
+        "flagClass": "fi fi-cc",
+        "code": "CC",
+        "dial_code": "+61"
+    },
+    {
+        "name": "Colombia",
+        "flagClass": "fi fi-co",
+        "code": "CO",
+        "dial_code": "+57"
+    },
+    {
+        "name": "Comoros",
+        "flagClass": "fi fi-km",
+        "code": "KM",
+        "dial_code": "+269"
+    },
+    {
+        "name": "Congo",
+        "flagClass": "fi fi-cg",
+        "code": "CG",
+        "dial_code": "+242"
+    },
+    {
+        "name": "Congo, The Democratic Republic of the Congo",
+        "flagClass": "fi fi-cd",
+        "code": "CD",
+        "dial_code": "+243"
+    },
+    {
+        "name": "Cook Islands",
+        "flagClass": "fi fi-ck",
+        "code": "CK",
+        "dial_code": "+682"
+    },
+    {
+        "name": "Costa Rica",
+        "flagClass": "fi fi-cr",
+        "code": "CR",
+        "dial_code": "+506"
+    },
+    {
+        "name": "Cote d'Ivoire",
+        "flagClass": "fi fi-ci",
+        "code": "CI",
+        "dial_code": "+225"
+    },
+    {
+        "name": "Croatia",
+        "flagClass": "fi fi-hr",
+        "code": "HR",
+        "dial_code": "+385"
+    },
+    {
+        "name": "Cuba",
+        "flagClass": "fi fi-cu",
+        "code": "CU",
+        "dial_code": "+53"
+    },
+    {
+        "name": "Cyprus",
+        "flagClass": "fi fi-cy",
+        "code": "CY",
+        "dial_code": "+357"
+    },
+    {
+        "name": "Czech Republic",
+        "flagClass": "fi fi-cz",
+        "code": "CZ",
+        "dial_code": "+420"
+    },
+    {
+        "name": "Denmark",
+        "flagClass": "fi fi-dk",
+        "code": "DK",
+        "dial_code": "+45"
+    },
+    {
+        "name": "Djibouti",
+        "flagClass": "fi fi-dj",
+        "code": "DJ",
+        "dial_code": "+253"
+    },
+    {
+        "name": "Dominica",
+        "flagClass": "fi fi-dm",
+        "code": "DM",
+        "dial_code": "+1767"
+    },
+    {
+        "name": "Dominican Republic",
+        "flagClass": "fi fi-do",
+        "code": "DO",
+        "dial_code": "+1849"
+    },
+    {
+        "name": "Ecuador",
+        "flagClass": "fi fi-ec",
+        "code": "EC",
+        "dial_code": "+593"
+    },
+    {
+        "name": "Egypt",
+        "flagClass": "fi fi-eg",
+        "code": "EG",
+        "dial_code": "+20"
+    },
+    {
+        "name": "El Salvador",
+        "flagClass": "fi fi-sv",
+        "code": "SV",
+        "dial_code": "+503"
+    },
+    {
+        "name": "Equatorial Guinea",
+        "flagClass": "fi fi-gq",
+        "code": "GQ",
+        "dial_code": "+240"
+    },
+    {
+        "name": "Eritrea",
+        "flagClass": "fi fi-er",
+        "code": "ER",
+        "dial_code": "+291"
+    },
+    {
+        "name": "Estonia",
+        "flagClass": "fi fi-ee",
+        "code": "EE",
+        "dial_code": "+372"
+    },
+    {
+        "name": "Ethiopia",
+        "flagClass": "fi fi-et",
+        "code": "ET",
+        "dial_code": "+251"
+    },
+    {
+        "name": "Falkland Islands (Malvinas)",
+        "flagClass": "fi fi-fk",
+        "code": "FK",
+        "dial_code": "+500"
+    },
+    {
+        "name": "Faroe Islands",
+        "flagClass": "fi fi-fo",
+        "code": "FO",
+        "dial_code": "+298"
+    },
+    {
+        "name": "Fiji",
+        "flagClass": "fi fi-fj",
+        "code": "FJ",
+        "dial_code": "+679"
+    },
+    {
+        "name": "Finland",
+        "flagClass": "fi fi-fi",
+        "code": "FI",
+        "dial_code": "+358"
+    },
+    {
+        "name": "France",
+        "flagClass": "fi fi-fr",
+        "code": "FR",
+        "dial_code": "+33"
+    },
+    {
+        "name": "French Guiana",
+        "flagClass": "fi fi-gf",
+        "code": "GF",
+        "dial_code": "+594"
+    },
+    {
+        "name": "French Polynesia",
+        "flagClass": "fi fi-pf",
+        "code": "PF",
+        "dial_code": "+689"
+    },
+    {
+        "name": "French Southern Territories",
+        "flagClass": "fi fi-tf",
+        "code": "TF",
+        "dial_code": "+262"
+    },
+    {
+        "name": "Gabon",
+        "flagClass": "fi fi-ga",
+        "code": "GA",
+        "dial_code": "+241"
+    },
+    {
+        "name": "Gambia",
+        "flagClass": "fi fi-gm",
+        "code": "GM",
+        "dial_code": "+220"
+    },
+    {
+        "name": "Georgia",
+        "flagClass": "fi fi-ge",
+        "code": "GE",
+        "dial_code": "+995"
+    },
+    {
+        "name": "Germany",
+        "flagClass": "fi fi-de",
+        "code": "DE",
+        "dial_code": "+49"
+    },
+    {
+        "name": "Ghana",
+        "flagClass": "fi fi-gh",
+        "code": "GH",
+        "dial_code": "+233"
+    },
+    {
+        "name": "Gibraltar",
+        "flagClass": "fi fi-gi",
+        "code": "GI",
+        "dial_code": "+350"
+    },
+    {
+        "name": "Greece",
+        "flagClass": "fi fi-gr",
+        "code": "GR",
+        "dial_code": "+30"
+    },
+    {
+        "name": "Greenland",
+        "flagClass": "fi fi-gl",
+        "code": "GL",
+        "dial_code": "+299"
+    },
+    {
+        "name": "Grenada",
+        "flagClass": "fi fi-gd",
+        "code": "GD",
+        "dial_code": "+1473"
+    },
+    {
+        "name": "Guadeloupe",
+        "flagClass": "fi fi-gp",
+        "code": "GP",
+        "dial_code": "+590"
+    },
+    {
+        "name": "Guam",
+        "flagClass": "fi fi-gu",
+        "code": "GU",
+        "dial_code": "+1671"
+    },
+    {
+        "name": "Guatemala",
+        "flagClass": "fi fi-gt",
+        "code": "GT",
+        "dial_code": "+502"
+    },
+    {
+        "name": "Guernsey",
+        "flagClass": "fi fi-gg",
+        "code": "GG",
+        "dial_code": "+44"
+    },
+    {
+        "name": "Guinea",
+        "flagClass": "fi fi-gn",
+        "code": "GN",
+        "dial_code": "+224"
+    },
+    {
+        "name": "Guinea-Bissau",
+        "flagClass": "fi fi-gw",
+        "code": "GW",
+        "dial_code": "+245"
+    },
+    {
+        "name": "Guyana",
+        "flagClass": "fi fi-gy",
+        "code": "GY",
+        "dial_code": "+592"
+    },
+    {
+        "name": "Haiti",
+        "flagClass": "fi fi-ht",
+        "code": "HT",
+        "dial_code": "+509"
+    },
+    {
+        "name": "Heard Island and Mcdonald Islands",
+        "flagClass": "fi fi-hm",
+        "code": "HM",
+        "dial_code": "+672"
+    },
+    {
+        "name": "Holy See (Vatican City State)",
+        "flagClass": "fi fi-va",
+        "code": "VA",
+        "dial_code": "+379"
+    },
+    {
+        "name": "Honduras",
+        "flagClass": "fi fi-hn",
+        "code": "HN",
+        "dial_code": "+504"
+    },
+    {
+        "name": "Hong Kong",
+        "flagClass": "fi fi-hk",
+        "code": "HK",
+        "dial_code": "+852"
+    },
+    {
+        "name": "Hungary",
+        "flagClass": "fi fi-hu",
+        "code": "HU",
+        "dial_code": "+36"
+    },
+    {
+        "name": "Iceland",
+        "flagClass": "fi fi-is",
+        "code": "IS",
+        "dial_code": "+354"
+    },
+    {
+        "name": "India",
+        "flagClass": "fi fi-in",
+        "code": "IN",
+        "dial_code": "+91"
+    },
+    {
+        "name": "Indonesia",
+        "flagClass": "fi fi-id",
+        "code": "ID",
+        "dial_code": "+62"
+    },
+    {
+        "name": "Iran, Islamic Republic of Persian Gulf",
+        "flagClass": "fi fi-ir",
+        "code": "IR",
+        "dial_code": "+98"
+    },
+    {
+        "name": "Iraq",
+        "flagClass": "fi fi-iq",
+        "code": "IQ",
+        "dial_code": "+964"
+    },
+    {
+        "name": "Ireland",
+        "flagClass": "fi fi-ie",
+        "code": "IE",
+        "dial_code": "+353"
+    },
+    {
+        "name": "Isle of Man",
+        "flagClass": "fi fi-im",
+        "code": "IM",
+        "dial_code": "+44"
+    },
+    {
+        "name": "Israel",
+        "flagClass": "fi fi-il",
+        "code": "IL",
+        "dial_code": "+972"
+    },
+    {
+        "name": "Italy",
+        "flagClass": "fi fi-it",
+        "code": "IT",
+        "dial_code": "+39"
+    },
+    {
+        "name": "Jamaica",
+        "flagClass": "fi fi-jm",
+        "code": "JM",
+        "dial_code": "+1876"
+    },
+    {
+        "name": "Japan",
+        "flagClass": "fi fi-jp",
+        "code": "JP",
+        "dial_code": "+81"
+    },
+    {
+        "name": "Jersey",
+        "flagClass": "fi fi-je",
+        "code": "JE",
+        "dial_code": "+44"
+    },
+    {
+        "name": "Jordan",
+        "flagClass": "fi fi-jo",
+        "code": "JO",
+        "dial_code": "+962"
+    },
+    {
+        "name": "Kazakhstan",
+        "flagClass": "fi fi-kz",
+        "code": "KZ",
+        "dial_code": "+7"
+    },
+    {
+        "name": "Kenya",
+        "flagClass": "fi fi-ke",
+        "code": "KE",
+        "dial_code": "+254"
+    },
+    {
+        "name": "Kiribati",
+        "flagClass": "fi fi-ki",
+        "code": "KI",
+        "dial_code": "+686"
+    },
+    {
+        "name": "Korea, Democratic People's Republic of Korea",
+        "flagClass": "fi fi-kp",
+        "code": "KP",
+        "dial_code": "+850"
+    },
+    {
+        "name": "Korea, Republic of South Korea",
+        "flagClass": "fi fi-kr",
+        "code": "KR",
+        "dial_code": "+82"
+    },
+    {
+        "name": "Kosovo",
+        "flagClass": "fi fi-xk",
+        "code": "XK",
+        "dial_code": "+383"
+    },
+    {
+        "name": "Kuwait",
+        "flagClass": "fi fi-kw",
+        "code": "KW",
+        "dial_code": "+965"
+    },
+    {
+        "name": "Kyrgyzstan",
+        "flagClass": "fi fi-kg",
+        "code": "KG",
+        "dial_code": "+996"
+    },
+    {
+        "name": "Laos",
+        "flagClass": "fi fi-la",
+        "code": "LA",
+        "dial_code": "+856"
+    },
+    {
+        "name": "Latvia",
+        "flagClass": "fi fi-lv",
+        "code": "LV",
+        "dial_code": "+371"
+    },
+    {
+        "name": "Lebanon",
+        "flagClass": "fi fi-lb",
+        "code": "LB",
+        "dial_code": "+961"
+    },
+    {
+        "name": "Lesotho",
+        "flagClass": "fi fi-ls",
+        "code": "LS",
+        "dial_code": "+266"
+    },
+    {
+        "name": "Liberia",
+        "flagClass": "fi fi-lr",
+        "code": "LR",
+        "dial_code": "+231"
+    },
+    {
+        "name": "Libyan Arab Jamahiriya",
+        "flagClass": "fi fi-ly",
+        "code": "LY",
+        "dial_code": "+218"
+    },
+    {
+        "name": "Liechtenstein",
+        "flagClass": "fi fi-li",
+        "code": "LI",
+        "dial_code": "+423"
+    },
+    {
+        "name": "Lithuania",
+        "flagClass": "fi fi-lt",
+        "code": "LT",
+        "dial_code": "+370"
+    },
+    {
+        "name": "Luxembourg",
+        "flagClass": "fi fi-lu",
+        "code": "LU",
+        "dial_code": "+352"
+    },
+    {
+        "name": "Macao",
+        "flagClass": "fi fi-mo",
+        "code": "MO",
+        "dial_code": "+853"
+    },
+    {
+        "name": "Macedonia",
+        "flagClass": "fi fi-mk",
+        "code": "MK",
+        "dial_code": "+389"
+    },
+    {
+        "name": "Madagascar",
+        "flagClass": "fi fi-mg",
+        "code": "MG",
+        "dial_code": "+261"
+    },
+    {
+        "name": "Malawi",
+        "flagClass": "fi fi-mw",
+        "code": "MW",
+        "dial_code": "+265"
+    },
+    {
+        "name": "Malaysia",
+        "flagClass": "fi fi-my",
+        "code": "MY",
+        "dial_code": "+60"
+    },
+    {
+        "name": "Maldives",
+        "flagClass": "fi fi-mv",
+        "code": "MV",
+        "dial_code": "+960"
+    },
+    {
+        "name": "Mali",
+        "flagClass": "fi fi-ml",
+        "code": "ML",
+        "dial_code": "+223"
+    },
+    {
+        "name": "Malta",
+        "flagClass": "fi fi-mt",
+        "code": "MT",
+        "dial_code": "+356"
+    },
+    {
+        "name": "Marshall Islands",
+        "flagClass": "fi fi-mh",
+        "code": "MH",
+        "dial_code": "+692"
+    },
+    {
+        "name": "Martinique",
+        "flagClass": "fi fi-mq",
+        "code": "MQ",
+        "dial_code": "+596"
+    },
+    {
+        "name": "Mauritania",
+        "flagClass": "fi fi-mr",
+        "code": "MR",
+        "dial_code": "+222"
+    },
+    {
+        "name": "Mauritius",
+        "flagClass": "fi fi-mu",
+        "code": "MU",
+        "dial_code": "+230"
+    },
+    {
+        "name": "Mayotte",
+        "flagClass": "fi fi-yt",
+        "code": "YT",
+        "dial_code": "+262"
+    },
+    {
+        "name": "Mexico",
+        "flagClass": "fi fi-mx",
+        "code": "MX",
+        "dial_code": "+52"
+    },
+    {
+        "name": "Micronesia, Federated States of Micronesia",
+        "flagClass": "fi fi-fm",
+        "code": "FM",
+        "dial_code": "+691"
+    },
+    {
+        "name": "Moldova",
+        "flagClass": "fi fi-md",
+        "code": "MD",
+        "dial_code": "+373"
+    },
+    {
+        "name": "Monaco",
+        "flagClass": "fi fi-mc",
+        "code": "MC",
+        "dial_code": "+377"
+    },
+    {
+        "name": "Mongolia",
+        "flagClass": "fi fi-mn",
+        "code": "MN",
+        "dial_code": "+976"
+    },
+    {
+        "name": "Montenegro",
+        "flagClass": "fi fi-me",
+        "code": "ME",
+        "dial_code": "+382"
+    },
+    {
+        "name": "Montserrat",
+        "flagClass": "fi fi-ms",
+        "code": "MS",
+        "dial_code": "+1664"
+    },
+    {
+        "name": "Morocco",
+        "flagClass": "fi fi-ma",
+        "code": "MA",
+        "dial_code": "+212"
+    },
+    {
+        "name": "Mozambique",
+        "flagClass": "fi fi-mz",
+        "code": "MZ",
+        "dial_code": "+258"
+    },
+    {
+        "name": "Myanmar",
+        "flagClass": "fi fi-mm",
+        "code": "MM",
+        "dial_code": "+95"
+    },
+    {
+        "name": "Namibia",
+        "flagClass": "fi fi-na",
+        "code": "NA",
+        "dial_code": "+264"
+    },
+    {
+        "name": "Nauru",
+        "flagClass": "fi fi-nr",
+        "code": "NR",
+        "dial_code": "+674"
+    },
+    {
+        "name": "Nepal",
+        "flagClass": "fi fi-np",
+        "code": "NP",
+        "dial_code": "+977"
+    },
+    {
+        "name": "Netherlands",
+        "flagClass": "fi fi-nl",
+        "code": "NL",
+        "dial_code": "+31"
+    },
+    {
+        "name": "Netherlands Antilles",
+        "flagClass": "fi fi-an",
+        "code": "AN",
+        "dial_code": "+599"
+    },
+    {
+        "name": "New Caledonia",
+        "flagClass": "fi fi-nc",
+        "code": "NC",
+        "dial_code": "+687"
+    },
+    {
+        "name": "New Zealand",
+        "flagClass": "fi fi-nz",
+        "code": "NZ",
+        "dial_code": "+64"
+    },
+    {
+        "name": "Nicaragua",
+        "flagClass": "fi fi-ni",
+        "code": "NI",
+        "dial_code": "+505"
+    },
+    {
+        "name": "Niger",
+        "flagClass": "fi fi-ne",
+        "code": "NE",
+        "dial_code": "+227"
+    },
+    {
+        "name": "Nigeria",
+        "flagClass": "fi fi-ng",
+        "code": "NG",
+        "dial_code": "+234"
+    },
+    {
+        "name": "Niue",
+        "flagClass": "fi fi-nu",
+        "code": "NU",
+        "dial_code": "+683"
+    },
+    {
+        "name": "Norfolk Island",
+        "flagClass": "fi fi-nf",
+        "code": "NF",
+        "dial_code": "+672"
+    },
+    {
+        "name": "Northern Mariana Islands",
+        "flagClass": "fi fi-mp",
+        "code": "MP",
+        "dial_code": "+1670"
+    },
+    {
+        "name": "Norway",
+        "flagClass": "fi fi-no",
+        "code": "NO",
+        "dial_code": "+47"
+    },
+    {
+        "name": "Oman",
+        "flagClass": "fi fi-om",
+        "code": "OM",
+        "dial_code": "+968"
+    },
+    {
+        "name": "Pakistan",
+        "flagClass": "fi fi-pk",
+        "code": "PK",
+        "dial_code": "+92"
+    },
+    {
+        "name": "Palau",
+        "flagClass": "fi fi-pw",
+        "code": "PW",
+        "dial_code": "+680"
+    },
+    {
+        "name": "Palestinian Territory, Occupied",
+        "flagClass": "fi fi-ps",
+        "code": "PS",
+        "dial_code": "+970"
+    },
+    {
+        "name": "Panama",
+        "flagClass": "fi fi-pa",
+        "code": "PA",
+        "dial_code": "+507"
+    },
+    {
+        "name": "Papua New Guinea",
+        "flagClass": "fi fi-pg",
+        "code": "PG",
+        "dial_code": "+675"
+    },
+    {
+        "name": "Paraguay",
+        "flagClass": "fi fi-py",
+        "code": "PY",
+        "dial_code": "+595"
+    },
+    {
+        "name": "Peru",
+        "flagClass": "fi fi-pe",
+        "code": "PE",
+        "dial_code": "+51"
+    },
+    {
+        "name": "Philippines",
+        "flagClass": "fi fi-ph",
+        "code": "PH",
+        "dial_code": "+63"
+    },
+    {
+        "name": "Pitcairn",
+        "flagClass": "fi fi-pn",
+        "code": "PN",
+        "dial_code": "+64"
+    },
+    {
+        "name": "Poland",
+        "flagClass": "fi fi-pl",
+        "code": "PL",
+        "dial_code": "+48"
+    },
+    {
+        "name": "Portugal",
+        "flagClass": "fi fi-pt",
+        "code": "PT",
+        "dial_code": "+351"
+    },
+    {
+        "name": "Puerto Rico",
+        "flagClass": "fi fi-pr",
+        "code": "PR",
+        "dial_code": "+1939"
+    },
+    {
+        "name": "Qatar",
+        "flagClass": "fi fi-qa",
+        "code": "QA",
+        "dial_code": "+974"
+    },
+    {
+        "name": "Romania",
+        "flagClass": "fi fi-ro",
+        "code": "RO",
+        "dial_code": "+40"
+    },
+    {
+        "name": "Russia",
+        "flagClass": "fi fi-ru",
+        "code": "RU",
+        "dial_code": "+7"
+    },
+    {
+        "name": "Rwanda",
+        "flagClass": "fi fi-rw",
+        "code": "RW",
+        "dial_code": "+250"
+    },
+    {
+        "name": "Reunion",
+        "flagClass": "fi fi-re",
+        "code": "RE",
+        "dial_code": "+262"
+    },
+    {
+        "name": "Saint Barthelemy",
+        "flagClass": "fi fi-bl",
+        "code": "BL",
+        "dial_code": "+590"
+    },
+    {
+        "name": "Saint Helena, Ascension and Tristan Da Cunha",
+        "flagClass": "fi fi-sh",
+        "code": "SH",
+        "dial_code": "+290"
+    },
+    {
+        "name": "Saint Kitts and Nevis",
+        "flagClass": "fi fi-kn",
+        "code": "KN",
+        "dial_code": "+1869"
+    },
+    {
+        "name": "Saint Lucia",
+        "flagClass": "fi fi-lc",
+        "code": "LC",
+        "dial_code": "+1758"
+    },
+    {
+        "name": "Saint Martin",
+        "flagClass": "fi fi-mf",
+        "code": "MF",
+        "dial_code": "+590"
+    },
+    {
+        "name": "Saint Pierre and Miquelon",
+        "flagClass": "fi fi-pm",
+        "code": "PM",
+        "dial_code": "+508"
+    },
+    {
+        "name": "Saint Vincent and the Grenadines",
+        "flagClass": "fi fi-vc",
+        "code": "VC",
+        "dial_code": "+1784"
+    },
+    {
+        "name": "Samoa",
+        "flagClass": "fi fi-ws",
+        "code": "WS",
+        "dial_code": "+685"
+    },
+    {
+        "name": "San Marino",
+        "flagClass": "fi fi-sm",
+        "code": "SM",
+        "dial_code": "+378"
+    },
+    {
+        "name": "Sao Tome and Principe",
+        "flagClass": "fi fi-st",
+        "code": "ST",
+        "dial_code": "+239"
+    },
+    {
+        "name": "Saudi Arabia",
+        "flagClass": "fi fi-sa",
+        "code": "SA",
+        "dial_code": "+966"
+    },
+    {
+        "name": "Senegal",
+        "flagClass": "fi fi-sn",
+        "code": "SN",
+        "dial_code": "+221"
+    },
+    {
+        "name": "Serbia",
+        "flagClass": "fi fi-rs",
+        "code": "RS",
+        "dial_code": "+381"
+    },
+    {
+        "name": "Seychelles",
+        "flagClass": "fi fi-sc",
+        "code": "SC",
+        "dial_code": "+248"
+    },
+    {
+        "name": "Sierra Leone",
+        "flagClass": "fi fi-sl",
+        "code": "SL",
+        "dial_code": "+232"
+    },
+    {
+        "name": "Singapore",
+        "flagClass": "fi fi-sg",
+        "code": "SG",
+        "dial_code": "+65"
+    },
+    {
+        "name": "Slovakia",
+        "flagClass": "fi fi-sk",
+        "code": "SK",
+        "dial_code": "+421"
+    },
+    {
+        "name": "Slovenia",
+        "flagClass": "fi fi-si",
+        "code": "SI",
+        "dial_code": "+386"
+    },
+    {
+        "name": "Solomon Islands",
+        "flagClass": "fi fi-sb",
+        "code": "SB",
+        "dial_code": "+677"
+    },
+    {
+        "name": "Somalia",
+        "flagClass": "fi fi-so",
+        "code": "SO",
+        "dial_code": "+252"
+    },
+    {
+        "name": "South Africa",
+        "flagClass": "fi fi-za",
+        "code": "ZA",
+        "dial_code": "+27"
+    },
+    {
+        "name": "South Sudan",
+        "flagClass": "fi fi-ss",
+        "code": "SS",
+        "dial_code": "+211"
+    },
+    {
+        "name": "South Georgia and the South Sandwich Islands",
+        "flagClass": "fi fi-gs",
+        "code": "GS",
+        "dial_code": "+500"
+    },
+    {
+        "name": "Spain",
+        "flagClass": "fi fi-es",
+        "code": "ES",
+        "dial_code": "+34"
+    },
+    {
+        "name": "Sri Lanka",
+        "flagClass": "fi fi-lk",
+        "code": "LK",
+        "dial_code": "+94"
+    },
+    {
+        "name": "Sudan",
+        "flagClass": "fi fi-sd",
+        "code": "SD",
+        "dial_code": "+249"
+    },
+    {
+        "name": "Suriname",
+        "flagClass": "fi fi-sr",
+        "code": "SR",
+        "dial_code": "+597"
+    },
+    {
+        "name": "Svalbard and Jan Mayen",
+        "flagClass": "fi fi-sj",
+        "code": "SJ",
+        "dial_code": "+47"
+    },
+    {
+        "name": "Eswatini",
+        "flagClass": "fi fi-sz",
+        "code": "SZ",
+        "dial_code": "+268"
+    },
+    {
+        "name": "Sweden",
+        "flagClass": "fi fi-se",
+        "code": "SE",
+        "dial_code": "+46"
+    },
+    {
+        "name": "Switzerland",
+        "flagClass": "fi fi-ch",
+        "code": "CH",
+        "dial_code": "+41"
+    },
+    {
+        "name": "Syrian Arab Republic",
+        "flagClass": "fi fi-sy",
+        "code": "SY",
+        "dial_code": "+963"
+    },
+    {
+        "name": "Taiwan",
+        "flagClass": "fi fi-tw",
+        "code": "TW",
+        "dial_code": "+886"
+    },
+    {
+        "name": "Tajikistan",
+        "flagClass": "fi fi-tj",
+        "code": "TJ",
+        "dial_code": "+992"
+    },
+    {
+        "name": "Tanzania, United Republic of Tanzania",
+        "flagClass": "fi fi-tz",
+        "code": "TZ",
+        "dial_code": "+255"
+    },
+    {
+        "name": "Thailand",
+        "flagClass": "fi fi-th",
+        "code": "TH",
+        "dial_code": "+66"
+    },
+    {
+        "name": "Timor-Leste",
+        "flagClass": "fi fi-tl",
+        "code": "TL",
+        "dial_code": "+670"
+    },
+    {
+        "name": "Togo",
+        "flagClass": "fi fi-tg",
+        "code": "TG",
+        "dial_code": "+228"
+    },
+    {
+        "name": "Tokelau",
+        "flagClass": "fi fi-tk",
+        "code": "TK",
+        "dial_code": "+690"
+    },
+    {
+        "name": "Tonga",
+        "flagClass": "fi fi-to",
+        "code": "TO",
+        "dial_code": "+676"
+    },
+    {
+        "name": "Trinidad and Tobago",
+        "flagClass": "fi fi-tt",
+        "code": "TT",
+        "dial_code": "+1868"
+    },
+    {
+        "name": "Tunisia",
+        "flagClass": "fi fi-tn",
+        "code": "TN",
+        "dial_code": "+216"
+    },
+    {
+        "name": "Turkey",
+        "flagClass": "fi fi-tr",
+        "code": "TR",
+        "dial_code": "+90"
+    },
+    {
+        "name": "Turkmenistan",
+        "flagClass": "fi fi-tm",
+        "code": "TM",
+        "dial_code": "+993"
+    },
+    {
+        "name": "Turks and Caicos Islands",
+        "flagClass": "fi fi-tc",
+        "code": "TC",
+        "dial_code": "+1649"
+    },
+    {
+        "name": "Tuvalu",
+        "flagClass": "fi fi-tv",
+        "code": "TV",
+        "dial_code": "+688"
+    },
+    {
+        "name": "Uganda",
+        "flagClass": "fi fi-ug",
+        "code": "UG",
+        "dial_code": "+256"
+    },
+    {
+        "name": "Ukraine",
+        "flagClass": "fi fi-ua",
+        "code": "UA",
+        "dial_code": "+380"
+    },
+    {
+        "name": "United Arab Emirates",
+        "flagClass": "fi fi-ae",
+        "code": "AE",
+        "dial_code": "+971"
+    },
+    {
+        "name": "United Kingdom",
+        "flagClass": "fi fi-gb",
+        "code": "GB",
+        "dial_code": "+44"
+    },
+    {
+        "name": "United States",
+        "flagClass": "fi fi-us",
+        "code": "US",
+        "dial_code": "+1"
+    },
+    {
+        "name": "Uruguay",
+        "flagClass": "fi fi-uy",
+        "code": "UY",
+        "dial_code": "+598"
+    },
+    {
+        "name": "Uzbekistan",
+        "flagClass": "fi fi-uz",
+        "code": "UZ",
+        "dial_code": "+998"
+    },
+    {
+        "name": "Vanuatu",
+        "flagClass": "fi fi-vu",
+        "code": "VU",
+        "dial_code": "+678"
+    },
+    {
+        "name": "Venezuela, Bolivarian Republic of Venezuela",
+        "flagClass": "fi fi-ve",
+        "code": "VE",
+        "dial_code": "+58"
+    },
+    {
+        "name": "Vietnam",
+        "flagClass": "fi fi-vn",
+        "code": "VN",
+        "dial_code": "+84"
+    },
+    {
+        "name": "Virgin Islands, British",
+        "flagClass": "fi fi-vg",
+        "code": "VG",
+        "dial_code": "+1284"
+    },
+    {
+        "name": "Virgin Islands, U.S.",
+        "flagClass": "fi fi-vi",
+        "code": "VI",
+        "dial_code": "+1340"
+    },
+    {
+        "name": "Wallis and Futuna",
+        "flagClass": "fi fi-wf",
+        "code": "WF",
+        "dial_code": "+681"
+    },
+    {
+        "name": "Yemen",
+        "flagClass": "fi fi-ye",
+        "code": "YE",
+        "dial_code": "+967"
+    },
+    {
+        "name": "Zambia",
+        "flagClass": "fi fi-zm",
+        "code": "ZM",
+        "dial_code": "+260"
+    },
+    {
+        "name": "Zimbabwe",
+        "flagClass": "fi fi-zw",
+        "code": "ZW",
+        "dial_code": "+263"
+    }
+]
