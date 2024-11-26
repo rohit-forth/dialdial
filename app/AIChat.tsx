@@ -39,7 +39,7 @@ const AIChat: React.FC = () => {
   const [chatId,setChatId]=useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    countryCode: '',
+    countryCode: '+91',
     phoneNumber: '',
     email: ''
 });
@@ -245,7 +245,7 @@ const handleSubmit = (e: React.FormEvent) => {
 
           {/* Loading Indicator */}
           {isLoading && (
-            
+
             <div className="flex justify-start mb-4">
               <div className="bg-gray-200 p-3 rounded-lg flex items-center">
                 <Loader2 className="h-5 w-5 mr-2 animate-spin text-gray-600" />
@@ -308,12 +308,12 @@ const handleSubmit = (e: React.FormEvent) => {
                     <Label htmlFor="countryCode">Country Code</Label>
                     <Select
                         value={formData.countryCode}
-                        onValueChange={(value) => {setFormData({ ...formData, countryCode: "" }); setFormData({ ...formData, countryCode: value })}}
+                        onValueChange={(value) => { setFormData({ ...formData, countryCode: value })}}
                     >
                         <SelectTrigger className="mt-1">
                             <SelectValue placeholder="Select" />
                         </SelectTrigger>
-                        <SelectContent className='bg-white '>
+                        <SelectContent className='bg-white ' placeholder='+91' defaultValue={"+91"}>
                             <SelectGroup className=' max-h-[200px] overflow-y-scroll'>
                                
                                 {

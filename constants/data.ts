@@ -125,53 +125,53 @@ export type Product = {
 export const 
 navItems: NavItem[] = [
   {
-    title: 'Dashboard',
-    url: '/dashboard',
-    icon: 'Dashboard',
+    title: 'Security',
+    url: '#',
+    icon: 'SettingsIcon',
     isActive: false,
     items: []
   },
   {
-    title: 'Call Managment',
-    url: '/call-management/page/1',
-    icon: 'Support',
+    title: 'Privacy',
+    url: '#',
+    icon: 'PrivacyIcon',
     isActive: false,
     items: [
    
     ]
   },
-  {
-    title: 'Chat',
-    url: '/chat/page/1',
-    icon: 'MessagesSquare',
-    isActive: false,
-    items: [
+  // {
+  //   title: 'Chat',
+  //   url: '/chat/page/1',
+  //   icon: 'MessagesSquare',
+  //   isActive: false,
+  //   items: [
      
-    ]
-  },
-  {
-    title: 'Test',
-    url: '/test',
-    icon: 'Test',
-    isActive: false,
-    items: [
+  //   ]
+  // },
+  // {
+  //   title: 'Test',
+  //   url: '/test',
+  //   icon: 'Test',
+  //   isActive: false,
+  //   items: [
      
-    ]
-  },
-  {
-    title: 'Knowledge Base',
-    url: '/knowledgebase',
-    icon: 'KnowledgeBase',
-    isActive: false,
-    items: [
+  //   ]
+  // },
+  // {
+  //   title: 'Knowledge Base',
+  //   url: '/knowledgebase',
+  //   icon: 'KnowledgeBase',
+  //   isActive: false,
+  //   items: [
      
-    ]
-  },
-  {
-    title:'Logout',
-    url:'#',
-    icon:'LogoutRed',
-    isActive:false,
-  }
+  //   ]
+  // },
+  // {
+  //   title:'Logout',
+  //   url:'#',
+  //   icon:'LogoutRed',
+  //   isActive:false,
+  // }
 
 ];

@@ -5,15 +5,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from '@/components/ui/collapsible';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+
 import { Separator } from '@/components/ui/separator';
 import {
   Sidebar,
@@ -55,6 +47,7 @@ import ProjectIcon from "@icons/projecticon.svg"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import DialogContentCommon from '../modal/DialogueContentCommon';
 import { useGlobalContext } from '../providers/Provider';
+import restaurantImage from "@images/restaurant.png"
 
 export const company = {
   name: 'Acme Inc',
@@ -117,15 +110,16 @@ export default function AppSidebar({
       {/* ..........sidebar......... */}
       <Sidebar collapsible="icon">
         <SidebarHeader>
-          <div className=" border-b-2 pb-6 border-common flex justify-center text-sidebar-primary-foreground">
-            {/* <h1 className='text-4xl text-primary text-center'>DAIL AI</h1> */}
-            {/* <Badge className=' h-[40px] common-bg hover:' variant="default"><Icons.BellIcon /></Badge> */}
-            <img src={ProjectIcon.src} alt="logo"  />
+          <div className=" border-b-2 pb-6 border-common text-sidebar-primary-foreground">
+        
+            <img  src={restaurantImage?.src} alt="logo"  />
+            <h1 className='text-3xl text-center font-semibold text-black'>Chef's Place</h1>
+            <p className='text-center text-sm text-gray-400'>Powered by Dial AI</p>
           </div>
         </SidebarHeader>
         <SidebarContent className="overflow-x-hidden ">
-          <SidebarGroup>
-            <SidebarGroupLabel className='-mt-[35px]'>MAIN MENU</SidebarGroupLabel>
+          <SidebarGroup className=''>
+            <SidebarGroupLabel className='-mt-[35px]'>OPTIONS</SidebarGroupLabel>
             <SidebarMenu>
               {navItems.map((item) => {
                 const Icon = item.icon ? Icons[item?.icon] : Icons.logo;
@@ -143,7 +137,7 @@ export default function AppSidebar({
                           isActive={pathname === item.url}
                         >
                           {item.icon && <Icon />}
-                          <span>{item.title}</span>
+                          <span >{item.title}</span>
                           <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
@@ -191,8 +185,8 @@ export default function AppSidebar({
                       </AlertDialog>
                     ) : ( */}
                       <Link onClick={()=>( item.title==="Logout" && setLogoutBtn(true))} href={item.url}>
-                        <Icon />
-                        <span>{item.title}</span>
+                        <Icon className=''/>
+                        <span >{item.title+" Settings"}</span>
                       </Link>
                     {/* )} */}
                   </SidebarMenuButton>
@@ -210,6 +204,61 @@ export default function AppSidebar({
                         </AlertDialog>}
             </SidebarMenu>
           </SidebarGroup>
+
+
+
+
+
+          <SidebarGroup className='mt-auto'>
+            <SidebarGroupLabel className='-mt-[35px]'>DETAILS</SidebarGroupLabel>
+            <SidebarMenu>
+             
+                  <Collapsible
+                    key={"jdhf"}
+                    asChild
+                    defaultOpen={true}
+                    className="group/collapsible"
+                  >
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                         <SidebarMenuButton
+                         tooltip={"Visit Site"}
+                        
+                        >
+                          <img src={restaurantImage?.src} alt="logo" className='w-10 h-10 rounded-full'/>
+                          <span>{"Chef's Palace (Visit Site)"}</span> 
+                          {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                     
+                      </CollapsibleContent>
+                    </SidebarMenuItem>
+                  </Collapsible>
+               
+                    {/* {item.title === "Logout" ? (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Link href="#" className="flex items-center gap-2 text-sm ms-[9px]">
+                            <Icon />
+                            { <span>{item.title}</span>}
+                          </Link>
+                        </AlertDialogTrigger>
+                        <DialogContentCommon 
+                          className="bg-danger text-white" 
+                          submitText="Yes, logout" 
+                          title="Confirm Logout" 
+                          des="Are you sure you want to logout from your account?" 
+                          onConfirm={() => signOut()}
+                        />
+                      </AlertDialog>
+                    ) 
+                    {/* )} */}
+               
+                
+           
+            </SidebarMenu>
+          </SidebarGroup>
         </SidebarContent>
         <SidebarRail />
       </Sidebar>
@@ -220,63 +269,24 @@ export default function AppSidebar({
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumbs />
+            
           </div>
-         <Link href={"/profile"} className='no-underline'><div className='flex gap-2 px-4 cursor-pointer'>
-         
-            {/* </div> */}
-            {/* card 2 */}
+          <h1 className='text-3xl font-semibold text-white'>AI Agent</h1>
+        <div className='flex gap-2 px-4 cursor-pointer'>
+     
             <div className='profile-card items-center  flex flex-row gap-2'>
               <div className='items-center flex flex-row gap-1' >
-                <Avatar>
+                {/* <Avatar>
                   <AvatarImage src={ProfileImg.src} />
                   <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <p className='text-md'>{userInfo?.name}</p>
+                </Avatar> */}
+                <p className='text-md pl-2 pr-2'>Share</p>
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <span><Icons.DownCircleArrow /></span>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className='relative right-6 p-2 font-semibold bg-white'>
-                  <DropdownMenuItem asChild>
-                    <Link href="/profile"><Icons.Profile /><span className='ml-2'>My Profile</span></Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/settings"><Icons.settings /><span className='ml-2'>Settings</span></Link>
-                  </DropdownMenuItem>
-                
-                  <DropdownMenuItem onSelect={(e) => {
-                    // Prevent the dropdown from closing when clicking the alert trigger
-                    e.preventDefault()
-                  }}>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <div className='flex items-center justify-between w-full text-danger cursor-pointer'>
-                          <span className='flex items-center gap-2'>
-                            <Icons.LogoutRed />
-                            Logout
-                          </span>
-
-                        </div>
-                      </AlertDialogTrigger>
-                      <DialogContentCommon
-                        className="bg-danger text-white"
-                        submitText="Yes, log me out"
-                        title="Confirm Logout"
-                        des="Are you sure you want to logout?"
-                      
-                      />
-                    </AlertDialog>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              {/* <div className="flex items-center gap-2 px-4">
-                <ThemeToggle />
-              </div> */}
+           
+              
             </div>
-          </div>
-          </Link> 
+            </div>
+     
 
           {/* <div className=" hidden w-1/3 items-center gap-2 px-4 md:flex ">
             <SearchInput />
