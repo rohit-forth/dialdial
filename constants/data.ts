@@ -125,16 +125,16 @@ export type Product = {
 export const 
 navItems: NavItem[] = [
   {
-    title: 'Security',
+    title: 'Privacy Policy',
     url: '#',
-    icon: 'SettingsIcon',
+    icon: 'PrivacyIcon',
     isActive: false,
     items: []
   },
   {
-    title: 'Privacy',
+    title: 'Terms & Conditions',
     url: '#',
-    icon: 'PrivacyIcon',
+    icon: 'SettingsIcon',
     isActive: false,
     items: [
    

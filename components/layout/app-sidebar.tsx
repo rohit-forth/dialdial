@@ -61,17 +61,17 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [mounted, setMounted] = React.useState(false);
- 
+
   const router = useRouter()
-  const {userInfo}=useGlobalContext()
+  const { userInfo } = useGlobalContext()
   const pathname = usePathname();
-  console.log("pathname",pathname)
+  console.log("pathname", pathname)
   const [logoutBtn, setLogoutBtn] = React.useState(false);
   // Only render after first client-side mount
   React.useEffect(() => {
     setMounted(true);
   }, []);
-  
+
 
 
   const signOut = () => {
@@ -82,40 +82,55 @@ export default function AppSidebar({
     return null; // or a loading skeleton
   }
 
-   
+
   const isActiveRoute = (itemUrl: string) => {
     // Handle each route type explicitly
     switch (itemUrl) {
       case '/dashboard':
         return pathname === '/dashboard';
-        
+
       case '/chat/page/1':
-        return pathname === '/chat/page/1' || 
-               pathname.match(/^\/chat\/\d+\/view/);
-        
+        return pathname === '/chat/page/1' ||
+          pathname.match(/^\/chat\/\d+\/view/);
+
       case '/call-management/page/1':
-        return pathname === '/call-management/page/1' || 
-               pathname.match(/^\/call-management\/\d+\/view/);
-               
+        return pathname === '/call-management/page/1' ||
+          pathname.match(/^\/call-management\/\d+\/view/);
+
       case '#': // Logout
         return false;
-        
+
       default:
         return pathname === itemUrl;
     }
   };
 
+
   return (
-    <SidebarProvider className='sidebar-layout'>
+    <SidebarProvider className='sidebar-layout' >
       {/* ..........sidebar......... */}
-      <Sidebar collapsible="icon">
+      <Sidebar collapsible="icon" >
         <SidebarHeader>
-          <div className=" border-b-2 pb-6 border-common text-sidebar-primary-foreground">
-        
-            <img  src={restaurantImage?.src} alt="logo"  />
-            <h1 className='text-3xl text-center font-semibold text-black'>Chef's Place</h1>
-            <p className='text-center text-sm text-gray-400'>Powered by Dial AI</p>
-          </div>
+
+          <Collapsible
+            key={"jdhf"}
+            asChild
+            defaultOpen={true}
+            className="group/collapsible"
+          >
+
+
+            <CollapsibleTrigger asChild>
+              {/* <div className=" border-b-2 pb-6 border-common text-sidebar-primary-foreground"> */}
+              <>
+                <img src={restaurantImage?.src} alt="logo" />
+                <h1 className='text-2xl text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>Chef's Place</h1>
+                <p className='text-center text-sm text-gray-400'>Powered by Dial AI</p></>
+              {/* </div> */}
+
+            </CollapsibleTrigger>
+          </Collapsible>
+
         </SidebarHeader>
         <SidebarContent className="overflow-x-hidden ">
           <SidebarGroup className=''>
@@ -145,15 +160,15 @@ export default function AppSidebar({
                         <SidebarMenuSub>
                           {item.items?.map((subItem) => (
                             <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton
+                              <SidebarMenuSubButton
                                 asChild
                                 isActive={pathname?.includes(subItem.url)}
-                                >
-                                <Link href={item.title!=="Logout"?item.url:"#"}>
-                            <Icon />
-                            <span onClick={()=>item.title==="Logout"?setLogoutBtn(true):""} >{item.title}</span>
-                            </Link>
-                                </SidebarMenuSubButton>
+                              >
+                                <Link href={item.title !== "Logout" ? item.url : "#"}>
+                                  <Icon />
+                                  <span onClick={() => item.title === "Logout" ? setLogoutBtn(true) : ""} >{item.title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}
                         </SidebarMenuSub>
@@ -162,12 +177,12 @@ export default function AppSidebar({
                   </Collapsible>
                 ) : (
                   <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={item.title}
-                    isActive={!!isActiveRoute(item.url)}
-                  >
-                    {/* {item.title === "Logout" ? (
+                    <SidebarMenuButton
+                      asChild
+                      tooltip={item.title}
+                      isActive={!!isActiveRoute(item.url)}
+                    >
+                      {/* {item.title === "Logout" ? (
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Link href="#" className="flex items-center gap-2 text-sm ms-[9px]">
@@ -184,24 +199,24 @@ export default function AppSidebar({
                         />
                       </AlertDialog>
                     ) : ( */}
-                      <Link onClick={()=>( item.title==="Logout" && setLogoutBtn(true))} href={item.url}>
-                        <Icon className=''/>
-                        <span >{item.title+" Settings"}</span>
+                      <Link onClick={() => (item.title === "Logout" && setLogoutBtn(true))} href={item.url}>
+                        <Icon className='' />
+                        <span >{item.title}</span>
                       </Link>
-                    {/* )} */}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                
+                      {/* )} */}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+
                 );
               })}
-                {<AlertDialog open={logoutBtn} onOpenChange={setLogoutBtn}><DialogContentCommon 
-                          className="bg-danger text-white" 
-                          submitText="Yes, logout" 
-                          title="Confirm Logout" 
-                          des="Are you sure you want to logout from your account?" 
-                       
-                        />
-                        </AlertDialog>}
+              {<AlertDialog open={logoutBtn} onOpenChange={setLogoutBtn}><DialogContentCommon
+                className="bg-danger text-white"
+                submitText="Yes, logout"
+                title="Confirm Logout"
+                des="Are you sure you want to logout from your account?"
+
+              />
+              </AlertDialog>}
             </SidebarMenu>
           </SidebarGroup>
 
@@ -212,31 +227,34 @@ export default function AppSidebar({
           <SidebarGroup className='mt-auto'>
             <SidebarGroupLabel className='-mt-[35px]'>DETAILS</SidebarGroupLabel>
             <SidebarMenu>
-             
-                  <Collapsible
-                    key={"jdhf"}
-                    asChild
-                    defaultOpen={true}
-                    className="group/collapsible"
-                  >
-                    <SidebarMenuItem>
-                      <CollapsibleTrigger asChild>
-                         <SidebarMenuButton
-                         tooltip={"Visit Site"}
-                        
-                        >
-                          <img src={restaurantImage?.src} alt="logo" className='w-10 h-10 rounded-full'/>
-                          <span>{"Chef's Palace (Visit Site)"}</span> 
-                          {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
-                        </SidebarMenuButton>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                     
-                      </CollapsibleContent>
-                    </SidebarMenuItem>
-                  </Collapsible>
-               
-                    {/* {item.title === "Logout" ? (
+
+              <Collapsible
+                key={"jdhf"}
+                asChild
+                defaultOpen={true}
+                className="group/collapsible"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      tooltip={"Visit Site"}
+                    >
+                      <img 
+                      src={restaurantImage?.src} 
+                      alt="logo" 
+                      className='w-10 h-10 rounded-full object-center group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-10'
+                      />
+                      <span>{"Chef's Palace (Visit Site)"}</span>
+                      {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+
+              {/* {item.title === "Logout" ? (
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Link href="#" className="flex items-center gap-2 text-sm ms-[9px]">
@@ -254,9 +272,9 @@ export default function AppSidebar({
                       </AlertDialog>
                     ) 
                     {/* )} */}
-               
-                
-           
+
+
+
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
@@ -269,11 +287,11 @@ export default function AppSidebar({
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            
+
           </div>
           <h1 className='text-3xl font-semibold text-white'>AI Agent</h1>
-        <div className='flex gap-2 px-4 cursor-pointer'>
-     
+          <div className='flex gap-2 px-4 cursor-pointer'>
+
             <div className='profile-card items-center  flex flex-row gap-2'>
               <div className='items-center flex flex-row gap-1' >
                 {/* <Avatar>
@@ -282,11 +300,11 @@ export default function AppSidebar({
                 </Avatar> */}
                 <p className='text-md pl-2 pr-2'>Share</p>
               </div>
-           
-              
+
+
             </div>
-            </div>
-     
+          </div>
+
 
           {/* <div className=" hidden w-1/3 items-center gap-2 px-4 md:flex ">
             <SearchInput />

@@ -24,19 +24,13 @@ type Message = {
 
 const Dashboard = () => {
  
- 
-
-
-
 
   return (
-    <PageContainer scrollable>
+  
       
-
-            <AIChat/>
-    
+<div className='m-6 mt-3'> <AIChat/></div>
            
-    </PageContainer>
+
   );
 };
 
