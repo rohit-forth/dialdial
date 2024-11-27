@@ -1,7 +1,7 @@
 import React from 'react';
-import ProfileBg from '@images/profilebg.png';
-import ProfileImg from '@images/profileimg.png';
-import gladiatorLogo from '@images/gladiator.png'
+import ProfileBg from '@/app/assets/images/profilebg.png';
+import ProfileImg from '@/app/assets/images/profileimg.png';
+import gladiatorLogo from 'app/assets/images/gladiator.png'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

@@ -1,5 +1,5 @@
 // app/layout.tsx
-import { auth } from '@/auth';
+// import { auth } from '@/auth';
 //import { Toaster } from '@/components/ui/sonner';
 import type { Metadata } from 'next';
 import { Rubik } from 'next/font/google';
@@ -40,7 +40,7 @@ export default async function RootLayout({
     }
   }
 
-  const session = await auth();
+  // const session = await auth();
 
   return (
     <html

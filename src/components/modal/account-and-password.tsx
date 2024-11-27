@@ -9,7 +9,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { useGlobalContext } from '../providers/Provider';
-import Profile_image from '@images/profileimg.png';
+import Profile_image from '@/app/assets/images/profileimg.png';
 // import { Upload } from "@/components/ui/upload";
 interface UserProfile {
  name:string,

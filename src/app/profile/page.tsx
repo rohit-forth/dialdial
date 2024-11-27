@@ -1,12 +1,12 @@
 "use client"
 import React, { useState } from 'react';
-import Profile_image from '@images/profileimg.png';
-import Profile_Banner from '@images/profile_banner.png';
-import gladiatorLogo from '@images/gladiator.png'
+import Profile_image from '@/app/assets/images/profileimg.png';
+import Profile_Banner from '@/app/assets/images/profile_banner.png';
+// import gladiatorLogo from '@images/gladiator.png'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
+// import { Progress } from '@/components/ui/progress';
 import { Icons } from "@/components/icons"
 import DashboardLayout from '../dashboard/layout';
 import { Separator } from '@/components/ui/separator';

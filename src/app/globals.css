@@ -212,7 +212,7 @@ body {
   }
 
 .auth-page {
-  background-image: url("../public/images/background.png");
+  background-image: url("../../public/images/background.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

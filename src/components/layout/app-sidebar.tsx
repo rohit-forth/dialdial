@@ -41,13 +41,13 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
 import { Breadcrumbs } from '../breadcrumbs';
-import ProfileImg from '@images/profileimg.png'
+// import ProfileImg from '@images/profileimg.png'
 import { Icons } from '../icons';
-import ProjectIcon from "@icons/projecticon.svg"
+// import ProjectIcon from "@icons/projecticon.svg"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import DialogContentCommon from '../modal/DialogueContentCommon';
 import { useGlobalContext } from '../providers/Provider';
-import restaurantImage from "@images/restaurant.png"
+import restaurantImage from "@/app/assets/images/restaurant.png"
 
 export const company = {
   name: 'Acme Inc',
