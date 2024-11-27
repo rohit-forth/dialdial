@@ -476,13 +476,12 @@ const AIChat: React.FC = () => {
 
             {/* Loading Indicator */}
             {isLoading && (
-              <div className="flex justify-start mb-2 md:mb-4">
-                <div className="bg-gray-200 p-2 md:p-3 rounded-lg flex items-center max-w-[80%] md:max-w-[70%] text-sm">
-                  <Loader2 className="h-4 w-4 md:h-5 md:w-5 mr-2 animate-spin text-gray-600" />
-                  Thinking...
-                </div>
-              </div>
-            )}
+  <div className="typing-indicator  show" id="typingIndicator">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+)}
             <div ref={scrollRef}></div>
           </ScrollArea>
 

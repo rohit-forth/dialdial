@@ -1,0 +1,77 @@
+image: node:18
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Build
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run build
+          artifacts:
+            - .next/**
+      - step:
+          name: Removing folder 
+          script:
+            - ssh $USER@$SERVER "sudo rm -rf /var/www/html/dial-ai-chatnextjs/.next"
+      - step:
+          name: Creating folder 
+          script:
+            - ssh $USER@$SERVER "sudo mkdir /var/www/html/dial-ai-chatnextjs/.next"
+      - step:
+          name: Add Folder Permission
+          script:
+            - ssh $USER@$SERVER "sudo chmod 777 /var/www/html/dial-ai-chatnextjs/.next"
+      - step:
+          name: Deploy artifacts using SCP to PROD 
+          deployment: production
+          script:
+            - pipe: atlassian/rsync-deploy:0.3.2
+              variables:
+                USER: $USER
+                SERVER: $SERVER
+                REMOTE_PATH: '/var/www/html/dial-ai-chatnextjs/.next'
+                LOCAL_PATH: '.next/*'
+      - step:
+          name: PM2 restart
+          script:
+            - ssh $USER@$SERVER "pm2 restart dial-ai-chatnextjs"
+           
+    dev:
+      - step:
+          name: Build
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run build
+          artifacts:
+            - .next/**
+            
+      - step:
+          name: Remove Build Folder
+          script:
+            - ssh $USERDEV@$SERVERDEV "sudo rm -rf /var/www/html/dial-ai-chatnextjs/.next"
+      - step:
+          name: Add Build Folder
+          script:
+            - ssh $USERDEV@$SERVERDEV "sudo mkdir /var/www/html/dial-ai-chatnextjs/.next"
+      - step:
+          name: Add Folder Permission
+          script:
+            - ssh $USERDEV@$SERVERDEV "sudo chmod 777 /var/www/html/dial-ai-chatnextjs/.next"            
+      - step:
+          name: Deploy artifacts using SCP to PROD
+          deployment: production
+          script:
+            - pipe: atlassian/rsync-deploy:0.3.2
+              variables:
+                USER: $USERDEV
+                SERVER: $SERVERDEV
+                REMOTE_PATH: '/var/www/html/dial-ai-chatnextjs/.next'
+                LOCAL_PATH: '.next/*'
+      - step:
+          name: PM2 restart
+          script:
+            - ssh $USERDEV@$SERVERDEV "pm2 restart dial-ai-chatnextjs"
