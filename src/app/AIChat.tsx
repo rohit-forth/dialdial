@@ -101,20 +101,9 @@ const AIChat: React.FC = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
-      // Submit user details
-      const payload = {
-        email: formData.email,
-        name: formData.name || null,
-        phone_no: formData.phoneNumber || null,
-        country_code: formData.countryCode || null
-      };
-
+ 
       setShowForm(false);
-    } catch (error) {
-      console.error('Error submitting user details:', error);
-    }
+      setIsLoading(true);
   };
 
   // Generate unique ID for messages
@@ -319,6 +308,40 @@ const AIChat: React.FC = () => {
   //   );
   // }
 
+  useEffect(() => {
+
+    if(!showForm){
+      setIsLoading(true)
+      const aiMessage: ChatMessage = {
+        id: generateId(),
+        content: " Hi there! I'm Ananya from Henceforth Solutions. We specialise in IT services, developing websites, and mobile apps using React JS, Node JS, and Flutter. We also offer digital marketing services and ready-made solutions like Uber-like apps, Amazon-like eCommerce platforms, Fleet Management CRM, and Airbnb-like platforms. How can I assist you today?",
+        sender: 'ai',
+        timestamp: Date.now()
+      };
+      setMessages(prev => [...prev, aiMessage]);
+      setIsLoading(false)
+    }
+
+    // Update messages with AI response
+  },[showForm]);
+
+
+  useEffect(() => {
+    const payload = {
+      email: formData.email,
+      name: formData.name || null,
+      phone_no: formData.phoneNumber || null,
+      country_code: formData.countryCode || null
+    }
+    if(chatId){
+     
+      try {
+        const apiRes=henceforthApi.SuperAdmin.submitChatProfile(chatId,payload)
+      } catch (error) {
+        
+      }
+    }
+  },[chatId])
   return (
     <>
       <Card className="w-full h-[calc(100vh-10vh)] flex flex-col rounded-none md:rounded-lg  ">

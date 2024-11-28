@@ -52,15 +52,15 @@ pipelines:
       - step:
           name: Remove Build Folder
           script:
-            - ssh $USERDEV@$SERVERDEV "sudo rm -rf /var/www/html/dial-ai-chatnextjs/.next"
+            - ssh $USERDEV@$SERVERDEV "sudo rm -rf /var/www/html/dev/dial-ai-chatnextjs/.next"
       - step:
           name: Add Build Folder
           script:
-            - ssh $USERDEV@$SERVERDEV "sudo mkdir /var/www/html/dial-ai-chatnextjs/.next"
+            - ssh $USERDEV@$SERVERDEV "sudo mkdir /var/www/html/dev/dial-ai-chatnextjs/.next"
       - step:
           name: Add Folder Permission
           script:
-            - ssh $USERDEV@$SERVERDEV "sudo chmod 777 /var/www/html/dial-ai-chatnextjs/.next"            
+            - ssh $USERDEV@$SERVERDEV "sudo chmod 777 /var/www/html/dev/dial-ai-chatnextjs/.next"            
       - step:
           name: Deploy artifacts using SCP to PROD
           deployment: production
@@ -69,9 +69,9 @@ pipelines:
               variables:
                 USER: $USERDEV
                 SERVER: $SERVERDEV
-                REMOTE_PATH: '/var/www/html/dial-ai-chatnextjs/.next'
+                REMOTE_PATH: '/var/www/html/dev/dial-ai-chatnextjs/.next'
                 LOCAL_PATH: '.next/*'
       - step:
           name: PM2 restart
           script:
-            - ssh $USERDEV@$SERVERDEV "pm2 restart dial-ai-chatnextjs"
+            - ssh $USERDEV@$SERVERDEV "pm2 restart dial-ai-chatnextjs-dev"
