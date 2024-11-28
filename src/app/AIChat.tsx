@@ -215,19 +215,7 @@ const AIChat: React.FC = () => {
     }, 500);
   }, [messages]);
 
-  // Automatically end chat if no response to inactivity modal
-  // useEffect(() => {
-  //   let timer: NodeJS.Timeout;
-  //   if (isInactivityModalVisible) {
-  //     timer = setTimeout(() => {
-  //       endChat();
-  //     }, 60000); // 60 seconds
-  //   }
-  //   return () => {
-  //     if (timer) clearTimeout(timer);
-  //   };
-  // }, [isInactivityModalVisible]);
-
+  // AI Greeting
 
   useEffect(() => {
 
