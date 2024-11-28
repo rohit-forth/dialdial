@@ -50,47 +50,47 @@ const AIChat: React.FC = () => {
   });
 
   // Reset inactivity timer
-  const resetInactivityTimer = useCallback(() => {
-    // Only start timer if showForm is false
-    if (!showForm) {
-      // Clear existing timer
-      if (inactivityTimerRef.current) {
-        clearTimeout(inactivityTimerRef.current);
-      }
+  // const resetInactivityTimer = useCallback(() => {
+  //   // Only start timer if showForm is false
+  //   if (!showForm) {
+  //     // Clear existing timer
+  //     if (inactivityTimerRef.current) {
+  //       clearTimeout(inactivityTimerRef.current);
+  //     }
 
-      // Set new timer
-      inactivityTimerRef.current = setTimeout(() => {
-        setIsInactivityModalVisible(true);
-      }, 60000); // 60 seconds
+  //     // Set new timer
+  //     inactivityTimerRef.current = setTimeout(() => {
+  //       setIsInactivityModalVisible(true);
+  //     }, 60000); // 60 seconds
 
-      // Update last activity time
-      lastActivityTimeRef.current = Date.now();
-    }
-  }, [showForm]);
+  //     // Update last activity time
+  //     lastActivityTimeRef.current = Date.now();
+  //   }
+  // }, [showForm]);
 
   // Effect to handle inactivity and reset timer
-  useEffect(() => {
-    // Track mouse and keyboard events
-    const trackActivity = () => {
-      resetInactivityTimer();
-    };
+  // useEffect(() => {
+  //   // Track mouse and keyboard events
+  //   const trackActivity = () => {
+  //     resetInactivityTimer();
+  //   };
 
-    window.addEventListener('mousemove', trackActivity);
-    window.addEventListener('keydown', trackActivity);
+  //   window.addEventListener('mousemove', trackActivity);
+  //   window.addEventListener('keydown', trackActivity);
 
-    // Initial timer setup
-    resetInactivityTimer();
+  //   // Initial timer setup
+  //   resetInactivityTimer();
 
-    // Cleanup
-    return () => {
-      window.removeEventListener('mousemove', trackActivity);
-      window.removeEventListener('keydown', trackActivity);
+  //   // Cleanup
+  //   return () => {
+  //     window.removeEventListener('mousemove', trackActivity);
+  //     window.removeEventListener('keydown', trackActivity);
 
-      if (inactivityTimerRef.current) {
-        clearTimeout(inactivityTimerRef.current);
-      }
-    };
-  }, [resetInactivityTimer]);
+  //     if (inactivityTimerRef.current) {
+  //       clearTimeout(inactivityTimerRef.current);
+  //     }
+  //   };
+  // }, [resetInactivityTimer]);
 
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,10 +129,10 @@ const AIChat: React.FC = () => {
   };
 
   // Continue chat
-  const continueChatAndResetTimer = () => {
-    setIsInactivityModalVisible(false);
-    resetInactivityTimer();
-  };
+  // const continueChatAndResetTimer = () => {
+  //   setIsInactivityModalVisible(false);
+  //   resetInactivityTimer();
+  // };
 
   // Handle sending message
   const handleSendMessage = async () => {
@@ -141,7 +141,7 @@ const AIChat: React.FC = () => {
     if (!trimmedMessage) return;
 
     // Reset inactivity timer
-    resetInactivityTimer();
+    // resetInactivityTimer();
 
     // Create user message
     const userMessage: ChatMessage = {
@@ -216,97 +216,18 @@ const AIChat: React.FC = () => {
   }, [messages]);
 
   // Automatically end chat if no response to inactivity modal
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isInactivityModalVisible) {
-      timer = setTimeout(() => {
-        endChat();
-      }, 60000); // 60 seconds
-    }
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [isInactivityModalVisible]);
+  // useEffect(() => {
+  //   let timer: NodeJS.Timeout;
+  //   if (isInactivityModalVisible) {
+  //     timer = setTimeout(() => {
+  //       endChat();
+  //     }, 60000); // 60 seconds
+  //   }
+  //   return () => {
+  //     if (timer) clearTimeout(timer);
+  //   };
+  // }, [isInactivityModalVisible]);
 
-  // Render form or chat based on showForm state
-  // if (showForm) {
-  //   return (
-  //     <Card className="w-full mx-auto max-w-md p-6">
-  //       <form onSubmit={handleSubmit} className="space-y-4">
-  //         <h2 className="text-xl font-semibold text-center">Contact Information</h2>
-  //         <div>
-  //           <Label htmlFor="name">Name</Label>
-  //           <Input
-  //             type="text"
-  //             id="name"
-  //             name="name"
-  //             placeholder="Enter your name"
-  //             value={formData.name}
-  //             onChange={handleChange}
-  //             className="mt-1 block w-full"
-  //           />
-  //         </div>
-  //         <div className="flex gap-4">
-  //           <div className="w-[30%]">
-  //             <Label htmlFor="countryCode">Country Code</Label>
-  //             <Select
-  //               value={formData.countryCode}
-  //               onValueChange={(value) => { 
-  //                 setFormData(prev => ({ ...prev, countryCode: value }));
-  //               }}
-  //             >
-  //               <SelectTrigger className="mt-1">
-  //                 <SelectValue placeholder="Select" />
-  //               </SelectTrigger>
-  //               <SelectContent className='bg-white' placeholder='+91' defaultValue={"+91"}>
-  //                 <SelectGroup className='max-h-[200px] overflow-y-scroll'>
-  //                   {countryCode?.map((country:any) => ( 
-  //                     <SelectItem 
-  //                       className='hover:bg-gray-200 cursor-pointer' 
-  //                       key={country.code} 
-  //                       value={country.dial_code}
-  //                     > 
-  //                       {country.dial_code}
-  //                     </SelectItem>
-  //                   ))}
-  //                 </SelectGroup>
-  //               </SelectContent>
-  //             </Select>
-  //           </div>
-  //           <div className="w-[70%]">
-  //             <Label htmlFor="phoneNumber">Phone Number</Label>
-  //             <Input
-  //               type="text"
-  //               id="phoneNumber"
-  //               name="phoneNumber"
-  //               placeholder="Enter phone number"
-  //               value={formData.phoneNumber}
-  //               onChange={handleChange}
-  //               className="mt-1 block w-full"
-  //             />
-  //           </div>
-  //         </div>
-  //         <div>
-  //           <Label htmlFor="email">Email <span className='text-red-500'>*</span></Label>
-  //           <Input
-  //             type="email"
-  //             id="email"
-  //             name="email"
-  //             placeholder="Enter your email"
-  //             value={formData.email}
-  //             onChange={handleChange}
-  //             className="mt-1 block w-full"
-  //             required
-  //           />
-  //         </div>
-
-  //         <Button type="submit" className='w-full common-btn text-white'>
-  //           Start Chat
-  //         </Button>
-  //       </form>
-  //     </Card>
-  //   );
-  // }
 
   useEffect(() => {
 
@@ -363,7 +284,7 @@ const AIChat: React.FC = () => {
 
         <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
           {/* Inactivity Modal */}
-          {isInactivityModalVisible && (
+          {/* {isInactivityModalVisible && (
             <div className="fixed z-50 inset-0 bg-black/50 flex items-center justify-center p-4">
               <div className="bg-white p-4 md:p-6 rounded-lg shadow-xl text-center max-w-md w-full">
                 <p className="mb-4 text-base md:text-lg font-semibold">
@@ -386,7 +307,7 @@ const AIChat: React.FC = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {/* Scrollable Chat Area */}
           <ScrollArea className="flex-1 p-2 md:p-4 space-y-2 md:space-y-4 overflow-y-auto">
