@@ -7,6 +7,7 @@
 
 @layer base {
   :root {
+     --dynamic-color: 0, 0, 0;
     --scrollbar-width: 12px;
     --scrollbar-thumb-color: theme('colors.blue.500');
     --scrollbar-track-color: theme('colors.gray.200');
@@ -185,9 +186,9 @@
 
 /* ....................sidebar-layout................... */
 
-.common-btn{
+/* .bg-dynamic{
   background-color:  hsla(236, 24%, 26%, 1);
-}
+} */
 
 
 /* profile card */

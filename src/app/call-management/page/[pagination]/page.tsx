@@ -171,7 +171,7 @@ const SheetContentComponent = ({ isLoading, selectedRecord }: { isLoading: boole
             </div>
           <div className="mx-auto w-full flex justify-center">
             <Link href={`/call-management/${selectedRecord?._id}/view`}>
-              <Button className="common-btn text-white">
+              <Button className="bg-dynamic text-white">
                 View Details
               </Button>
             </Link>

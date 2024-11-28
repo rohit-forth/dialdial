@@ -119,7 +119,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
                 
                 <Button 
                   type="submit" 
-                  className="flex common-btn text-white ms-auto" 
+                  className="flex bg-dynamic text-white ms-auto" 
                   disabled={isLoading}
                 >
                   {isLoading ? "Saving..." : "Save changes"}

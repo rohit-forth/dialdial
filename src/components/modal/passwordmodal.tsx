@@ -221,7 +221,7 @@ const PasswordChangeDialog = () => {
             >
               Cancel
             </Button> */}
-            <Button type="submit" className='common-btn text-white'>
+            <Button type="submit" className='bg-dynamic text-white'>
               Change Password
             </Button>
           </div>

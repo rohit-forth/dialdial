@@ -61,7 +61,8 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [mounted, setMounted] = React.useState(false);
-
+  const {companyDetails} = useGlobalContext();
+  console.log("companyDetails", companyDetails)
   const router = useRouter()
   const { userInfo } = useGlobalContext()
   const pathname = usePathname();
@@ -107,7 +108,7 @@ export default function AppSidebar({
 
 
   return (
-    <SidebarProvider className='sidebar-layout' >
+    <SidebarProvider className='sidebar-layout bg-dynamic' >
       {/* ..........sidebar......... */}
       <Sidebar collapsible="icon" >
         <SidebarHeader>
@@ -127,7 +128,7 @@ export default function AppSidebar({
               <img src={restaurantImage?.src} alt="logo" />
               </div>
                 
-                <h1 className='text-2xl text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>Henceforth Solutions</h1>
+                <h1 className='text-2xl text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>{companyDetails?.company_name}</h1>
                 <p className='text-center text-sm text-gray-400'>Powered by Dial AI</p></>
               {/* </div> */}
 
@@ -287,7 +288,7 @@ export default function AppSidebar({
 
       {/* ......header...... */}
       <SidebarInset>
-        <header className="header flex mt-2 mr-2 ml-2 rounded-xl h-16 shrink-0 items-center gap-2 justify-between transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <header className="bg-dynamic flex mt-2 mr-2 ml-2 rounded-xl h-16 shrink-0 items-center gap-2 justify-between transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />

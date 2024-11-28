@@ -146,7 +146,7 @@ const SettingsPage = () => {
           </section>
 
           <div className="mt-8 flex justify-end">
-            <Button variant="default" className="w-full sm:w-auto common-btn text-white">Save Changes</Button>
+            <Button variant="default" className="w-full sm:w-auto bg-dynamic text-white">Save Changes</Button>
           </div>
         </div>
       </div>

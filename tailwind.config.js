@@ -19,6 +19,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        dynamic:"rgb(var(--dynamic-color, 0, 0, 0))",
         primaryBtn:'#323452',
         grayCustom: '#BBBBBB',
         border: 'hsl(var(--border))',

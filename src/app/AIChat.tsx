@@ -288,7 +288,7 @@ const AIChat: React.FC = () => {
                   </Button>
                   <Button
                     onClick={continueChatAndResetTimer}
-                    className="flex items-center common-btn text-white text-sm md:text-base"
+                    className="flex items-center bg-dynamic text-white text-sm md:text-base"
                   >
                     <Check className="mr-2 h-4 w-4" /> Continue Chat
                   </Button>
@@ -374,7 +374,7 @@ const AIChat: React.FC = () => {
 
                     <Button 
                       type="submit" 
-                      className='w-full common-btn text-white text-sm md:text-base'
+                      className='w-full bg-dynamic text-white text-sm md:text-base'
                     >
                       Start Chat
                     </Button>
@@ -396,7 +396,7 @@ const AIChat: React.FC = () => {
                 >
                   <div
                     className={`max-w-[80%] md:max-w-[70%] break-words p-2 md:p-3 rounded-lg text-sm md:text-base ${message.sender === 'user'
-                        ? 'bg-blue-500 text-white'
+                        ? 'bg-dynamic text-white'
                         : 'bg-gray-200 text-black'
                       }`}
                   >
@@ -431,7 +431,7 @@ const AIChat: React.FC = () => {
             <Button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || isLoading}
-              className="common-btn text-white p-2 md:p-3"
+              className="bg-dynamic text-white p-2 md:p-3"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />

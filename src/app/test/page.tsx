@@ -318,7 +318,7 @@ const TestPage = () => {
 
                         <Button 
                             type="submit" 
-                            className="w-full text-white common-btn"
+                            className="w-full text-white bg-dynamic"
                         >
                             Submit Phone Number
                         </Button>

@@ -123,7 +123,7 @@ const ChatDetailPage = () => {
         {/* Chat Section */}
         <div className="flex-1 flex flex-col border border-gray rounded-lg h-[calc(100vh-7rem)]">
           {/* Chat Header */}
-          <div className="border-b p-4 flex items-center justify-between shrink-0 text-white common-btn rounded-t-lg"> {/* Added shrink-0 */}
+          <div className="border-b p-4 flex items-center justify-between shrink-0 text-white bg-dynamic rounded-t-lg"> {/* Added shrink-0 */}
             <div className="flex items-center  gap-3">
               <Avatar className="h-10 w-10">
                 <AvatarImage src={chatDetails.avatar} />

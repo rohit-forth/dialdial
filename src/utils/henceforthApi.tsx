@@ -123,7 +123,7 @@ const SuperAdmin = {
 };
 const Company = {
   add: (info: any) => requests.post("admin/company", info),
-  profile: () => requests.get("admin/company"),
+  profile: () => requests.get("admin/profile-chatboat"),
   updateCompany: (id: string, info: any) =>
     requests.patch(`admin/company/${id}`, info),
   addmember: (id: string, info: any) =>

@@ -1,6 +1,6 @@
 // components/providers/Provider.tsx
 "use client";
-import { createContext, useContext, ReactNode, useState } from "react";
+import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Updated to next/navigation
 import { destroyCookie } from "nookies";
 import henceforthApi from "@/utils/henceforthApi";
@@ -19,7 +19,8 @@ interface GlobalContextType {
   stopSpaceEnter: (event: React.KeyboardEvent) => boolean;
   getProfile: () => Promise<void>;
   formatDuration: (seconds: number) => string;
-  Toast:any
+  Toast:any,
+  companyDetails:any
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -37,6 +38,10 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
   if (userInfo?.access_token) {
     henceforthApi.setToken(userInfo.access_token);
   }
+
+  useEffect(() => { 
+    getThemeColor()
+  },[])
 
   const stopSpaceEnter = (event: React.KeyboardEvent): boolean => {
     if (event.target instanceof HTMLInputElement) {
@@ -140,6 +145,36 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     }
   };
 
+  const [companyDetails,setCompanyDetails]=useState({
+    company_color:"",
+    company_logo:"",
+    company_name:""
+  })
+
+  const hexToRgb = (hex:string) => {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r}, ${g}, ${b}`;
+  };
+  const getThemeColor = async() => {
+    try {
+      const apiRes = await henceforthApi.Company.profile();
+      console.log(apiRes, "apiRes");
+      setCompanyDetails({
+        ...companyDetails,
+        company_color: apiRes?.data?.company_color,
+        company_logo: apiRes?.data?.company_logo,
+        company_name: apiRes?.data?.company_name
+      });
+      const rgbColor = hexToRgb(apiRes?.data?.company_color);
+      document.documentElement.style.setProperty("--dynamic-color", rgbColor);
+    } catch (error) {
+      
+    }
+   }
+
   const contextValue: GlobalContextType = {
     logout,
     setUserInfo,
@@ -147,7 +182,8 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     stopSpaceEnter,
     getProfile,
     formatDuration,
-    Toast
+    Toast,
+    companyDetails
   };
 
   return (
