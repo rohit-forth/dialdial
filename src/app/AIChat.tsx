@@ -368,10 +368,10 @@ const AIChat: React.FC = () => {
           {/* Scrollable Chat Area */}
           <ScrollArea className="flex-1 p-2 md:p-4 space-y-2 md:space-y-4 overflow-y-auto">
             {showForm ? (
-              <div className='flex w-full justify-end items-end min-h-[calc(100vh-30vh)] p-4'>
+              <div className='flex w-full justify-center items-center min-h-[calc(100vh-30vh)] p-4'>
                 <Card className="w-full max-w-md p-4 md:p-6">
                   <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
-                    <h2 className="text-lg md:text-xl font-semibold text-center">User Information</h2>
+                    <h2 className="text-lg md:text-xl font-semibold text-center">Get Started</h2>
                     <div>
                       <Label htmlFor="name" className="text-sm">Name</Label>
                       <Input

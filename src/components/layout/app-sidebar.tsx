@@ -47,7 +47,7 @@ import { Icons } from '../icons';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import DialogContentCommon from '../modal/DialogueContentCommon';
 import { useGlobalContext } from '../providers/Provider';
-import restaurantImage from "@/app/assets/images/restaurant.png"
+import restaurantImage from "@/app/assets/images/hf_logo.png"
 
 export const company = {
   name: 'Acme Inc',
@@ -123,8 +123,11 @@ export default function AppSidebar({
             <CollapsibleTrigger asChild>
               {/* <div className=" border-b-2 pb-6 border-common text-sidebar-primary-foreground"> */}
               <>
-                <img src={restaurantImage?.src} alt="logo" />
-                <h1 className='text-2xl text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>Chef's Place</h1>
+              <div className='flex justify-center items-center'>
+              <img src={restaurantImage?.src} alt="logo" />
+              </div>
+                
+                <h1 className='text-2xl text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>Henceforth Solutions</h1>
                 <p className='text-center text-sm text-gray-400'>Powered by Dial AI</p></>
               {/* </div> */}
 
@@ -242,9 +245,10 @@ export default function AppSidebar({
                       <img 
                       src={restaurantImage?.src} 
                       alt="logo" 
-                      className='w-10 h-10 rounded-full object-center group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-10'
+                      className='w-10 h-8 rounded-full object-contain group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-10'
                       />
-                      <span>{"Chef's Palace (Visit Site)"}</span>
+                      <Link className='text-wrap text-ellipsis' href={"https://henceforthsolutions.com/"}>{"Henceforth Solutions (Visit Site)"}</Link>
+                    
                       {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
