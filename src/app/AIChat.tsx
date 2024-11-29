@@ -396,7 +396,7 @@ const AIChat: React.FC = () => {
                 >
                   <div
                     className={`max-w-[80%] md:max-w-[70%] break-words p-2 md:p-3 rounded-lg text-sm md:text-base ${message.sender === 'user'
-                        ? 'bg-dynamic text-white'
+                        ? 'bg-lightDynamic text-white'
                         : 'bg-gray-200 text-black'
                       }`}
                   >

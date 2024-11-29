@@ -8,6 +8,8 @@
 @layer base {
   :root {
      --dynamic-color: 0, 0, 0;
+     --light-dynamic-color: 0, 0, 0;
+     --medium-dynamic-color: 0, 0, 0;
     --scrollbar-width: 12px;
     --scrollbar-thumb-color: theme('colors.blue.500');
     --scrollbar-track-color: theme('colors.gray.200');

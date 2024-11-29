@@ -1,3 +1,5 @@
+const { default: dynamic } = require('next/dynamic')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
@@ -19,7 +21,9 @@ module.exports = {
     },
     extend: {
       colors: {
-        dynamic:"rgb(var(--dynamic-color, 0, 0, 0))",
+        dynamic:"rgb(var(--dynamic-color))",
+        mediumDynamic: "rgb(var(--medium-dynamic-color))",
+        lightDynamic: "rgb(var(--light-dynamic-color))",
         primaryBtn:'#323452',
         grayCustom: '#BBBBBB',
         border: 'hsl(var(--border))',

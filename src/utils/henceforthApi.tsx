@@ -5,8 +5,8 @@ import _superagent, { search } from "superagent";
 const SuperagentPromise = require("superagent-promise");
 const superagent = SuperagentPromise(_superagent, global.Promise);
 
-export const API_ROOT = "https://dial-ai.henceforthsolutions.com:3001/";
-export const BUCKET_ROOT = "https://raizestag.blob.core.windows.net";
+export const API_ROOT = "https://dev.dial-ai.henceforthsolutions.com:3003/";
+export const BUCKET_ROOT = "https://demoserver3.sgp1.digitaloceanspaces.com/uploads/images";
 
 
 // export const API_ROOT = "https://production.techraize.com:3000/";

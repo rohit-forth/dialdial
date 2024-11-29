@@ -148,7 +148,8 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
   const [companyDetails,setCompanyDetails]=useState({
     company_color:"",
     company_logo:"",
-    company_name:""
+    company_name:"",
+    company_url:""
   })
 
   const hexToRgb = (hex:string) => {
@@ -156,8 +157,35 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
     const b = bigint & 255;
-    return `${r}, ${g}, ${b}`;
+
+    console.log(r, g, b, "rgb");
+    return `${r},${g},${b}`;
   };
+  function generateColorAccents(rgbString:string) {
+    // Parse the input RGB string into separate color components
+    console.log(rgbString, "rgbString");
+    const [r, g, b] = rgbString.split(',').map(Number);
+    console.log(r, g, b, "rgbString");
+    
+    // Function to ensure color values stay within 0-255 range
+    const clamp = (value: number) => Math.min(255, Math.max(0, value));
+    
+    // Original color (unchanged)
+    const originalColor = `${r}, ${g}, ${b}`;
+    
+    // Light accent (increase brightness)
+    const lightColor = `${clamp(r + 30)}, ${clamp(g + 30)}, ${clamp(b + 30)}`;
+    
+    // Medium accent (slightly darker)
+    const mediumColor = `${clamp(r - 30)}, ${clamp(g - 30)}, ${clamp(b - 30)}`;
+    
+    return {
+      originalColor,
+      lightColor,
+      mediumColor
+    };
+  }
+  
   const getThemeColor = async() => {
     try {
       const apiRes = await henceforthApi.Company.profile();
@@ -169,7 +197,11 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
         company_name: apiRes?.data?.company_name
       });
       const rgbColor = hexToRgb(apiRes?.data?.company_color);
-      document.documentElement.style.setProperty("--dynamic-color", rgbColor);
+      console.log(rgbColor, "rgbColor");
+      const colorAccents =  generateColorAccents(rgbColor);
+      document.documentElement.style.setProperty("--dynamic-color", colorAccents?.originalColor);
+      document.documentElement.style.setProperty("--light-dynamic-color", colorAccents?.lightColor);
+      document.documentElement.style.setProperty("--medium-dynamic-color", colorAccents?.mediumColor);
     } catch (error) {
       
     }
