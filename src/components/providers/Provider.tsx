@@ -194,7 +194,8 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
         ...companyDetails,
         company_color: apiRes?.data?.company_color,
         company_logo: apiRes?.data?.company_logo,
-        company_name: apiRes?.data?.company_name
+        company_name: apiRes?.data?.company_name,
+        company_url: apiRes?.data?.company_url
       });
       const rgbColor = hexToRgb(apiRes?.data?.company_color);
       console.log(rgbColor, "rgbColor");
