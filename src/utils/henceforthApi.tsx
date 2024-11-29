@@ -5,12 +5,9 @@ import _superagent, { search } from "superagent";
 const SuperagentPromise = require("superagent-promise");
 const superagent = SuperagentPromise(_superagent, global.Promise);
 
-export const API_ROOT = "https://dev.dial-ai.henceforthsolutions.com:3003/";
+export const API_ROOT = "https://dev.qixs.ai:3003/";
 export const BUCKET_ROOT = "https://demoserver3.sgp1.digitaloceanspaces.com/uploads/images";
 
-
-// export const API_ROOT = "https://production.techraize.com:3000/";
-// export const BUCKET_ROOT = "https://raizeprod.blob.core.windows.net";
 
 const API_FILE_ROOT_MEDIUM = `${BUCKET_ROOT}/medium/`;
 const API_FILE_ROOT_ORIGINAL = `${BUCKET_ROOT}/original/`;
