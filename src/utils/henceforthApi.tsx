@@ -103,28 +103,28 @@ const page = {
 };
 
 const SuperAdmin = {
-  login: (info: any) => requests.post("admin/login", info),
-  setupCompProfile: (info: any) => requests.post("admin/company", info),
+  login: (info: any) => requests.post("vendor/login", info),
+  setupCompProfile: (info: any) => requests.post("vendor/company", info),
   getSystems:(search?:any)=>requests.get(search?`system?search=${search}`:"system?limit=200"),
-  changePassword: (info: any) => requests.put("admin/password", info),
-  profile: (type?: any) => requests.get(type ? `admin/profile?${type}` : `admin/profile`),
-  updateProfile: (info: any) => requests.put("admin/profile", info),
-  callListing: (q: any) => requests.get(`admin/call${q ? `?${q}` : ""}`),
-  dashboardCards: (type?:any) => requests.get(type?`admin/dashboard?type=${type}`:"admin/dashboard"),
-  getTranscription: (id: string) => requests.get(`admin/call/${id}/transcript`),
-  callDetail: (id: string) => requests.get(`admin/call/${id}`),
-  submitPhoneNumber:(info:any)=>requests.post(`twilio/send-call-admin`,info),
+  changePassword: (info: any) => requests.put("vendor/password", info),
+  profile: (type?: any) => requests.get(type ? `vendor/profile?${type}` : `vendor/profile`),
+  updateProfile: (info: any) => requests.put("vendor/profile", info),
+  callListing: (q: any) => requests.get(`vendor/call${q ? `?${q}` : ""}`),
+  dashboardCards: (type?:any) => requests.get(type?`vendor/dashboard?type=${type}`:"vendor/dashboard"),
+  getTranscription: (id: string) => requests.get(`vendor/call/${id}/transcript`),
+  callDetail: (id: string) => requests.get(`vendor/call/${id}`),
+  submitPhoneNumber:(info:any)=>requests.post(`twilio/send-call-vendor`,info),
   sendMessage:(info:any)=>requests.post(`chat`,info),
   submitChatProfile:(id:any,info:any)=>requests.put(`chat/${id}/user-detail`,info),
   endChat:(id:any)=>requests.put(`chat/${id}`,{}),
 };
 const Company = {
-  add: (info: any) => requests.post("admin/company", info),
-  profile: () => requests.get("admin/profile-chatboat"),
+  add: (info: any) => requests.post("vendor/company", info),
+  profile: () => requests.get("vendor/profile-chatboat"),
   updateCompany: (id: string, info: any) =>
-    requests.patch(`admin/company/${id}`, info),
+    requests.patch(`vendor/company/${id}`, info),
   addmember: (id: string, info: any) =>
-    requests.post(`admin/company/${id}/admins`, info),
+    requests.post(`vendor/company/${id}/admins`, info),
 };
 const Team = {
   addTeamMates: (info: any) => requests.post("user/teammates", info),
