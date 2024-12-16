@@ -218,18 +218,32 @@ const AIChat: React.FC = () => {
   // AI Greeting
 
   useEffect(() => {
-
     if(!showForm){
-      setIsLoading(true)
-      const aiMessage: ChatMessage = {
-        id: generateId(),
-        content: " Hi there! I'm Ananya from Henceforth Solutions. We specialise in IT services, developing websites, and mobile apps using React JS, Node JS, and Flutter. We also offer digital marketing services and ready-made solutions like Uber-like apps, Amazon-like eCommerce platforms, Fleet Management CRM, and Airbnb-like platforms. How can I assist you today?",
-        sender: 'ai',
-        timestamp: Date.now()
-      };
-      setMessages(prev => [...prev, aiMessage]);
-      setIsLoading(false)
+      
+      const getInitial = async () => {
+        setIsLoading(true);
+        try {
+          const apiRes=await henceforthApi.SuperAdmin.getInitialMessage();
+
+          const aiMessage: ChatMessage = {
+            id: generateId(),
+            content: apiRes?.data,
+            sender: 'ai',
+            timestamp: Date.now()
+          };
+          setMessages(prev => [...prev, aiMessage]);
+  
+        } catch (error) {
+          
+        }finally{
+          setIsLoading(false);
+        }
+      }
+
+      getInitial()
     }
+
+
 
     // Update messages with AI response
   },[showForm]);

@@ -119,6 +119,8 @@ const SuperAdmin = {
   sendMessage:(info:any)=>requests.post(`chat`,info),
   submitChatProfile:(id:any,info:any)=>requests.put(`chat/${id}/user-detail`,info),
   endChat:(id:any)=>requests.put(`chat/${id}`,{}),
+
+  getInitialMessage:()=>requests.get(`vendor/initial-message`),
 };
 const Company = {
   add: (info: any) => requests.post("admin/company", info),
