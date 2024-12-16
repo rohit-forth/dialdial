@@ -10,7 +10,7 @@ import henceforthApi from '@/utils/henceforthApi';
 import { cookies } from 'next/headers';
 import { Toaster } from 'react-hot-toast';
 export const metadata: Metadata = {
-  title: 'DIAL AI',
+  title: 'QIXS',
   description: 'Basic dashboard with Next.js and Shadcn'
 };
 

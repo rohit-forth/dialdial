@@ -130,7 +130,7 @@ export default function AppSidebar({
               </div>
                 
                 <h1 className='text-2xl mt-3 text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>{companyDetails?.company_name}</h1>
-                <p className='text-center text-sm text-gray-400'>Powered by Dial AI</p></>
+                <p className='text-center text-sm text-gray-400'>Powered by QIXS</p></>
               {/* </div> */}
 
             </CollapsibleTrigger>
