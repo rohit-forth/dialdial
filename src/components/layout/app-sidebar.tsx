@@ -49,6 +49,7 @@ import DialogContentCommon from '../modal/DialogueContentCommon';
 import { useGlobalContext } from '../providers/Provider';
 import restaurantImage from "@/app/assets/images/hf_logo.png"
 import henceforthApi from '@/utils/henceforthApi';
+import gladiatorIcon from "@/app/assets/images/hf_logo.png"
 
 export const company = {
   name: 'Acme Inc',
@@ -126,10 +127,10 @@ export default function AppSidebar({
               {/* <div className=" border-b-2 pb-6 border-common text-sidebar-primary-foreground"> */}
               <>
               <div className='flex justify-center items-center'>
-              <img className='rounded-full h-[200px] w-[200px] object-cover' src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,"hey")} alt="logo" />
+              <img className='rounded-full  object-fill' src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon?.src)} alt="logo" />
               </div>
                 
-                <h1 className='text-2xl mt-3 text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>{companyDetails?.company_name}</h1>
+                <h1 className='text-2xl mt-3 text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>{companyDetails?.company_name??"Henceforth Solutions"}</h1>
                 <p className='text-center text-sm text-gray-400'>Powered by QIXS</p></>
               {/* </div> */}
 
@@ -244,14 +245,14 @@ export default function AppSidebar({
                     <SidebarMenuButton
                       tooltip={"Visit Site"}
                     >
-                      <div className='flex items-center gap-2'>
+                      <div className='flex items-center justify-center gap-2 ms-1'>
 
                       <img 
-                      src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,"hey")} 
+                      src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon.src)} 
                       alt="logo" 
-                      className='w-7 h-8 rounded-full object-cover group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-10'
+                      className='w-7 h-8 rounded-full object-contain group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-6 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-8'
                       />
-                      <Link className='text-wrap mt-1 text-ellipsis' href={companyDetails?.company_url?`${companyDetails?.company_url}`:"https://henceforthsolutions.com"}>{`${companyDetails?.company_name} (Visit Site)`}</Link>
+                      <Link className='text-wrap mt-1 text-ellipsis' href={companyDetails?.company_url?`${companyDetails?.company_url}`:"https://henceforthsolutions.com"}>{`${companyDetails?.company_name??"Henceforth Solutions"} (Visit Site)`}</Link>
                     
                       </div>
                       {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}

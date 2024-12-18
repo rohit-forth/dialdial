@@ -24,8 +24,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 interface ChatMessage {
   id: string;
   content: string;
-  sender: 'user' | 'ai' | 'system';
+  sender: 'user' | 'ai' | 'system' | 'inactivity';
   timestamp: number;
+  actions?: 'end_chat' | 'continue_chat' | null;
 }
 
 const AIChat: React.FC = () => {
@@ -35,7 +36,7 @@ const AIChat: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showForm, setShowForm] = useState(true);
   const [chatId, setChatId] = useState<string | null>(null);
-  const [isInactivityModalVisible, setIsInactivityModalVisible] = useState(false);
+  const [isInputDisabled, setIsInputDisabled] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -50,47 +51,63 @@ const AIChat: React.FC = () => {
   });
 
   // Reset inactivity timer
-  // const resetInactivityTimer = useCallback(() => {
-  //   // Only start timer if showForm is false
-  //   if (!showForm) {
-  //     // Clear existing timer
-  //     if (inactivityTimerRef.current) {
-  //       clearTimeout(inactivityTimerRef.current);
-  //     }
-
-  //     // Set new timer
-  //     inactivityTimerRef.current = setTimeout(() => {
-  //       setIsInactivityModalVisible(true);
-  //     }, 60000); // 60 seconds
-
-  //     // Update last activity time
-  //     lastActivityTimeRef.current = Date.now();
-  //   }
-  // }, [showForm]);
-
+  const resetInactivityTimer = useCallback(() => {
+    // Only start timer if showForm is false
+    if (!showForm) {
+      // Clear existing timer
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+  
+      // Set new timer
+      inactivityTimerRef.current = setTimeout(() => {
+        // Check if a system message already exists
+        const existingSystemMessage = messages.find(
+          msg => msg.sender === 'system' && msg.actions === 'end_chat'
+        );
+  
+        // Only add a new system message if no existing one is present
+        if (!existingSystemMessage) {
+          const inactivityMessage: ChatMessage = {
+            id: `msg_inactivity_${Date.now()}`,
+            content: 'Would you like to end this conversation?',
+            sender: 'system',
+            timestamp: Date.now(),
+            actions: 'end_chat'
+          };
+  
+          setMessages(prev => [...prev, inactivityMessage]);
+          setIsInputDisabled(true);
+        }
+      }, 60000); // 60 seconds
+  
+      // Update last activity time
+      lastActivityTimeRef.current = Date.now();
+    }
+  }, [showForm, messages]);
   // Effect to handle inactivity and reset timer
-  // useEffect(() => {
-  //   // Track mouse and keyboard events
-  //   const trackActivity = () => {
-  //     resetInactivityTimer();
-  //   };
+  useEffect(() => {
+    // Track mouse and keyboard events
+    const trackActivity = () => {
+      resetInactivityTimer();
+    };
 
-  //   window.addEventListener('mousemove', trackActivity);
-  //   window.addEventListener('keydown', trackActivity);
+    window.addEventListener('mousemove', trackActivity);
+    window.addEventListener('keydown', trackActivity);
 
-  //   // Initial timer setup
-  //   resetInactivityTimer();
+    // Initial timer setup
+    resetInactivityTimer();
 
-  //   // Cleanup
-  //   return () => {
-  //     window.removeEventListener('mousemove', trackActivity);
-  //     window.removeEventListener('keydown', trackActivity);
+    // Cleanup
+    return () => {
+      window.removeEventListener('mousemove', trackActivity);
+      window.removeEventListener('keydown', trackActivity);
 
-  //     if (inactivityTimerRef.current) {
-  //       clearTimeout(inactivityTimerRef.current);
-  //     }
-  //   };
-  // }, [resetInactivityTimer]);
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+    };
+  }, [resetInactivityTimer]);
 
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,9 +118,9 @@ const AIChat: React.FC = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
- 
-      setShowForm(false);
-      setIsLoading(true);
+    setShowForm(false);
+    setIsLoading(true);
+    setIsInputDisabled(false);
   };
 
   // Generate unique ID for messages
@@ -125,23 +142,22 @@ const AIChat: React.FC = () => {
     setMessages([]);
     setChatId(null);
     setShowForm(true);
-    setIsInactivityModalVisible(false);
+    setIsInputDisabled(false);
   };
 
-  // Continue chat
-  // const continueChatAndResetTimer = () => {
-  //   setIsInactivityModalVisible(false);
-  //   resetInactivityTimer();
-  // };
+  // Continue chat and reset timer
+  const continueChat = () => {
+    // Remove the last inactivity message
+    setMessages(prev => prev.filter(msg => msg.sender !== 'system'));
+    setIsInputDisabled(false);
+    resetInactivityTimer();
+  };
 
   // Handle sending message
   const handleSendMessage = async () => {
     // Trim and validate input
     const trimmedMessage = inputMessage.trim();
     if (!trimmedMessage) return;
-
-    // Reset inactivity timer
-    // resetInactivityTimer();
 
     // Create user message
     const userMessage: ChatMessage = {
@@ -200,7 +216,7 @@ const AIChat: React.FC = () => {
 
   // Handle input submission on Enter key
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isLoading) {
+    if (e.key === 'Enter' && !isLoading && !isInputDisabled) {
       handleSendMessage();
     }
   };
@@ -216,14 +232,12 @@ const AIChat: React.FC = () => {
   }, [messages]);
 
   // AI Greeting
-
   useEffect(() => {
     if(!showForm){
-      
       const getInitial = async () => {
         setIsLoading(true);
         try {
-          const apiRes=await henceforthApi.SuperAdmin.getInitialMessage();
+          const apiRes = await henceforthApi.SuperAdmin.getInitialMessage();
 
           const aiMessage: ChatMessage = {
             id: generateId(),
@@ -232,23 +246,18 @@ const AIChat: React.FC = () => {
             timestamp: Date.now()
           };
           setMessages(prev => [...prev, aiMessage]);
-  
         } catch (error) {
-          
-        }finally{
+          console.error('Error fetching initial message:', error);
+        } finally {
           setIsLoading(false);
         }
       }
 
       getInitial()
     }
-
-
-
-    // Update messages with AI response
   },[showForm]);
 
-
+  // Submit chat profile
   useEffect(() => {
     const payload = {
       email: formData.email,
@@ -257,17 +266,17 @@ const AIChat: React.FC = () => {
       country_code: formData.countryCode || null
     }
     if(chatId){
-     
       try {
-        const apiRes=henceforthApi.SuperAdmin.submitChatProfile(chatId,payload)
+        henceforthApi.SuperAdmin.submitChatProfile(chatId,payload)
       } catch (error) {
-        
+        console.error('Error submitting chat profile:', error);
       }
     }
   },[chatId])
+
   return (
     <>
-      <Card className="w-full h-[calc(100vh-10vh)] flex flex-col rounded-none md:rounded-lg  ">
+      <Card className="w-full h-[calc(100vh-10vh)] flex flex-col rounded-none md:rounded-lg">
         <CardHeader className="flex flex-row items-center justify-between border-b p-4">
           <CardTitle className="flex items-center text-base md:text-lg">
             <MessageCircle className="mr-2 h-5 w-5 md:h-6 md:w-6" /> AI Chat
@@ -285,33 +294,6 @@ const AIChat: React.FC = () => {
         </CardHeader>
 
         <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
-          {/* Inactivity Modal */}
-          {/* {isInactivityModalVisible && (
-            <div className="fixed z-50 inset-0 bg-black/50 flex items-center justify-center p-4">
-              <div className="bg-white p-4 md:p-6 rounded-lg shadow-xl text-center max-w-md w-full">
-                <p className="mb-4 text-base md:text-lg font-semibold">
-                  Would you like to end this conversation?
-                </p>
-                <div className="flex justify-center space-x-2 md:space-x-4">
-                  <Button
-                    onClick={endChat}
-                    variant="destructive"
-                    className="flex items-center text-white text-sm md:text-base"
-                  >
-                    <X className="mr-2 h-4 w-4" /> End Chat
-                  </Button>
-                  <Button
-                    onClick={continueChatAndResetTimer}
-                    className="flex items-center bg-dynamic text-white text-sm md:text-base"
-                  >
-                    <Check className="mr-2 h-4 w-4" /> Continue Chat
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )} */}
-
-          {/* Scrollable Chat Area */}
           <ScrollArea className="flex-1 p-2 md:p-4 space-y-2 md:space-y-4 overflow-y-auto">
             {showForm ? (
               <div className='flex w-full justify-center items-center min-h-[calc(100vh-30vh)] p-4'>
@@ -409,12 +391,37 @@ const AIChat: React.FC = () => {
                     } mb-2 md:mb-4`}
                 >
                   <div
-                    className={`max-w-[80%] md:max-w-[70%] break-words p-2 md:p-3 rounded-lg text-sm md:text-base ${message.sender === 'user'
-                        ? 'bg-lightDynamic text-white'
-                        : 'bg-gray-200 text-black'
-                      }`}
+                    className={`max-w-[80%] md:max-w-[70%] break-words p-2 md:p-3 rounded-lg text-sm md:text-base ${
+                      message.sender === 'user'
+                        ? 'bg-mediumDynamic text-white'
+                        : message.sender === 'system'
+                        ? 'bg-gray-200 text-black'
+                        : message.sender === 'ai'
+                        ? 'bg-gray-200 text-black'
+                        : ''
+                    }`}
                   >
                     {message?.content}
+                    {message.sender === 'system' && (
+                      <div className="flex justify-between mt-2 space-x-2">
+                        <Button 
+                          onClick={endChat} 
+                          variant="destructive" 
+                          size="sm" 
+                          className="flex-1 flex items-center text-white justify-center"
+                        >
+                          <X className="mr-2 h-4 w-4" /> End Chat
+                        </Button>
+                        <Button 
+                          onClick={continueChat} 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex-1 flex border-gray-400 items-center justify-center"
+                        >
+                          <Check className="mr-2 h-4 w-4" /> Continue Chat
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))
@@ -422,12 +429,12 @@ const AIChat: React.FC = () => {
 
             {/* Loading Indicator */}
             {isLoading && (
-  <div className="typing-indicator  show" id="typingIndicator">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-)}
+              <div className="typing-indicator  show" id="typingIndicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            )}
             <div ref={scrollRef}></div>
           </ScrollArea>
 
@@ -438,13 +445,13 @@ const AIChat: React.FC = () => {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              disabled={showForm}
+              disabled={showForm || isInputDisabled}
               placeholder="Type your message..."
               className="flex-1 text-sm md:text-base"
             />
             <Button
               onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isLoading}
+              disabled={!inputMessage.trim() || isLoading || showForm || isInputDisabled}
               className="bg-dynamic text-white p-2 md:p-3"
             >
               {isLoading ? (
