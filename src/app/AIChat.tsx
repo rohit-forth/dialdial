@@ -366,7 +366,7 @@ const AIChat: React.FC = () => {
                       )
                     }
                     <div
-                      className={`max-w-3xl p-3 rounded-2xl ${
+                      className={`max-w-2xl p-3 rounded-2xl ${
                         message.sender === 'user'
                           ? 'bg-mediumDynamic text-white rounded-br-none'
                           : message.sender === 'system'
@@ -374,7 +374,7 @@ const AIChat: React.FC = () => {
                           : 'bg-gray-100 text-gray-900 rounded-bl-none'
                       }`}
                     >
-                      <p className="text-sm md:text-base break-words">{message.content}</p>
+                      <p className="text-sm md:text-base break-words max-w-lg md:max-w-4xl">{message.content}</p>
                    
                       {message.sender === 'system' && (
                         
@@ -428,8 +428,8 @@ const AIChat: React.FC = () => {
 
       {/* Input Area - Fixed at bottom */}
       { (
-        <div className=" bg-white pt-3 p-2 w-full">
-            <div className="max-w-4xl border-[1.5px] border-b-0 border-lightDynamic h-full rounded-lg mx-auto flex align-center gap-2 ">
+        <div className=" bg-white mb-14 md:mb-2 p-2 w-full">
+            <div className="max-w-3xl border-[1.5px] border-lightDynamic h-full rounded-lg mx-auto flex align-center gap-2 ">
             <Textarea
               ref={textareaRef}
               value={inputMessage}
