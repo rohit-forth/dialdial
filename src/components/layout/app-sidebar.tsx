@@ -124,7 +124,7 @@ export default function AppSidebar({
 
 
             <CollapsibleTrigger asChild>
-              {/* <div className=" border-b-2 pb-6 border-common text-sidebar-primary-foreground"> */}
+           
               <>
               <div className='flex justify-center items-center'>
               <img className='rounded-full  object-fill' src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon?.src)} alt="logo" />
@@ -188,23 +188,7 @@ export default function AppSidebar({
                       tooltip={item.title}
                       isActive={!!isActiveRoute(item.url)}
                     >
-                      {/* {item.title === "Logout" ? (
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Link href="#" className="flex items-center gap-2 text-sm ms-[9px]">
-                            <Icon />
-                            { <span>{item.title}</span>}
-                          </Link>
-                        </AlertDialogTrigger>
-                        <DialogContentCommon 
-                          className="bg-danger text-white" 
-                          submitText="Yes, logout" 
-                          title="Confirm Logout" 
-                          des="Are you sure you want to logout from your account?" 
-                          onConfirm={() => signOut()}
-                        />
-                      </AlertDialog>
-                    ) : ( */}
+                  
                       <Link onClick={() => (item.title === "Logout" && setLogoutBtn(true))} href={item.url}>
                         <Icon className='' />
                         <span >{item.title}</span>
@@ -264,25 +248,7 @@ export default function AppSidebar({
                 </SidebarMenuItem>
               </Collapsible>
 
-              {/* {item.title === "Logout" ? (
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Link href="#" className="flex items-center gap-2 text-sm ms-[9px]">
-                            <Icon />
-                            { <span>{item.title}</span>}
-                          </Link>
-                        </AlertDialogTrigger>
-                        <DialogContentCommon 
-                          className="bg-danger text-white" 
-                          submitText="Yes, logout" 
-                          title="Confirm Logout" 
-                          des="Are you sure you want to logout from your account?" 
-                          onConfirm={() => signOut()}
-                        />
-                      </AlertDialog>
-                    ) 
-                    {/* )} */}
-
+           
 
 
             </SidebarMenu>
@@ -304,10 +270,7 @@ export default function AppSidebar({
 
             <div className='profile-card items-center  flex flex-row gap-2'>
               <div className='items-center flex flex-row gap-1' >
-                {/* <Avatar>
-                  <AvatarImage src={ProfileImg.src} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar> */}
+            
                 <p className='text-md pl-2 pr-2'>Share</p>
               </div>
 
@@ -316,25 +279,11 @@ export default function AppSidebar({
           </div>
 
 
-          {/* <div className=" hidden w-1/3 items-center gap-2 px-4 md:flex ">
-            <SearchInput />
-          </div> */}
         </header>
         {/* page main content */}
         {children}
       </SidebarInset>
-      {/* <AlertDialogContent>
-            <AlertDialogHeader>
-                <AlertDialogTitle >{"Confirm Logout"}</AlertDialogTitle>
-                <AlertDialogDescription>
-                    {props?.des}
-                </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className={"bg-red-400 text-white"}>Yes, log me out</AlertDialogAction>
-            </AlertDialogFooter>
-        </AlertDialogContent> */}
+    
     </SidebarProvider>
   );
 }

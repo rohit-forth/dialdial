@@ -1,10 +1,10 @@
 {
-  "name": "nextshcdndashboardstarter",
+  "name": "qixschatpanel",
   "version": "1.0.0",
   "private": true,
   "author": {
-    "name": "Kiran",
-    "url": "https://github.com/Kiranism"
+    "name": "Rohit",
+    "email": "rohit.henceforth@gmail.com"
   },
   "scripts": {
     "dev": "next dev --turbo",
