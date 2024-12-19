@@ -42,6 +42,7 @@ const AIChat: React.FC = () => {
   const [showForm, setShowForm] = useState(true);
   const [chatId, setChatId] = useState<string | null>(null);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
+  const [connecting,setConnecting] = useState(false);
     const {companyDetails} = useGlobalContext();
   
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -119,7 +120,6 @@ const AIChat: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setShowForm(false);
-    setIsLoading(true);
     setIsInputDisabled(false);
   };
 
@@ -218,7 +218,8 @@ const AIChat: React.FC = () => {
   useEffect(() => {
     if(!showForm){
       const getInitial = async () => {
-        setIsLoading(true);
+        // setIsLoading(true);
+        setConnecting(true)
         try {
           const apiRes = await henceforthApi.SuperAdmin.getInitialMessage();
           const aiMessage: ChatMessage = {
@@ -231,7 +232,7 @@ const AIChat: React.FC = () => {
         } catch (error) {
           console.error('Error fetching initial message:', error);
         } finally {
-          setIsLoading(false);
+          setConnecting(false)
         }
       }
       getInitial()
@@ -401,6 +402,17 @@ const AIChat: React.FC = () => {
                   </div>
                     
                 ))}
+                {
+                 
+                connecting && (
+                  <div className="flex justify-center items-center">
+                    <span>Connecting</span>
+                    <span className="ml-2 animate-pulse">.</span>
+                    <span className="animate-pulse animation-delay-200">.</span>
+                    <span className="animate-pulse animation-delay-400">.</span>
+                  </div>
+                )
+                }
                
                 {isLoading && (
                   <div className="flex items-center space-x-2 ">
