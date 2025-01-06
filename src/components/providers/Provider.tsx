@@ -6,6 +6,7 @@ import { destroyCookie } from "nookies";
 import henceforthApi from "@/utils/henceforthApi";
 import { formatDuration } from "date-fns";
 import toast from "react-hot-toast";
+import { company } from "../layout/app-sidebar";
 
 interface UserInfo {
   access_token?: string;
@@ -20,7 +21,8 @@ interface GlobalContextType {
   getProfile: () => Promise<void>;
   formatDuration: (seconds: number) => string;
   Toast:any,
-  companyDetails:any
+  companyDetails:any,
+  getThemeColor:any
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -39,9 +41,7 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     henceforthApi.setToken(userInfo.access_token);
   }
 
-  useEffect(() => { 
-    getThemeColor()
-  },[])
+ 
 
   const stopSpaceEnter = (event: React.KeyboardEvent): boolean => {
     if (event.target instanceof HTMLInputElement) {
@@ -149,7 +149,8 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     company_color:"",
     company_logo:"",
     company_name:"",
-    company_url:""
+    company_url:"",
+    company_description:""
   })
 
   const hexToRgb = (hex:string) => {
@@ -187,18 +188,19 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     };
   }
   
-  const getThemeColor = async() => {
+  const getThemeColor = async(script_id:any) => {
     try {
-      const apiRes = await henceforthApi.Company.profile();
+      const apiRes = await henceforthApi.SuperAdmin.getConfigFromScriptId(script_id);
       console.log(apiRes, "apiRes");
       setCompanyDetails({
         ...companyDetails,
-        company_color: apiRes?.data?.company_color,
-        company_logo: apiRes?.data?.company_logo,
-        company_name: apiRes?.data?.company_name,
-        company_url: apiRes?.data?.company_url
+        company_color: apiRes?.data?.colour,
+        company_logo: apiRes?.data?.image,
+        company_name: apiRes?.data?.title,
+        company_url: apiRes?.data?.url ?? "https://www.henceforthsolutions.com/",
+        company_description: apiRes?.data?.description
       });
-      const rgbColor = hexToRgb(apiRes?.data?.company_color);
+      const rgbColor = hexToRgb(apiRes?.data?.colour);
       console.log(rgbColor, "rgbColor");
       const colorAccents =  generateColorAccents(rgbColor);
       document.documentElement.style.setProperty("--dynamic-color", colorAccents?.originalColor);
@@ -213,6 +215,7 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     logout,
     setUserInfo,
     userInfo,
+    getThemeColor,
     stopSpaceEnter,
     getProfile,
     formatDuration,

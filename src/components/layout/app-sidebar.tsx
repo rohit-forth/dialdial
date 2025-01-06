@@ -131,7 +131,7 @@ export default function AppSidebar({
               </div>
                 
                 <h1 className='text-2xl mt-3 text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>{companyDetails?.company_name??"Henceforth Solutions"}</h1>
-                <p className='text-center text-sm text-gray-400'>Powered by QIXS</p></>
+                <p className='text-center text-sm text-gray-400'>{companyDetails?.company_description ??"Powered by QIXS"}</p></>
               {/* </div> */}
 
             </CollapsibleTrigger>
@@ -142,7 +142,7 @@ export default function AppSidebar({
           <SidebarGroup className=''>
             <SidebarGroupLabel className='-mt-[35px]'>OPTIONS</SidebarGroupLabel>
             <SidebarMenu>
-              {navItems.map((item) => {
+              {navItems?.map((item) => {
                 const Icon = item.icon ? Icons[item?.icon] : Icons.logo;
                 return item?.items && item?.items?.length > 0 ? (
                   <Collapsible

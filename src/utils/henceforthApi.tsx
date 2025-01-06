@@ -119,6 +119,8 @@ const SuperAdmin = {
   endChat:(id:any)=>requests.put(`chat/${id}`,{}),
 
   getInitialMessage:(agent_id:any)=>requests.get(`agent/${atob(agent_id)}`),
+
+  getConfigFromScriptId:(id:any)=>requests.get(`vendor/workspace-script/${id}`),
 };
 const Company = {
   add: (info: any) => requests.post("vendor/company", info),

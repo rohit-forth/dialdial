@@ -44,7 +44,7 @@ const AIChat: React.FC = () => {
   const [chatId, setChatId] = useState<string | null>(null);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [connecting,setConnecting] = useState(false);
-    const {companyDetails} = useGlobalContext();
+    const {companyDetails,getThemeColor} = useGlobalContext();
   const searchParams=useSearchParams();
   console.log(searchParams.get("ai_agent"))
   console.log("jhufedgwjeuwgrfherhgijuhrtrdhews5j45ej345")
@@ -144,6 +144,15 @@ const AIChat: React.FC = () => {
     setShowForm(true);
     setIsInputDisabled(false);
   };
+
+  useEffect(()=>{
+    if(searchParams.get("script_id")){
+      const scriptId = searchParams.get("script_id");
+      if (scriptId) {
+        getThemeColor(atob(scriptId));
+      }
+    }
+  },[])
 
   const continueChat = () => {
     setMessages(prev => prev.filter(msg => msg.sender !== 'system'));
@@ -266,9 +275,9 @@ const AIChat: React.FC = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] relative ">
       {/* Chat Area */}
-      <div className="flex-1 max-w-4xl  mx-auto overflow-hidden  ">
+      <div className="flex-1 max-w-4xl relative right-1  w-full mx-auto overflow-hidden  ">
         <ScrollArea className="h-full">
-          <div className="px-4 py-6 md:px-7 ">
+          <div className="px-4 py-6 md:px-7  ">
             {showForm ? (
               <div className="flex justify-center items-center min-h-[60vh]">
                 <Card className="w-full max-w-md p-6 shadow-lg">
@@ -347,7 +356,7 @@ const AIChat: React.FC = () => {
                 </Card>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-6 ">
                 {messages.map(message => (
                   <div
                     key={message.id}
@@ -383,7 +392,7 @@ const AIChat: React.FC = () => {
                           : 'bg-gray-100 text-gray-900 rounded-bl-none'
                       }`}
                     >
-                      <p className="text-sm md:text-base break-words max-w-lg md:max-w-4xl">{message.content}</p>
+                      <p className="text-sm md:text-base break-words max-w-lg md:max-w-4xl ">{message.content}</p>
                    
                       {message.sender === 'system' && (
                         
@@ -448,8 +457,8 @@ const AIChat: React.FC = () => {
 
       {/* Input Area - Fixed at bottom */}
       { (
-        <div className=" bg-white mb-14 md:mb-2 p-2 w-full">
-            <div className="max-w-3xl border-[1.5px] border-lightDynamic h-full rounded-lg mx-auto flex align-center gap-2 ">
+        <div className=" bg-white flex justify-center  mb-14 md:mb-2 p-2 w-full">
+            <div className="max-w-4xl min-w-4xl w-full border-[1.5px] border-lightDynamic h-full rounded-lg mx-auto flex align-center gap-2 ">
             <Textarea
               ref={textareaRef}
               value={inputMessage}
