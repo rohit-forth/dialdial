@@ -177,7 +177,9 @@ const AIChat: React.FC = () => {
         });
       } else {
         aiResponse = await henceforthApi?.SuperAdmin.sendMessage({
-          "text": trimmedMessage
+          "text": trimmedMessage,
+          "agent_id": atob(searchParams.get("ai_agent") || ""),
+          "secret_key": atob(searchParams.get("secret_key") || "")
         });
         setChatId(aiResponse?.data?.chat_id);
       }
