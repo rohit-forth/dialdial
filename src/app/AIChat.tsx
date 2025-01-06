@@ -26,6 +26,7 @@ import admin4 from "@/app/assets/images/admin4.png"
 import admin5 from "@/app/assets/images/admin5.png"
 import admin6 from "@/app/assets/images/admin6.png"
 import admin7 from "@/app/assets/images/admin7.png"
+import { useSearchParams } from 'next/navigation';
 
 interface ChatMessage {
   id: string;
@@ -44,7 +45,10 @@ const AIChat: React.FC = () => {
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [connecting,setConnecting] = useState(false);
     const {companyDetails} = useGlobalContext();
-  
+  const searchParams=useSearchParams();
+  console.log(searchParams.get("ai_agent"))
+  console.log("jhufedgwjeuwgrfherhgijuhrtrdhews5j45ej345")
+  console.log(searchParams.get("secret_key"))
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lastActivityTimeRef = useRef(Date.now());
@@ -167,7 +171,9 @@ const AIChat: React.FC = () => {
       if (chatId) {
         aiResponse = await henceforthApi?.SuperAdmin.sendMessage({
           "text": trimmedMessage,
-          "chat_id": chatId
+          "chat_id": chatId,
+          "agent_id": atob(searchParams.get("ai_agent") || ""),
+          "secret_key": atob(searchParams.get("secret_key") || "")
         });
       } else {
         aiResponse = await henceforthApi?.SuperAdmin.sendMessage({
@@ -221,10 +227,10 @@ const AIChat: React.FC = () => {
         // setIsLoading(true);
         setConnecting(true)
         try {
-          const apiRes = await henceforthApi.SuperAdmin.getInitialMessage();
+          const apiRes = await henceforthApi.SuperAdmin.getInitialMessage(searchParams.get("ai_agent"))
           const aiMessage: ChatMessage = {
             id: generateId(),
-            content: apiRes?.data,
+            content: apiRes?.data?.first_message,
             sender: 'ai',
             timestamp: Date.now()
           };
