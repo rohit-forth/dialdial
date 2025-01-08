@@ -90,7 +90,7 @@ const AIChat: React.FC = () => {
           setMessages(prev => [...prev, inactivityMessage]);
           setIsInputDisabled(true);
         }
-      }, 60000);
+      }, 300000);
   
       lastActivityTimeRef.current = Date.now();
     }
@@ -216,7 +216,7 @@ const AIChat: React.FC = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !isLoading && !isInputDisabled) {
       e.preventDefault();
       handleSendMessage();
@@ -275,9 +275,9 @@ const AIChat: React.FC = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] relative ">
       {/* Chat Area */}
-      <div className="flex-1 max-w-4xl relative right-1  w-full mx-auto overflow-hidden  ">
+      <div className="flex-1 relative right-1  w-full mx-auto overflow-hidden  ">
         <ScrollArea className="h-full">
-          <div className="px-4 py-6 md:px-7  ">
+          <div className="px-4 py-6 md:px-7 ">
             {showForm ? (
               <div className="flex justify-center items-center min-h-[60vh]">
                 <Card className="w-full max-w-md p-6 shadow-lg">
@@ -295,7 +295,7 @@ const AIChat: React.FC = () => {
                       />
                     </div>
                     <div className="flex gap-4">
-                      <div className="w-1/3">
+                      <div className="w-1/4">
                         <Label htmlFor="countryCode">Code</Label>
                         <Select
                           value={formData.countryCode}
@@ -320,7 +320,7 @@ const AIChat: React.FC = () => {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div className="w-2/3">
+                      <div className="w-full">
                         <Label htmlFor="phoneNumber">Phone Number</Label>
                         <Input
                           type="text"
@@ -356,100 +356,109 @@ const AIChat: React.FC = () => {
                 </Card>
               </div>
             ) : (
-              <div className="space-y-6 ">
-                {messages.map(message => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    {message.sender === 'ai'&& (
-                      <div className="w-8 h-8 rounded-full  flex items-center justify-center mr-2">
-                        <img 
-                      src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon.src)} 
-                      alt="logo" 
-                      className='w-7 h-8 rounded-full object-contain  '
-                      />
-
-                      </div>
-                    )}
-                    {
-                      message.sender === 'system' && (
-                        <div className="w-8 h-8 rounded-full  flex items-center justify-center mr-2">
-                          <img 
-                            src={getRandomAdminImage()} 
-                            alt="logo" 
-                            className='w-8 h-8 rounded-full object-cover'
-                          />
-                        </div>
-                      )
-                    }
-                    <div
-                      className={`max-w-2xl p-3 rounded-2xl ${
-                        message.sender === 'user'
-                          ? 'bg-mediumDynamic text-white rounded-br-none'
-                          : message.sender === 'system'
-                          ? 'bg-gray-100 text-gray-900'
-                          : 'bg-gray-100 text-gray-900 rounded-bl-none'
-                      }`}
-                    >
-                      <p className="text-sm md:text-base break-words max-w-lg md:max-w-4xl ">{message.content}</p>
-                   
-                      {message.sender === 'system' && (
-                        
-                        <div className="flex gap-4 justify-center mt-4">
-                          <Button 
-                            onClick={endChat} 
-                       
-                            size="sm" 
-                            className="flex bg-mediumDynamic text-white items-center"
-                          >
-                            <X className="mr-1 h-4 w-4" /> End Chat
-                          </Button>
-                          <Button 
-                            onClick={continueChat} 
-                            variant="outline" 
-                            size="sm" 
-                            className="flex items-center"
-                          >
-                            <Check className="mr-1 h-4 w-4" /> Continue Chat
-                          </Button>
+              <div className="flex-1 flex flex-col mx-auto ">
+              <ScrollArea className="flex-1 px-4 py-4">
+                <div className="space-y-16 mt-10">
+                  {messages.map(message => (
+                    <div key={message.id} className="relative ">
+                      {message.sender !== 'user' && (
+                        <div className="absolute -top-10 left-0 ">
+                          <div className="w-8 h-8 border-2 rounded-lg overflow-hidden">
+                            <img 
+                              src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, gladiatorIcon.src)} 
+                              alt="AI"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         </div>
                       )}
-                    </div>
-                  </div>
-                    
-                ))}
-                {
-                 
-                connecting && (
-                  <div className="flex justify-center items-center">
-                    <span>Connecting</span>
-                    <span className="ml-2 animate-pulse">.</span>
-                    <span className="animate-pulse animation-delay-200">.</span>
-                    <span className="animate-pulse animation-delay-400">.</span>
-                  </div>
-                )
-                }
-               
-                {isLoading && (
-                  <div className="flex items-center space-x-2 ">
-                    <div className="w-8 h-8 rounded-full ">
-                        <img 
-                      src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon.src)} 
-                      alt="logo" 
-                      className='w-7 h-8 rounded-full object-contain  '
-                      />
-
+                      
+                      <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`relative max-w-[80%] ${
+                      message.sender === 'user' 
+                        ? 'bg-white border-r-4 border-gray-200 border border-r-dynamic shadow rounded-[5px]' 
+                        : 'bg-white border-l-4 border-gray-200 border border-l-dynamic rounded-[5px] shadow-sm'
+                    } px-4 py-3 `}>
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                          
+                          {message.sender === 'system' && (
+                            <div className="flex gap-2 mt-3">
+                                <Button 
+                                onClick={endChat}
+                                size="sm"
+                                className="bg-dynamic text-white text-xs"
+                                >
+                                <X className="h-3 w-3 mr-1" /> End Chat
+                                </Button>
+                                <Button variant="outline" size="sm" className="text-xs relative">
+                                  <Check className="h-3 w-3 mr-1" /> Continue Chat
+                                  {/* <span className="absolute right-2 text-xs text-gray-500">
+                                  {Math.floor((300000 - (Date.now() - lastActivityTimeRef.current)) / 60000)}:{Math.floor(((300000 - (Date.now() - lastActivityTimeRef.current)) % 60000) / 1000).toString().padStart(2, '0')}
+                                  </span> */}
+                                </Button>
+                              <Button
+                                onClick={continueChat}
+                                variant="outline"
+                                size="sm"
+                                className="text-xs"
+                              >
+                                <Check className="h-3 w-3 mr-1" /> Continue Chat
+                              </Button>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    <div className="typing-indicator">
-                      <span></span>
-                      <span></span>
-                      <span></span>
                     </div>
-                  </div>
-                )}
-                <div ref={scrollRef} />
-              </div>
+                  ))}
+                  
+                  {connecting && (
+                    <div className="relative">
+                      <div className="absolute -top-3 left-4">
+                        <div className="w-6 h-6 rounded-full overflow-hidden">
+                          <img 
+                            src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, gladiatorIcon.src)} 
+                            alt="AI"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div className="bg-gray-200 shadow-sm rounded-3xl rounded-tl-none mt-2 px-4 py-3 inline-block">
+                        <div className="flex items-center gap-1 text-gray-500">
+                          <span>Connecting</span>
+                          <span className="animate-pulse">.</span>
+                          <span className="animate-pulse delay-100">.</span>
+                          <span className="animate-pulse delay-200">.</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {isLoading && (
+                    <div className="relative">
+                      <div className="absolute -top-7 left-0 mb-5">
+                        <div className="w-6 h-6 rounded-full overflow-hidden">
+                          <img 
+                            src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, gladiatorIcon.src)} 
+                            alt="AI"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div className="bg-gray-100 shadow-sm rounded-3xl mt-2 px-4 py-3 inline-block">
+                        <div className="flex gap-1 ">
+                          <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce"></div>
+                          <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-100"></div>
+                          <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-200"></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div ref={scrollRef} />
+                </div>
+              </ScrollArea>
+    
+             
+            </div>
             )}
           </div>
         </ScrollArea>
@@ -457,31 +466,30 @@ const AIChat: React.FC = () => {
 
       {/* Input Area - Fixed at bottom */}
       { (
-        <div className=" bg-white flex justify-center  mb-14 md:mb-2 p-2 w-full">
-            <div className="max-w-4xl min-w-4xl w-full border-[1.5px] border-lightDynamic h-full rounded-lg mx-auto flex align-center gap-2 ">
-            <Textarea
-              ref={textareaRef}
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyDown={handleKeyPress}
-              disabled={(isInputDisabled||showForm)}
-              placeholder="Type your message..."
-              className="min-h-[90px] max-h-[200px] resize-none border-0 text-mediumDynamic"
-              rows={1}
-            />
-            <Button
-              onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isLoading || isInputDisabled}
-              className="bg-mediumDynamic mr-2 mt-auto mb-auto rounded-full hover:bg-dynamic text-white px-4  "
-            >
-              {isLoading ? (
-              <Loader2 className="h-5 w-4 animate-spin" />
-              ) : (
-              <Send className="h-6 w-4" />
-              )}
-            </Button>
-            </div>
-        </div>
+        <div className="p-4 mb-10 bg-white border-t">
+                <div className=" mx-auto flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyDown={handleKeyPress}
+                    disabled={isInputDisabled || showForm}
+                    placeholder="Type a new message here"
+                    className="flex-1 bg-transparent border border-gray-200 focus:outline-none focus:ring-0 focus:border-gray-300 rounded-full px-6 py-3 text-sm"
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!inputMessage.trim() || isLoading || isInputDisabled}
+                    className="bg-dynamic hover:bg-mediumDynamic text-white rounded-full w-10 h-10 p-0 flex items-center justify-center"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Send className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
       )}
     </div>
   );

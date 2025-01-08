@@ -6,7 +6,7 @@ import { destroyCookie } from "nookies";
 import henceforthApi from "@/utils/henceforthApi";
 import { formatDuration } from "date-fns";
 import toast from "react-hot-toast";
-import { company } from "../layout/app-sidebar";
+// import { company } from "../layout/app-sidebar";
 
 interface UserInfo {
   access_token?: string;

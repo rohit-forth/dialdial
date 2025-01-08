@@ -2,7 +2,7 @@
 // import { auth } from '@/auth';
 //import { Toaster } from '@/components/ui/sonner';
 import type { Metadata } from 'next';
-import { Rubik } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 import { GlobalProvider } from '@/components/providers/Provider';
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: 'Basic dashboard with Next.js and Shadcn'
 };
 
-const rubik = Rubik({
+const rubik = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   display: 'swap'

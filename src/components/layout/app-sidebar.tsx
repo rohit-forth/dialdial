@@ -1,12 +1,6 @@
 'use client';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from '@/components/ui/collapsible';
 
-import { Separator } from '@/components/ui/separator';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Sidebar,
   SidebarContent,
@@ -18,44 +12,20 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
   SidebarTrigger
 } from '@/components/ui/sidebar';
-import { navItems } from '@/constants/data';
-import {
-  BadgeCheck,
-  Bell,
-  ChevronRight,
-  ChevronsUpDown,
-  CreditCard,
-  MessagesSquare,
-  GalleryVerticalEnd,
-  LogOut
-} from 'lucide-react';
-import { useSession } from 'next-auth/react';
+// import { Icons } from '../icons';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
-import { Breadcrumbs } from '../breadcrumbs';
-// import ProfileImg from '@images/profileimg.png'
-import { Icons } from '../icons';
-// import ProjectIcon from "@icons/projecticon.svg"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
-import DialogContentCommon from '../modal/DialogueContentCommon';
 import { useGlobalContext } from '../providers/Provider';
-import restaurantImage from "@/app/assets/images/hf_logo.png"
 import henceforthApi from '@/utils/henceforthApi';
-import gladiatorIcon from "@/app/assets/images/hf_logo.png"
-
-export const company = {
-  name: 'Acme Inc',
-  logo: GalleryVerticalEnd,
-  plan: 'Enterprise'
-};
+import gladiatorIcon from "@/app/assets/images/hf_logo.png";
+import { ArrowUpRight, Phone, PhoneCall, Scroll, Share, Share2, Shield } from 'lucide-react';
+import { Icons } from '../icons';
+import { Button } from '../ui/button';
 
 export default function AppSidebar({
   children
@@ -63,227 +33,98 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [mounted, setMounted] = React.useState(false);
-  const {companyDetails} = useGlobalContext();
-  console.log("companyDetails", companyDetails)
-  const router = useRouter()
-  const { userInfo } = useGlobalContext()
+  const { companyDetails } = useGlobalContext();
+  const router = useRouter();
   const pathname = usePathname();
-  console.log("pathname", pathname)
-  const [logoutBtn, setLogoutBtn] = React.useState(false);
-  // Only render after first client-side mount
+
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
+  if (!mounted) return null;
 
-
-  const signOut = () => {
-
-    router.replace("/")
-  }
-  if (!mounted) {
-    return null; // or a loading skeleton
-  }
-
-
-  const isActiveRoute = (itemUrl: string) => {
-    // Handle each route type explicitly
-    switch (itemUrl) {
-      case '/dashboard':
-        return pathname === '/dashboard';
-
-      case '/chat/page/1':
-        return pathname === '/chat/page/1' ||
-          pathname.match(/^\/chat\/\d+\/view/);
-
-      case '/call-management/page/1':
-        return pathname === '/call-management/page/1' ||
-          pathname.match(/^\/call-management\/\d+\/view/);
-
-      case '#': // Logout
-        return false;
-
-      default:
-        return pathname === itemUrl;
-    }
-  };
-
+  const isActiveRoute = (itemUrl: string) => pathname === itemUrl;
 
   return (
-    <SidebarProvider className='sidebar-layout bg-dynamic' >
-      {/* ..........sidebar......... */}
-      <Sidebar collapsible="icon" >
-        <SidebarHeader>
+    <div className="w-full overflow-hidden">
+      <SidebarProvider className="relative">
+        <Sidebar collapsible='icon'  className="ml-5 mt-5 mb-5 text-white rounded-xl w-[264px] overflow-hidden h-[calc(100vh-2.5rem)] ">
+          <div className="flex flex-col h-full bg-inherit rounded-r-3xl">
+            <SidebarHeader className="flex-none p-6">
+              <div className="flex flex-col items-center space-y-4">
+                <div className='p-4 border-white border-2 rounded-full overflow-hidden bg-white/10'>
 
-          <Collapsible
-            key={"jdhf"}
-            asChild
-            defaultOpen={true}
-            className="group/collapsible"
-          >
+                <div className="w-[144px] h-[144px] border-white border rounded-full overflow-hidden bg-white/10">
+                  <img
+                    className="w-full h-full object-cover"
+                    src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, gladiatorIcon?.src)}
+                    alt="logo"
+                    />
+                </div>
+                    </div>
+                <div className="text-center group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">
+                  <h1 className="text-xl font-semibold ">
+                    {companyDetails?.company_name ?? "Chat with Amy"}
+                  </h1>
+                  <p className="text-sm opacity-70">
+                    {companyDetails?.company_description ?? "This is Amy Chatbot"}
+                  </p>
+                </div>
+                <Link 
+                  href={companyDetails?.company_url ?? "https://henceforthsolutions.com"}
+                  className="px-8 w-full flex gap-[10px] fs-16 py-[8px] bg-white text-black rounded-[5px] border border-current text-sm hover:opacity-80 transition-opacity group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:border-transparent group-has-[[data-collapsible=icon]]/sidebar-wrapper:bg-white/10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:rounded-full group-has-[[data-collapsible=icon]]/sidebar-wrapper:justify-center"
+                >
+                  <span className='flex w-full  items-center gap-[10px] ml-[10px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>
+                  Visit Website <ArrowUpRight size={18}  />
+                  </span>
+                 
 
-
-            <CollapsibleTrigger asChild>
-           
-              <>
-              <div className='flex justify-center items-center'>
-              <img className='rounded-full  object-fill' src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon?.src)} alt="logo" />
+                  <ArrowUpRight size={18}  className="group-has-[[data-collapsible=icon]]/sidebar-wrapper:block hidden" />
+              
+                </Link>
               </div>
-                
-                <h1 className='text-2xl mt-3 text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>{companyDetails?.company_name??"Henceforth Solutions"}</h1>
-                <p className='text-center text-sm text-gray-400'>{companyDetails?.company_description ??"Powered by QIXS"}</p></>
-              {/* </div> */}
+            </SidebarHeader>
 
-            </CollapsibleTrigger>
-          </Collapsible>
+            {/* Empty flex-grow div to push footer to bottom */}
+            <div className="flex-grow"></div>
 
-        </SidebarHeader>
-        <SidebarContent className="overflow-x-hidden ">
-          <SidebarGroup className=''>
-            <SidebarGroupLabel className='-mt-[35px]'>OPTIONS</SidebarGroupLabel>
-            <SidebarMenu>
-              {navItems?.map((item) => {
-                const Icon = item.icon ? Icons[item?.icon] : Icons.logo;
-                return item?.items && item?.items?.length > 0 ? (
-                  <Collapsible
-                    key={item.title}
-                    asChild
-                    defaultOpen={item.isActive}
-                    className="group/collapsible"
-                  >
-                    <SidebarMenuItem>
-                      <CollapsibleTrigger asChild>
-                        <SidebarMenuButton
-                          tooltip={item.title}
-                          isActive={pathname === item.url}
-                        >
-                          {item.icon && <Icon />}
-                          <span >{item.title}</span>
-                          <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                        </SidebarMenuButton>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <SidebarMenuSub>
-                          {item.items?.map((subItem) => (
-                            <SidebarMenuSubItem key={subItem.title}>
-                              <SidebarMenuSubButton
-                                asChild
-                                isActive={pathname?.includes(subItem.url)}
-                              >
-                                <Link href={item.title !== "Logout" ? item.url : "#"}>
-                                  <Icon />
-                                  <span onClick={() => item.title === "Logout" ? setLogoutBtn(true) : ""} >{item.title}</span>
-                                </Link>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          ))}
-                        </SidebarMenuSub>
-                      </CollapsibleContent>
-                    </SidebarMenuItem>
-                  </Collapsible>
-                ) : (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      tooltip={item.title}
-                      isActive={!!isActiveRoute(item.url)}
-                    >
-                  
-                      <Link onClick={() => (item.title === "Logout" && setLogoutBtn(true))} href={item.url}>
-                        <Icon className='' />
-                        <span >{item.title}</span>
-                      </Link>
-                      {/* )} */}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-
-                );
-              })}
-              {<AlertDialog open={logoutBtn} onOpenChange={setLogoutBtn}><DialogContentCommon
-                className="bg-danger text-white"
-                submitText="Yes, logout"
-                title="Confirm Logout"
-                des="Are you sure you want to logout from your account?"
-
-              />
-              </AlertDialog>}
-            </SidebarMenu>
-          </SidebarGroup>
-
-
-
-
-
-          <SidebarGroup className='mt-auto'>
-            <SidebarGroupLabel className='-mt-[35px]'>DETAILS</SidebarGroupLabel>
-            <SidebarMenu>
-
-              <Collapsible
-                key={"jdhf"}
-                asChild
-                defaultOpen={true}
-                className="group/collapsible"
-              >
-                <SidebarMenuItem >
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton
-                      tooltip={"Visit Site"}
-                    >
-                      <div className='flex items-center justify-center gap-2 ms-1'>
-
-                      <img 
-                      src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon.src)} 
-                      alt="logo" 
-                      className='w-7 h-8 rounded-full object-contain group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-6 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-8'
-                      />
-                      <Link className='text-wrap mt-1 text-ellipsis' href={companyDetails?.company_url?`${companyDetails?.company_url}`:"https://henceforthsolutions.com"}>{`${companyDetails?.company_name??"Henceforth Solutions"} (Visit Site)`}</Link>
-                    
-                      </div>
-                      {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-
-           
-
-
-            </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarRail />
-      </Sidebar>
-
-      {/* ......header...... */}
-      <SidebarInset>
-        <header className="bg-dynamic flex mt-2 mr-2 ml-2 rounded-xl h-16 shrink-0 items-center gap-2 justify-between transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-
+            <SidebarFooter className="flex-none p-4 border-t border-white/10">
+                <div className="space-y-2 flex items-left group-has-[[data-collapsible=icon]]/sidebar-wrapper:items-center flex-col">
+                <Link href="/privacy-policy" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-colors group" title="Privacy Policy">
+                  <Shield className="w-5 h-5 opacity-70" />
+                  <span className="opacity-70 group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">Privacy Policy</span>
+                </Link>
+                <Link href="/terms" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-colors group" title="Terms & Conditions">
+                  <Scroll className="w-5 h-5 opacity-70" />
+                  <span className="opacity-70 group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">Terms & Conditions</span>
+                </Link>
+                </div>
+            </SidebarFooter>
           </div>
-          <h1 className='text-3xl font-semibold text-white'>AI Agent</h1>
-          <div className='flex gap-2 px-4 cursor-pointer'>
+        </Sidebar>
 
-            <div className='profile-card items-center  flex flex-row gap-2'>
-              <div className='items-center flex flex-row gap-1' >
-            
-                <p className='text-md pl-2 pr-2'>Share</p>
-              </div>
-
-
+        <SidebarInset>
+          <header className=" text-white bg-dynamic flex mt-5 mr-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:ml-10 rounded-xl h-16 shrink-0 items-center gap-2 ">
+            <div className="flex items-center gap-2 px-4">
+              <SidebarTrigger />
             </div>
-          </div>
-
-
-        </header>
-        {/* page main content */}
-        {children}
-      </SidebarInset>
-    
-    </SidebarProvider>
+            <h1 className="fs-20 font-semibold">Hi, I’m Amy. Your AI Agent!</h1>
+            <div className="px-4 flex gap-5 ml-auto">
+             <Button className='flex items-center gap-2 font-normal px-4 py-2  text-black rounded-lg transition-colors duration-200'>
+              <Phone size={18} />
+              <span className=''>
+                Call Agent
+                </span>
+             </Button>
+             <Button className='flex items-center gap-2 font-normal px-4 py-2  text-black rounded-lg transition-colors duration-200'>
+              <Share2 size={18} />
+              
+              </Button>
+            </div>
+          </header>
+          {children}
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
   );
 }
