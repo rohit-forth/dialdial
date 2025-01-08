@@ -131,7 +131,7 @@ const AIChat: React.FC = () => {
           setMessages(prev => [...prev, inactivityMessage]);
           setIsInputDisabled(true);
         }
-      }, 6000);
+      }, 300000);
   
       lastActivityTimeRef.current = Date.now();
     }
