@@ -53,7 +53,48 @@ const AIChat: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lastActivityTimeRef = useRef(Date.now());
   const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const [adminImages, setAdminImages] = useState([admin1,admin2,admin3,admin4,admin5,admin6,admin7]);
+  const [adminImages, setAdminImages] = useState([admin1]);
+
+  const [countdownTime, setCountdownTime] = useState<number | null>(null);
+  
+  // Function to format time remaining
+  const formatTimeRemaining = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  useEffect(() => {
+    const systemMessage = messages.find(
+      msg => msg.sender === 'system' && msg.actions === 'end_chat'
+    );
+    
+    if (systemMessage && countdownTime === null) {
+      setCountdownTime(300); // 5 minutes in seconds
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    
+    if (countdownTime !== null && countdownTime > 0) {
+      timer = setInterval(() => {
+        setCountdownTime(prev => {
+          if (prev === null) return null;
+          if (prev <= 1) {
+            clearInterval(timer);
+            endChat(); // Automatically end chat when timer reaches 0
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [countdownTime]);
 
   function getRandomAdminImage(){
     return adminImages[Math.floor(Math.random() * adminImages.length)].src;
@@ -90,7 +131,7 @@ const AIChat: React.FC = () => {
           setMessages(prev => [...prev, inactivityMessage]);
           setIsInputDisabled(true);
         }
-      }, 60000);
+      }, 6000);
   
       lastActivityTimeRef.current = Date.now();
     }
@@ -131,6 +172,14 @@ const AIChat: React.FC = () => {
     return `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   };
 
+  const continueChat = () => {
+    setMessages(prev => prev.filter(msg => msg.sender !== 'system'));
+    setIsInputDisabled(false);
+    setCountdownTime(null);
+    resetInactivityTimer();
+  };
+
+  // Modify your endChat function to reset the countdown
   const endChat = async () => {
     if (chatId) {
       try {
@@ -143,7 +192,9 @@ const AIChat: React.FC = () => {
     setChatId(null);
     setShowForm(true);
     setIsInputDisabled(false);
+    setCountdownTime(null);
   };
+
 
   useEffect(()=>{
     if(searchParams.get("script_id")){
@@ -154,11 +205,7 @@ const AIChat: React.FC = () => {
     }
   },[])
 
-  const continueChat = () => {
-    setMessages(prev => prev.filter(msg => msg.sender !== 'system'));
-    setIsInputDisabled(false);
-    resetInactivityTimer();
-  };
+ 
 
   const handleSendMessage = async () => {
     const trimmedMessage = inputMessage.trim();
@@ -397,6 +444,9 @@ const AIChat: React.FC = () => {
                       {message.sender === 'system' && (
                         
                         <div className="flex gap-4 justify-center mt-4">
+                           <div className="text-sm text-gray-600 mb-2">
+            Chat will end in: {countdownTime !== null ? formatTimeRemaining(countdownTime) : '5:00'}
+          </div>
                           <Button 
                             onClick={endChat} 
                        
