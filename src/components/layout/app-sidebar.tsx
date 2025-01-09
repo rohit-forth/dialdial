@@ -127,7 +127,7 @@ export default function AppSidebar({
            
               <>
               <div className='flex justify-center items-center'>
-              <img className='rounded-full  object-fill' src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon?.src)} alt="logo" />
+              <img className='rounded-full w-[180px] h-[180px] object-cover' src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo,gladiatorIcon?.src)} alt="logo" />
               </div>
                 
                 <h1 className='text-2xl mt-3 text-center text-wrap font-semibold text-black group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>{companyDetails?.company_name??"Henceforth Solutions"}</h1>
