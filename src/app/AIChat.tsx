@@ -466,7 +466,7 @@ const AIChat: React.FC = () => {
 
       {/* Input Area - Fixed at bottom */}
       { (
-        <div className="p-4 mb-10 bg-white border-t">
+        <div className="p-4 mb-10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:ml-3 bg-white border-t">
                 <div className=" mx-auto flex items-center gap-2">
                   <input
                     type="text"

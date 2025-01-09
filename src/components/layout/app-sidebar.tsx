@@ -50,11 +50,11 @@ export default function AppSidebar({
       <SidebarProvider className="relative">
         <Sidebar collapsible='icon'  className="ml-5 mt-5 mb-5 text-white rounded-xl w-[264px] overflow-hidden h-[calc(100vh-2.5rem)] ">
           <div className="flex flex-col h-full bg-inherit rounded-r-3xl">
-            <SidebarHeader className="flex-none p-6">
+            <SidebarHeader className="flex-none p-6 group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-3">
               <div className="flex flex-col items-center space-y-4">
                 <div className='p-4 border-white border-2 rounded-full overflow-hidden bg-white/10'>
 
-                <div className="w-[144px] h-[144px] border-white border rounded-full overflow-hidden bg-white/10">
+                <div className="w-[144px] h-[144px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-[50px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[50px] border-white border rounded-full overflow-hidden bg-white/10">
                   <img
                     className="w-full h-full object-cover"
                     src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, gladiatorIcon?.src)}
