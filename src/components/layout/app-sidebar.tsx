@@ -34,7 +34,7 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [mounted, setMounted] = React.useState(false);
-  const { companyDetails,isCallActive,setIsCallActive,agentDetails } = useGlobalContext();
+  const { companyDetails,isCallActive,setIsCallActive,agentDetails,Toast } = useGlobalContext();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -45,15 +45,25 @@ export default function AppSidebar({
   if (!mounted) return null;
 
   const isActiveRoute = (itemUrl: string) => pathname === itemUrl;
-
-  async function handleCall(){
+  async function handleCall() {
     try {
+      // First check if any audio input devices exist
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const hasMicrophone = devices.some(device => device.kind === 'audioinput');
+
+      if (!hasMicrophone) {
+        Toast.error('No microphone found on your device');
+        setIsCallActive(false);
+        return;
+      }
+
+      // If microphone exists, try to access it
       await navigator.mediaDevices.getUserMedia({ audio: true });
       setIsCallActive(true);
-      // You can now use the stream for your call logic
       console.log('Microphone access granted');
     } catch (err) {
       console.error('Microphone access denied', err);
+      Toast.error('Microphone access denied');
       setIsCallActive(false);
     }
   }

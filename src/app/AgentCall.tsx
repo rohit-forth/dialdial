@@ -19,21 +19,27 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
   const audioRef = useRef(new Audio());
   const isPlayingRef = useRef(false);
   const [chatId, setChatId] = useState('');
+  const chatIdRef = useRef(''); //
 
-
+  useEffect(() => {
+    chatIdRef.current = chatId;
+  }, [chatId]);
+   
+  console.log(chatId, "chatId23");
 
   const playInitialMessage = async () => {
     try {
       setIsInitialMessagePlaying(true);
+      setIsMicOn(true);
       
-      const response = await fetch(`https://api.deepgram.com/v1/speak?${agentDetails?.agent_voice}`, {
+      const response = await fetch(`https://api.deepgram.com/v1/speak?model=${agentDetails.agent_voice}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Token c7f2be50ae5262222eb302d1b47a8099e476b306'
         },
         body: JSON.stringify({
-          text: initialMessage,
+          text: initialMessage
         })
       });
 
@@ -43,111 +49,106 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
       audioRef.current.src = audioUrl;
       isPlayingRef.current = true;
       
-      // Start listening after initial message ends
       audioRef.current.onended = () => {
         isPlayingRef.current = false;
         setIsInitialMessagePlaying(false);
         URL.revokeObjectURL(audioUrl);
         startTranscription();
-        setIsMicOn(true);
       };
       
       await audioRef.current.play();
     } catch (error) {
       console.error('Error playing initial message:', error);
       setIsInitialMessagePlaying(false);
-      // If initial message fails, start listening anyway
+      setIsMicOn(false);
       startTranscription();
-      setIsMicOn(true);
     }
   };
 
-  const startTranscription = async () => {
-    try {
-      // First, clean up any existing connections
-      await stopTranscription();
 
-      // Get microphone access
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          noiseSuppression: true,
-          echoCancellation: true,
-          autoGainControl: true,
-        },
-      });
-      streamRef.current = stream;
+  const startTranscription = () => {
+    const initializeTranscription = async () => {
+      try {
+        // Get microphone access
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            noiseSuppression: true,
+            echoCancellation: true,
+            autoGainControl: true,
+          },
+        });
+        streamRef.current = stream;
 
-      // Create MediaRecorder
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
-      mediaRecorderRef.current = mediaRecorder;
+        // Create MediaRecorder
+        const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+        mediaRecorderRef.current = mediaRecorder;
 
-      // Initialize Deepgram client
-      const deepgram = createClient('c7f2be50ae5262222eb302d1b47a8099e476b306');
-      
-      // Create live transcription connection
-      const connection = deepgram.listen.live({
-        model: 'nova-2',
-        language: 'en-US',
-        smart_format: true,
-        interim_results: true,
-        utterance_end_ms: 1000,
-        vad_events: true,
-        endpointing: 500,
-      });
-      connectionRef.current = connection;
+        // Initialize Deepgram client
+        const deepgram = createClient('c7f2be50ae5262222eb302d1b47a8099e476b306');
+        
+        // Create live transcription connection
+        const connection = deepgram.listen.live({
+          model: 'nova-2',
+          language: 'en-US',
+          smart_format: true,
+          interim_results: true,
+          utterance_end_ms: 1000,
+          vad_events: true,
+          endpointing: 500,
+        });
+        connectionRef.current = connection;
 
-      // Set up connection event handlers
-      connection.on('open', () => {
-        console.log('Deepgram connection opened');
-        setIsListening(true);
+        // Set up connection event handlers
+        connection.on('open', () => {
+          console.log('Deepgram connection opened');
+          setIsListening(true);
+          setIsMicOn(true);
 
-        // Send audio data to Deepgram
-        mediaRecorder.addEventListener('dataavailable', (event) => {
-          if (event.data.size > 0 && connection.getReadyState() === 1) {
-            connection.send(event.data);
+          mediaRecorder.addEventListener('dataavailable', (event) => {
+            if (event.data.size > 0 && connection.getReadyState() === 1) {
+              connection.send(event.data);
+            }
+          });
+
+          mediaRecorder.start(250); // Send audio every 250ms
+        });
+
+        connection.on('Results', (data) => {
+          const receivedTranscript = data.channel?.alternatives[0]?.transcript || '';
+          
+          if (data.is_final) {
+            isFinalTranscriptsRef.current.push(receivedTranscript);
+            console.log(`Final Transcript: ${isFinalTranscriptsRef.current.join(" ")}`);
+          } else {
+            console.log(`Interim Transcript: ${receivedTranscript}`);
           }
         });
 
-        if (stream.active) {
-          mediaRecorder?.start(250); // Send audio every 250ms
-        }
-      });
+        connection.on('UtteranceEnd', () => {
+          const fullUtterance = isFinalTranscriptsRef.current.join(' ');
+          console.log(`Utterance End: ${fullUtterance}`);
+          if (fullUtterance.trim()) {
+            sendFinalRequest(fullUtterance.trim());
+            isFinalTranscriptsRef.current = [];
+          }
+        });
 
-      connection.on('Results', (data) => {
-        if (!isMicOn || isInitialMessagePlaying) return;
-        
-        const receivedTranscript = data.channel?.alternatives[0]?.transcript || '';
-        
-        if (data.is_final) {
-          isFinalTranscriptsRef.current.push(receivedTranscript);
-          setTranscript(prev => prev + ' ' + receivedTranscript);
-        }
-      });
+        connection.on('error', (error) => {
+          console.error('Deepgram error:', error);
+        });
 
-      connection.on('UtteranceEnd', () => {
-        if (!isMicOn || isInitialMessagePlaying) return;
-        
-        const fullUtterance = isFinalTranscriptsRef.current.join(' ').trim();
-        if (fullUtterance) {
-          sendFinalRequest(fullUtterance);
-          isFinalTranscriptsRef.current = [];
-        }
-      });
+        connection.on('close', () => {
+          console.log('Deepgram connection closed');
+        });
 
-      connection.on('error', (error) => {
-        console.error('Deepgram error:', error);
+      } catch (error) {
+        console.error('Error initializing microphone or Deepgram:', error);
+        setIsMicOn(false);
         setIsListening(false);
-      });
+      }
+    };
 
-      connection.on('close', () => {
-        console.log('Deepgram connection closed');
-        setIsListening(false);
-      });
-
-    } catch (error) {
-      console.error('Error starting transcription:', error);
-      setIsListening(false);
-    }
+    initializeTranscription();
   };
 
   const stopTranscription = async () => {
@@ -174,57 +175,8 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
     }
   };
 
-  const sendFinalRequest = async (transcript: any) => {
-    try {
-      if (isPlayingRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-        isPlayingRef.current = false;
-      }
-
-      const requestBody = {
-        query: transcript,
-        prompt: agentDetails?.agent_prompt,
-        voice: agentDetails?.agent_voice,
-       
-        agent_id: agentId,
-        secret_key: secretKey,
-        ...(chatId && { chat_id: chatId }),
-      };
-
-      const response = await fetch('https://dev.qixs.ai:3003/knowledge-base/landing/page/ai', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': '*/*'
-        },
-        body: JSON.stringify(requestBody),
-      });
-      const responseBody = await response.json();
-      setChatId(responseBody?.chat_id)
-      // const audioBlob=await responseBody?.data?.blob();
-      const audioBlob = new Blob([new Uint8Array(responseBody.data.data)], { type: 'audio/wav' });
-      const audioUrl = URL.createObjectURL(audioBlob);
-     
-      
-      audioRef.current.src = audioUrl;
-      isPlayingRef.current = true;
-      
-      audioRef.current.onended = () => {
-        isPlayingRef.current = false;
-        URL.revokeObjectURL(audioUrl);
-      };
-      
-      await audioRef.current.play();
-
-    } catch (error) {
-      console.error('Error sending final request:', error);
-      isPlayingRef.current = false;
-    }
-  };
-
   const toggleMic = async () => {
-    if (isInitialMessagePlaying) return; // Prevent toggling while initial message is playing
+    if (isInitialMessagePlaying) return;
     
     if (isListening) {
       await stopTranscription();
@@ -233,10 +185,10 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
         audioRef.current.currentTime = 0;
         isPlayingRef.current = false;
       }
+      setIsMicOn(false);
     } else {
-      await startTranscription();
+      startTranscription();
     }
-    setIsMicOn(!isMicOn);
   };
 
   const onEndCall = async () => {
@@ -251,15 +203,9 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
   };
 
   useEffect(() => {
-    // Start with initial message instead of immediate transcription
     if (initialMessage) {
-      // setIsMicOn(true);
       playInitialMessage();
-    } else {
-      startTranscription();
-      setIsMicOn(true);
     }
-
     return () => {
       if (isPlayingRef.current) {
         audioRef.current.pause();
@@ -268,6 +214,78 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
       stopTranscription();
     };
   }, []);
+
+
+
+  const sendFinalRequest = async (transcript: any) => {
+    try {
+      if (isPlayingRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        isPlayingRef.current = false;
+      }
+
+      const requestBody: {
+        query: any;
+        prompt: any;
+        voice: any;
+        agent_id: string;
+        secret_key: string;
+        chat_id?: string;
+      } = {
+        query: transcript,
+        prompt: agentDetails?.agent_prompt,
+        voice: agentDetails?.agent_voice,
+        agent_id: agentId,
+        secret_key: secretKey,
+      };
+
+      // Use the ref instead of the state directly
+      console.log(chatIdRef.current, "beforechatIdIf");
+      if (chatIdRef.current) {
+        requestBody.chat_id = chatIdRef.current;
+      }
+      console.log(requestBody, "requestBody with chatId");
+
+      const response = await fetch('https://dev.qixs.ai:3003/knowledge-base/landing/page/ai', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const responseBody = await response.json();
+      console.log(responseBody, "responseBody");
+
+      if (responseBody && responseBody.chat_id && !chatIdRef.current) {
+        const newChatId = String(responseBody.chat_id);
+        setChatId(newChatId);
+        chatIdRef.current = newChatId; // Update ref immediately
+        console.log('Setting chat_id to:', newChatId);
+      }
+
+      const audioBlob = new Blob([new Uint8Array(responseBody.data.data)], { type: 'audio/wav' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      audioRef.current.src = audioUrl;
+      isPlayingRef.current = true;
+      
+      audioRef.current.onended = () => {
+        isPlayingRef.current = false;
+        URL.revokeObjectURL(audioUrl);
+      };
+      
+      await audioRef.current.play();
+    } catch (error) {
+      console.error('Error sending final request:', error);
+      isPlayingRef.current = false;
+    }
+  };
+
+
+
   return (
     <motion.div
       className="flex flex-col mt-auto mb-auto justify-center items-center gap-12"
