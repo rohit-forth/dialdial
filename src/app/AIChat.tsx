@@ -4,7 +4,6 @@ import {
   Loader2,
   X,
   Check,
-  Bot
 } from 'lucide-react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
@@ -14,11 +13,9 @@ import { Input } from '@/components/ui/input';
 import countryCode from "@/utils/countryCode.json";
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar } from '@/components/ui/avatar';
+
 import { useGlobalContext } from '@/components/providers/Provider';
 import gladiatorIcon from "@/app/assets/images/hf_logo.png"
-
 import admin1 from "@/app/assets/images/admin1.png"
 import admin2 from "@/app/assets/images/admin2.png"
 import admin3 from "@/app/assets/images/admin3.png"
@@ -27,6 +24,10 @@ import admin5 from "@/app/assets/images/admin5.png"
 import admin6 from "@/app/assets/images/admin6.png"
 import admin7 from "@/app/assets/images/admin7.png"
 import { useSearchParams } from 'next/navigation';
+import { set } from 'date-fns';
+import DeepgramCall from './AgentCall';
+const { createClient, LiveTranscriptionEvents } = require("@deepgram/sdk");
+const fetch = require("cross-fetch");
 
 interface ChatMessage {
   id: string;
@@ -44,7 +45,7 @@ const AIChat: React.FC = () => {
   const [chatId, setChatId] = useState<string | null>(null);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [connecting,setConnecting] = useState(false);
-    const {companyDetails,getThemeColor} = useGlobalContext();
+    const {companyDetails,getThemeColor,isCallActive,setIsCallActive,getAgentName} = useGlobalContext();
   const searchParams=useSearchParams();
   console.log(searchParams.get("ai_agent"))
   console.log("jhufedgwjeuwgrfherhgijuhrtrdhews5j45ej345")
@@ -146,12 +147,20 @@ const AIChat: React.FC = () => {
   };
 
   useEffect(()=>{
+
+    if(searchParams.get("ai_agent")){
+      const agentId = searchParams.get("ai_agent");
+      if (agentId) {
+        getAgentName(atob(agentId));
+      }
+    }
     if(searchParams.get("script_id")){
       const scriptId = searchParams.get("script_id");
       if (scriptId) {
         getThemeColor(atob(scriptId));
       }
     }
+    
   },[])
 
   const continueChat = () => {
@@ -272,89 +281,127 @@ const AIChat: React.FC = () => {
     }
   },[chatId])
 
+
+
+  
+
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] relative ">
       {/* Chat Area */}
+      
+         {isCallActive ?(
+      <DeepgramCall 
+        agentId={searchParams.get("ai_agent") ? atob(searchParams.get("ai_agent") as string) : ""} 
+        secretKey={searchParams.get("secret_key") ? atob(searchParams.get("secret_key") as string) : ""} 
+      />
+        ):
+        <>
+        
       <div className="flex-1 relative right-1  w-full mx-auto overflow-hidden  ">
         <ScrollArea className="h-full">
           <div className="px-4 py-6 md:px-7 ">
             {showForm ? (
-              <div className="flex justify-center items-center min-h-[60vh]">
-                <Card className="w-full max-w-md p-6 shadow-lg">
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <h2 className="text-xl font-semibold text-center text-gray-900">Start Chatting</h2>
-                    <div>
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder="Enter your name"
-                        value={formData.name}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="w-1/4">
-                        <Label htmlFor="countryCode">Code</Label>
-                        <Select
-                          value={formData.countryCode}
-                          onValueChange={(value) => {
-                            setFormData(prev => ({ ...prev, countryCode: value }));
-                          }}
+          <div className="flex justify-center items-center mt-[100px]">
+          <Card className="w-full max-w-[700px] p-8 bg-white rounded-2xl shadow-md">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <h2 className="text-[32px] font-bold text-center text-lightDynamic mb-8">
+                Start chatting
+              </h2>
+              
+              <div className="space-y-5">
+                <div>
+                  <Label 
+                    htmlFor="name" 
+                    className="text-lightDynamic font-medium text-base mb-2 block"
+                  >
+                    Name
+                  </Label>
+                  <Input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full h-12 px-4 border border-gray-200 rounded-lg  placeholder:text-gray-400"
+                  />
+                </div>
+    
+                <div>
+                  <Label 
+                    htmlFor="phoneNumber" 
+                    className="text-lightDynamic font-medium text-base mb-2 block"
+                  >
+                    Phone number
+                  </Label>
+                  <div className="relative flex">
+                  <div className="flex flex-grow gap-2">
+                <Select
+                  value={formData.countryCode}
+                  onValueChange={(value) => {
+                    setFormData(prev => ({ ...prev, countryCode: value }));
+                  }}
+                >
+                  <SelectTrigger className="w-[90px] h-12 border-gray-200 ">
+                    <SelectValue placeholder="+91" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white max-h-[250px]">
+                    <SelectGroup>
+                      {countryCode.map((country) => (
+                        <SelectItem
+                          key={country.code}
+                          value={country.dial_code}
+                          className="cursor-pointer hover:bg-gray-100"
                         >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent className='bg-white max-h-[250px]' >
-                            <SelectGroup>
-                              {countryCode?.map((country: any) => (
-                                <SelectItem
-                                  key={country.code}
-                                  value={country.dial_code}
-                                >
-                                  {country.dial_code}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="w-full">
-                        <Label htmlFor="phoneNumber">Phone Number</Label>
-                        <Input
-                          type="text"
-                          id="phoneNumber"
-                          name="phoneNumber"
-                          placeholder="Enter phone number"
-                          value={formData.phoneNumber}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Label htmlFor="email">
-                        Email <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-dynamic hover:bg-mediumDynamic text-white"
-                    >
-                      Start Chat
-                    </Button>
-                  </form>
-                </Card>
+                          {country.dial_code}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                
+                <Input
+                  type="text"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  placeholder="Enter your phone number"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  className="h-12  px-4 border border-gray-200 rounded-lg  placeholder:text-gray-400"
+                />
               </div>
+                  </div>
+                </div>
+    
+                <div>
+                  <Label 
+                    htmlFor="email" 
+                    className="text-lightDynamic font-medium text-base mb-2 block"
+                  >
+                    Email <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full h-12 px-4 border border-gray-200 rounded-lg   placeholder:text-gray-400"
+                  />
+                </div>
+              </div>
+    
+              <Button 
+                type="submit" 
+                className="w-full h-12 mt-8 bg-lightDynamic text-white font-medium rounded-lg transition-colors"
+              >
+                Start chat
+              </Button>
+            </form>
+          </Card>
+        </div>
             ) : (
               <div className="flex-1 flex flex-col mx-auto ">
               <ScrollArea className="flex-1 px-4 py-4">
@@ -463,9 +510,8 @@ const AIChat: React.FC = () => {
           </div>
         </ScrollArea>
       </div>
-
       {/* Input Area - Fixed at bottom */}
-      { (
+      
         <div className="p-4 mb-10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:ml-3 bg-white border-t">
                 <div className=" mx-auto flex items-center gap-2">
                   <input
@@ -490,7 +536,12 @@ const AIChat: React.FC = () => {
                   </Button>
                 </div>
               </div>
-      )}
+        
+        </>
+        }
+      
+
+      
     </div>
   );
 };

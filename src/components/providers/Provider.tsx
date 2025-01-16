@@ -22,7 +22,11 @@ interface GlobalContextType {
   formatDuration: (seconds: number) => string;
   Toast:any,
   companyDetails:any,
-  getThemeColor:any
+  getThemeColor:any,
+  setIsCallActive:any,
+  isCallActive:any,
+  getAgentName:any,
+  agentDetails:any
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -35,6 +39,14 @@ type ToastFunction = (msg: any) => void;
 export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalProviderProps) {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(initialUserInfo || null);
+  const [isCallActive, setIsCallActive] = useState(false);
+
+
+  const [agentDetails,setAgentDetails]=useState({
+    agent_name:"",
+    agent_voice:"",
+    agent_prompt:""
+  })
   console.log(initialUserInfo, "initialUserInfo");
 
   if (userInfo?.access_token) {
@@ -144,6 +156,23 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
      
     }
   };
+  const getAgentName = async (agent_id:string) => {
+    try {
+      const apiRes = await fetch(`https://dev.qixs.ai:3003/agent/${agent_id}`,{method:"GET"});
+      const response = await apiRes.json();
+      console.log(response, "response");
+      setAgentDetails({
+        ...agentDetails,
+        agent_name: response?.data?.name,
+        agent_voice: response?.data?.voice,
+        agent_prompt: response?.data?.prompt
+      });
+    } catch (error) {
+      console.error('Profile fetch error:', error);
+      
+     
+    }
+  }
 
   const [companyDetails,setCompanyDetails]=useState({
     company_color:"",
@@ -213,6 +242,8 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
 
   const contextValue: GlobalContextType = {
     logout,
+    isCallActive,
+    setIsCallActive,
     setUserInfo,
     userInfo,
     getThemeColor,
@@ -220,7 +251,9 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     getProfile,
     formatDuration,
     Toast,
-    companyDetails
+    companyDetails,
+    getAgentName,
+    agentDetails
   };
 
   return (

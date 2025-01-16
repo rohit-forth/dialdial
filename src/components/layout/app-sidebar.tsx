@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/sidebar';
 // import { Icons } from '../icons';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useGlobalContext } from '../providers/Provider';
@@ -33,7 +34,7 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [mounted, setMounted] = React.useState(false);
-  const { companyDetails } = useGlobalContext();
+  const { companyDetails,isCallActive,setIsCallActive,agentDetails } = useGlobalContext();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -44,6 +45,18 @@ export default function AppSidebar({
   if (!mounted) return null;
 
   const isActiveRoute = (itemUrl: string) => pathname === itemUrl;
+
+  async function handleCall(){
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      setIsCallActive(true);
+      // You can now use the stream for your call logic
+      console.log('Microphone access granted');
+    } catch (err) {
+      console.error('Microphone access denied', err);
+      setIsCallActive(false);
+    }
+  }
 
   return (
     <div className="w-full overflow-hidden">
@@ -70,7 +83,7 @@ export default function AppSidebar({
                     {companyDetails?.company_description ?? "This is Amy Chatbot"}
                   </p>
                 </div>
-                <Link 
+                <Link target='_blank'
                   href={companyDetails?.company_url ?? "https://henceforthsolutions.com"}
                   className="px-8 w-full flex gap-[10px] fs-16 py-[8px] bg-white text-black rounded-[5px] border border-current text-sm hover:opacity-80 transition-opacity group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:border-transparent group-has-[[data-collapsible=icon]]/sidebar-wrapper:bg-white/10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:rounded-full group-has-[[data-collapsible=icon]]/sidebar-wrapper:justify-center"
                 >
@@ -108,14 +121,26 @@ export default function AppSidebar({
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger />
             </div>
-            <h1 className="fs-20 font-semibold">Hi, I’m Amy. Your AI Agent!</h1>
+            <h1 className="fs-20 font-semibold">{`Hi, I’m ${agentDetails?.agent_name??"A"}. Your AI Agent!`}</h1>
             <div className="px-4 flex gap-5 ml-auto">
-             <Button className='flex items-center gap-2 font-normal px-4 py-2  text-black rounded-lg transition-colors duration-200'>
+    
+
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <Button
+              onClick={() =>handleCall()}
+              className={`flex items-center gap-2 font-normal px-4 py-2 text-black rounded-lg transition-colors duration-200 ${
+                isCallActive ? "bg-green-500" : "bg-white"
+              }`}
+              >
               <Phone size={18} />
-              <span className=''>
-                Call Agent
-                </span>
-             </Button>
+              <span>{isCallActive ? "On Call" : "Call Agent"}</span>
+              </Button>
+            </motion.div>
              <Button className='flex items-center gap-2 font-normal px-4 py-2  text-black rounded-lg transition-colors duration-200'>
               <Share2 size={18} />
               
