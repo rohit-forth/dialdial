@@ -45,7 +45,8 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
   const [agentDetails,setAgentDetails]=useState({
     agent_name:"",
     agent_voice:"",
-    agent_prompt:""
+    agent_prompt:"",
+    first_message:""
   })
   console.log(initialUserInfo, "initialUserInfo");
 
@@ -165,7 +166,8 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
         ...agentDetails,
         agent_name: response?.data?.name,
         agent_voice: response?.data?.voice,
-        agent_prompt: response?.data?.prompt
+        agent_prompt: response?.data?.prompt,
+        first_message: response?.data?.first_message
       });
     } catch (error) {
       console.error('Profile fetch error:', error);

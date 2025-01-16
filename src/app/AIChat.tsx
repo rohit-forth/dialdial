@@ -45,7 +45,7 @@ const AIChat: React.FC = () => {
   const [chatId, setChatId] = useState<string | null>(null);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [connecting,setConnecting] = useState(false);
-    const {companyDetails,getThemeColor,isCallActive,setIsCallActive,getAgentName} = useGlobalContext();
+    const {companyDetails,getThemeColor,isCallActive,setIsCallActive,getAgentName,agentDetails} = useGlobalContext();
   const searchParams=useSearchParams();
   console.log(searchParams.get("ai_agent"))
   console.log("jhufedgwjeuwgrfherhgijuhrtrdhews5j45ej345")
@@ -340,6 +340,7 @@ const AIChat: React.FC = () => {
       <DeepgramCall 
         agentId={searchParams.get("ai_agent") ? atob(searchParams.get("ai_agent") as string) : ""} 
         secretKey={searchParams.get("secret_key") ? atob(searchParams.get("secret_key") as string) : ""} 
+        initialMessage={agentDetails?.first_message}
       />
         ):
         <>

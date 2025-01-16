@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useGlobalContext } from '@/components/providers/Provider';
 import { motion } from 'framer-motion';
-import { Mic, MicOff, PhoneOff } from 'lucide-react';
+import { PhoneOff } from 'lucide-react';
 import { createClient, ListenLiveClient } from '@deepgram/sdk';
+import { SpeakerLoudIcon, SpeakerOffIcon } from '@radix-ui/react-icons';
 
-const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: string }) => {
+const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string; secretKey: string; initialMessage: string }) => {
   const [transcript, setTranscript] = useState('');
-  const [isMicOn, setIsMicOn] = useState(true);
+  const [isMicOn, setIsMicOn] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const { setIsCallActive,agentDetails } = useGlobalContext();
+  const [isInitialMessagePlaying, setIsInitialMessagePlaying] = useState(false);
+  const { setIsCallActive, agentDetails } = useGlobalContext();
   
   const connectionRef = useRef<ListenLiveClient | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -16,6 +18,49 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
   const isFinalTranscriptsRef = useRef<string[]>([]);
   const audioRef = useRef(new Audio());
   const isPlayingRef = useRef(false);
+  const [chatId, setChatId] = useState('');
+
+
+
+  const playInitialMessage = async () => {
+    try {
+      setIsInitialMessagePlaying(true);
+      
+      const response = await fetch(`https://api.deepgram.com/v1/speak?${agentDetails?.agent_voice}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token c7f2be50ae5262222eb302d1b47a8099e476b306'
+        },
+        body: JSON.stringify({
+          text: initialMessage,
+        })
+      });
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      audioRef.current.src = audioUrl;
+      isPlayingRef.current = true;
+      
+      // Start listening after initial message ends
+      audioRef.current.onended = () => {
+        isPlayingRef.current = false;
+        setIsInitialMessagePlaying(false);
+        URL.revokeObjectURL(audioUrl);
+        startTranscription();
+        setIsMicOn(true);
+      };
+      
+      await audioRef.current.play();
+    } catch (error) {
+      console.error('Error playing initial message:', error);
+      setIsInitialMessagePlaying(false);
+      // If initial message fails, start listening anyway
+      startTranscription();
+      setIsMicOn(true);
+    }
+  };
 
   const startTranscription = async () => {
     try {
@@ -69,7 +114,7 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
       });
 
       connection.on('Results', (data) => {
-        if (!isMicOn) return; // Don't process results if mic is off
+        if (!isMicOn || isInitialMessagePlaying) return;
         
         const receivedTranscript = data.channel?.alternatives[0]?.transcript || '';
         
@@ -80,7 +125,7 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
       });
 
       connection.on('UtteranceEnd', () => {
-        if (!isMicOn) return; // Don't process utterance if mic is off
+        if (!isMicOn || isInitialMessagePlaying) return;
         
         const fullUtterance = isFinalTranscriptsRef.current.join(' ').trim();
         if (fullUtterance) {
@@ -131,7 +176,6 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
 
   const sendFinalRequest = async (transcript: any) => {
     try {
-      // If audio is playing and we get new input, stop current playback
       if (isPlayingRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
@@ -142,25 +186,33 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
         query: transcript,
         prompt: agentDetails?.agent_prompt,
         voice: agentDetails?.agent_voice,
-        chat_id: `chat_${Date.now()}_${Math.floor(Math.random() * 10000000)}`,
+       
         agent_id: agentId,
         secret_key: secretKey,
+        ...(chatId && { chat_id: chatId }),
       };
 
       const response = await fetch('https://dev.qixs.ai:3003/knowledge-base/landing/page/ai', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify(requestBody),
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+        body: JSON.stringify(requestBody),
       });
-
-      const audioBlob = await response?.blob();
-      const audioUrl = URL?.createObjectURL(audioBlob);
+      const responseBody = await response.json();
+      setChatId(responseBody?.chat_id)
+      // const audioBlob=await responseBody?.data?.blob();
+      const audioBlob = new Blob([new Uint8Array(responseBody.data.data)], { type: 'audio/wav' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+     
       
       audioRef.current.src = audioUrl;
       isPlayingRef.current = true;
       
       audioRef.current.onended = () => {
         isPlayingRef.current = false;
+        URL.revokeObjectURL(audioUrl);
       };
       
       await audioRef.current.play();
@@ -172,6 +224,8 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
   };
 
   const toggleMic = async () => {
+    if (isInitialMessagePlaying) return; // Prevent toggling while initial message is playing
+    
     if (isListening) {
       await stopTranscription();
       if (isPlayingRef.current) {
@@ -180,7 +234,6 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
         isPlayingRef.current = false;
       }
     } else {
-      // setTranscript(''); // Clear transcript when starting new session
       await startTranscription();
     }
     setIsMicOn(!isMicOn);
@@ -198,7 +251,15 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
   };
 
   useEffect(() => {
-    startTranscription();
+    // Start with initial message instead of immediate transcription
+    if (initialMessage) {
+      // setIsMicOn(true);
+      playInitialMessage();
+    } else {
+      startTranscription();
+      setIsMicOn(true);
+    }
+
     return () => {
       if (isPlayingRef.current) {
         audioRef.current.pause();
@@ -226,20 +287,20 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
       >
         <div
           className={`absolute w-28 h-28 rounded-full flex items-center justify-center ${
-            isMicOn ? "bg-dynamic" : "bg-red-500"
+            (isMicOn || isInitialMessagePlaying) ? "bg-dynamic" : "bg-red-500"
           } shadow-lg`}
         >
-          {isMicOn && (
+          {(isMicOn || isInitialMessagePlaying) && (
             <>
               <div className="absolute w-28 h-28 rounded-full border-4 border-blue-400 animate-ripple" />
               <div className="absolute w-28 h-28 rounded-full border-4 border-blue-400 animate-ripple-delayed" />
             </>
           )}
           
-          {isMicOn ? (
-            <Mic className="text-white w-12 h-12 relative z-10" />
+          {(isMicOn || isInitialMessagePlaying) ? (
+            <SpeakerLoudIcon className="text-white w-12 h-12 relative z-10" />
           ) : (
-            <MicOff className="text-white w-12 h-12 relative z-10" />
+            <SpeakerOffIcon className="text-white w-12 h-12 relative z-10" />
           )}
         </div>
       </div>
@@ -250,10 +311,10 @@ const DeepgramCall = ({ agentId, secretKey }: { agentId: string; secretKey: stri
           onClick={toggleMic}
           whileTap={{ scale: 0.9 }}
         >
-          {isMicOn ? (
-            <Mic className="text-green-500 w-6 h-6" />
+          {(isMicOn || isInitialMessagePlaying) ? (
+            <SpeakerLoudIcon className="text-green-500 w-6 h-6" />
           ) : (
-            <MicOff className="text-red-500 w-6 h-6" />
+            <SpeakerOffIcon className="text-red-500 w-6 h-6" />
           )}
         </motion.button>
 
