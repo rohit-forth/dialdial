@@ -189,9 +189,9 @@ const AIChat: React.FC = () => {
         console.error('Error ending chat:', error);
       }
     }
+    setShowForm(true);
     setMessages([]);
     setChatId(null);
-    setShowForm(true);
     setIsInputDisabled(false);
     setCountdownTime(null);
   };
@@ -482,22 +482,24 @@ const AIChat: React.FC = () => {
                                 size="sm"
                                 className="bg-dynamic text-white text-xs"
                                 >
+
                                 <X className="h-3 w-3 mr-1" /> End Chat
-                                </Button>
-                                <Button variant="outline" size="sm" className="text-xs relative">
-                                  <Check className="h-3 w-3 mr-1" /> Continue Chat
-                                  {/* <span className="absolute right-2 text-xs text-gray-500">
+                                 <span className="ml-3">
                                   {Math.floor((300000 - (Date.now() - lastActivityTimeRef.current)) / 60000)}:{Math.floor(((300000 - (Date.now() - lastActivityTimeRef.current)) % 60000) / 1000).toString().padStart(2, '0')}
-                                  </span> */}
+                                  </span>
                                 </Button>
-                              <Button
+                                <Button onClick={continueChat} variant="outline" size="sm" className="text-xs relative">
+                                  <Check className="h-3 w-3 mr-1" /> Continue Chat
+                                 
+                                </Button>
+                              {/* <Button
                                 onClick={continueChat}
                                 variant="outline"
                                 size="sm"
                                 className="text-xs"
                               >
                                 <Check className="h-3 w-3 mr-1" /> Continue Chat
-                              </Button>
+                              </Button> */}
                             </div>
                           )}
                         </div>

@@ -85,9 +85,9 @@ export default function AppSidebar({
                 </div>
                 <Link target='_blank'
                   href={companyDetails?.company_url ?? "https://henceforthsolutions.com"}
-                  className="px-8 w-full flex gap-[10px] fs-16 py-[8px] bg-white text-black rounded-[5px] border border-current text-sm hover:opacity-80 transition-opacity group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:border-transparent group-has-[[data-collapsible=icon]]/sidebar-wrapper:bg-white/10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:rounded-full group-has-[[data-collapsible=icon]]/sidebar-wrapper:justify-center"
+                  className="px-8 w-full flex gap-[10px] fs-16 py-[8px] bg-dynamic  rounded-[5px] border border-current text-sm hover:opacity-80 transition-opacity group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:border-transparent group-has-[[data-collapsible=icon]]/sidebar-wrapper:bg-white/10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:rounded-full group-has-[[data-collapsible=icon]]/sidebar-wrapper:justify-center"
                 >
-                  <span className='flex w-full  items-center gap-[10px] ml-[10px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>
+                  <span className='flex  w-full  items-center gap-[10px] ml-[10px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden'>
                   Visit Website <ArrowUpRight size={18}  />
                   </span>
                  
