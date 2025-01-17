@@ -17,17 +17,11 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useGlobalContext } from '@/components/providers/Provider';
 import gladiatorIcon from "@/app/assets/images/hf_logo.png"
 import admin1 from "@/app/assets/images/admin1.png"
-import admin2 from "@/app/assets/images/admin2.png"
-import admin3 from "@/app/assets/images/admin3.png"
-import admin4 from "@/app/assets/images/admin4.png"
-import admin5 from "@/app/assets/images/admin5.png"
-import admin6 from "@/app/assets/images/admin6.png"
-import admin7 from "@/app/assets/images/admin7.png"
+
 import { useSearchParams } from 'next/navigation';
 import { set } from 'date-fns';
 import DeepgramCall from './AgentCall';
-const { createClient, LiveTranscriptionEvents } = require("@deepgram/sdk");
-const fetch = require("cross-fetch");
+
 
 interface ChatMessage {
   id: string;
