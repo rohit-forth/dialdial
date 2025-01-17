@@ -10,7 +10,7 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
   const [isMicOn, setIsMicOn] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isInitialMessagePlaying, setIsInitialMessagePlaying] = useState(false);
-  const { setIsCallActive, agentDetails } = useGlobalContext();
+  const {isCallActive, setIsCallActive, agentDetails } = useGlobalContext();
   
   const connectionRef = useRef<ListenLiveClient | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -55,8 +55,10 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
         URL.revokeObjectURL(audioUrl);
         startTranscription();
       };
-      
-      await audioRef.current.play();
+      if(isCallActive){
+
+        await audioRef.current.play();
+      }
     } catch (error) {
       console.error('Error playing initial message:', error);
       setIsInitialMessagePlaying(false);
@@ -277,7 +279,10 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
         URL.revokeObjectURL(audioUrl);
       };
       
-      await audioRef.current.play();
+      if(isCallActive){
+
+        await audioRef.current.play();
+      }
     } catch (error) {
       console.error('Error sending final request:', error);
       isPlayingRef.current = false;
