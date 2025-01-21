@@ -21,6 +21,8 @@ import admin1 from "@/app/assets/images/admin1.png"
 import { useSearchParams } from 'next/navigation';
 import { set } from 'date-fns';
 import DeepgramCall from './AgentCall';
+import { decode } from 'punycode';
+import { de } from 'date-fns/locale';
 
 
 interface ChatMessage {
@@ -35,15 +37,13 @@ const AIChat: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showForm, setShowForm] = useState(true);
-  const [chatId, setChatId] = useState<string | null>(null);
+  // const [showForm, setShowForm] = useState(true);
+  // const [chatId, setChatId] = useState<string | null>(null);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [connecting,setConnecting] = useState(false);
-    const {companyDetails,getThemeColor,isCallActive,setIsCallActive,getAgentName,agentDetails} = useGlobalContext();
+    const {companyDetails,getThemeColor,isCallActive,setIsCallActive,getAgentName,agentDetails,showForm,setShowForm,chatId,setChatId} = useGlobalContext();
   const searchParams=useSearchParams();
-  console.log(searchParams.get("ai_agent"))
-  console.log("jhufedgwjeuwgrfherhgijuhrtrdhews5j45ej345")
-  console.log(searchParams.get("secret_key"))
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lastActivityTimeRef = useRef(Date.now());
@@ -189,22 +189,48 @@ const AIChat: React.FC = () => {
     setIsInputDisabled(false);
     setCountdownTime(null);
   };
+  
+  const [decodedToken, setDecodedToken] = useState<any | null>({
+    agent_id: "",
+    script_id: "",
+    secret_key: ""
+  });
 
 
   useEffect(()=>{
 
-    if(searchParams.get("ai_agent")){
-      const agentId = searchParams.get("ai_agent");
-      if (agentId) {
-        getAgentName(atob(agentId));
+    function decodeToken(token: string) {
+      try {
+        // Replace URL-safe characters back
+        const normalizedToken = token
+          .replace(/-/g, '+')
+          .replace(/_/g, '/')
+        
+        // Add padding if needed
+        const padding = normalizedToken.length % 4
+        const paddedToken = padding 
+          ? normalizedToken + '='.repeat(4 - padding)
+          : normalizedToken
+    
+        // Decode
+        const decoded = Buffer.from(paddedToken, 'base64').toString()
+        const data=JSON.parse(decoded)
+        // console.log(data,"fdchuwgyufvwiubfkiwrbog")
+        getAgentName(data?.agent_id);
+        getThemeColor(data?.script_id);
+        setDecodedToken(data);
+      } catch (error) {
+        console.error('Error decoding token:', error)
+        return null
       }
     }
-    if(searchParams.get("script_id")){
-      const scriptId = searchParams.get("script_id");
-      if (scriptId) {
-        getThemeColor(atob(scriptId));
-      }
+
+    const token = searchParams.get("token") || "";
+    if (token) {
+      decodeToken(token);
     }
+
+   
     
   },[])
 
@@ -231,14 +257,14 @@ const AIChat: React.FC = () => {
         aiResponse = await henceforthApi?.SuperAdmin.sendMessage({
           "text": trimmedMessage,
           "chat_id": chatId,
-          "agent_id": atob(searchParams.get("ai_agent") || ""),
-          "secret_key": atob(searchParams.get("secret_key") || "")
+          "agent_id": decodedToken?.agent_id,
+          "secret_key": decodedToken?.secret_key
         });
       } else {
         aiResponse = await henceforthApi?.SuperAdmin.sendMessage({
           "text": trimmedMessage,
-          "agent_id": atob(searchParams.get("ai_agent") || ""),
-          "secret_key": atob(searchParams.get("secret_key") || "")
+          "agent_id": decodedToken?.agent_id,
+          "secret_key": decodedToken?.secret_key
         });
         setChatId(aiResponse?.data?.chat_id);
       }
@@ -283,15 +309,15 @@ const AIChat: React.FC = () => {
   }, [messages]);
 
   useEffect(() => {
-    if(!showForm){
+    if(!showForm && decodedToken?.agent_id){
       const getInitial = async () => {
         // setIsLoading(true);
         setConnecting(true)
         try {
-          const apiRes = await henceforthApi.SuperAdmin.getInitialMessage(searchParams.get("ai_agent"))
+          // const apiRes = await henceforthApi.SuperAdmin.getInitialMessage(String(decodedToken?.agent_id))
           const aiMessage: ChatMessage = {
             id: generateId(),
-            content: apiRes?.data?.first_message,
+            content: agentDetails?.first_message,
             sender: 'ai',
             timestamp: Date.now()
           };
@@ -327,24 +353,27 @@ const AIChat: React.FC = () => {
   
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] relative ">
+    <div className="grid grid-cols-1 grid-flow-row col-span-1  relative ">
       {/* Chat Area */}
+      <div className='flex flex-col h-[calc(100vh-6rem)]'>
+
+      
       
          {isCallActive ?(
       <DeepgramCall 
-        agentId={searchParams.get("ai_agent") ? atob(searchParams.get("ai_agent") as string) : ""} 
-        secretKey={searchParams.get("secret_key") ? atob(searchParams.get("secret_key") as string) : ""} 
+        agentId={decodedToken?.agent_id} 
+        secretKey={decodedToken?.secret_key} 
         initialMessage={agentDetails?.first_message}
       />
         ):
         <>
         
-      <div className="flex-1 relative right-1  w-full mx-auto overflow-hidden  ">
-        <ScrollArea className="h-full">
+      <div className="flex-1 relative right-1 h-full w-full mx-auto overflow-hidden  ">
+        <ScrollArea className="h-full flex items-center">
           <div className="px-4 py-6 md:px-7 ">
             {showForm ? (
-          <div className="flex justify-center items-center mt-[100px]">
-          <Card className="w-full max-w-[700px] p-8 bg-white rounded-2xl shadow-md">
+          <div className="flex justify-center mt-[50px] items-center">
+          <Card className="w-full border-2 max-w-[600px] p-8 bg-white rounded-2xl shadow-md">
             <form onSubmit={handleSubmit} className="space-y-6">
               <h2 className="text-[32px] font-bold text-center text-lightDynamic mb-8">
                 Start chatting
@@ -556,7 +585,7 @@ const AIChat: React.FC = () => {
       </div>
       {/* Input Area - Fixed at bottom */}
       
-        <div className="p-4 mb-10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:ml-3 bg-white border-t">
+        <div className="p-4 mt-auto group-has-[[data-collapsible=icon]]/sidebar-wrapper:ml-3 bg-white border-t">
                 <div className=" mx-auto flex items-center gap-2">
                   <input
                     type="text"
@@ -583,7 +612,7 @@ const AIChat: React.FC = () => {
         
         </>
         }
-      
+      </div>
 
       
     </div>

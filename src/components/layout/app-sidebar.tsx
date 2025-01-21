@@ -24,7 +24,7 @@ import * as React from 'react';
 import { useGlobalContext } from '../providers/Provider';
 import henceforthApi from '@/utils/henceforthApi';
 import gladiatorIcon from "@/app/assets/images/hf_logo.png";
-import { ArrowUpRight, Phone, PhoneCall, Scroll, Share, Share2, Shield } from 'lucide-react';
+import { ArrowUpRight, MessageCircleOff, Phone, PhoneCall, Scroll, Share, Share2, Shield } from 'lucide-react';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
 
@@ -34,7 +34,7 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [mounted, setMounted] = React.useState(false);
-  const { companyDetails,isCallActive,setIsCallActive,agentDetails,Toast } = useGlobalContext();
+  const { companyDetails,isCallActive,setIsCallActive,agentDetails,Toast,showForm,setShowForm,chatId,setChatId } = useGlobalContext();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -59,12 +59,26 @@ export default function AppSidebar({
 
       // If microphone exists, try to access it
       await navigator.mediaDevices.getUserMedia({ audio: true });
-      setIsCallActive(true);
+      setIsCallActive(!isCallActive);
       console.log('Microphone access granted');
     } catch (err) {
       console.error('Microphone access denied', err);
       Toast.error('Microphone access denied');
       setIsCallActive(false);
+    }
+  }
+
+  async function handleEndChat() {
+    try{
+      await henceforthApi?.SuperAdmin.endChat(chatId);
+      
+      setShowForm(true);
+
+    }catch(err){
+      console.error(err);
+    }finally{
+      setChatId("")
+      setShowForm(true);
     }
   }
 
@@ -127,11 +141,11 @@ export default function AppSidebar({
         </Sidebar>
 
         <SidebarInset>
-          <header className=" text-white bg-dynamic flex mt-5 mr-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:ml-10 rounded-xl h-16 shrink-0 items-center gap-2 ">
+          <header className=" text-white bg-dynamic flex mt-5 mr-2 ml-2 md:ml-0 group-has-[[data-collapsible=icon]]/sidebar-wrapper:ml-10 rounded-xl h-16 shrink-0 items-center gap-2 ">
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger />
             </div>
-            <h1 className="fs-20 font-semibold">{`Hi, I’m ${agentDetails?.agent_name??"A"}. Your AI Agent!`}</h1>
+            <h1 className="fs-20 font-semibold hidden lg:block">{`Hi, I’m ${agentDetails?.agent_name??"A"}. Your AI Agent!`}</h1>
             <div className="px-4 flex gap-5 ml-auto">
     
 
@@ -141,20 +155,33 @@ export default function AppSidebar({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              <Button
+              {!showForm && <Button
               onClick={() =>handleCall()}
-              className={`flex items-center gap-2 font-normal px-4 py-2 text-black rounded-lg transition-colors duration-200 ${
+              className={`flex whitespace-nowrap items-center gap-2 font-normal px-4 py-2 text-black rounded-lg transition-colors duration-200 ${
                 isCallActive ? "bg-green-500" : "bg-white"
               }`}
               >
               <Phone size={18} />
-              <span>{isCallActive ? "On Call" : "Call Agent"}</span>
-              </Button>
+              <span>{isCallActive ? "On Call" : "Call"}</span>
+              </Button>}
             </motion.div>
-             <Button className='flex items-center gap-2 font-normal px-4 py-2  text-black rounded-lg transition-colors duration-200'>
-              <Share2 size={18} />
-              
-              </Button>
+            {!showForm && !isCallActive && (
+              <>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  // whileTap={{ scale: 0.95 }}
+                >
+                  <Button onClick={()=>handleEndChat()} className='whitespace-nowrap flex items-center gap-2 font-normal px-4 py-2 bg-white text-black rounded-lg transition-colors duration-200'>
+                    <MessageCircleOff size={18} />
+                    <span>End</span>
+                  </Button>
+                </motion.div>
+                <Button className='flex whitespace-nowrap items-center gap-2 font-normal px-4 py-2 bg-white text-black rounded-lg transition-colors duration-200'>
+                  <Share2 size={18} />
+                  <span>Share</span>
+                </Button>
+              </>
+            )}
             </div>
           </header>
           {children}

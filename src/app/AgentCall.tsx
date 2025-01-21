@@ -7,6 +7,7 @@ import henceforthApi from '@/utils/henceforthApi';
 
 import { SpeakerLoudIcon, SpeakerOffIcon } from '@radix-ui/react-icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { add } from 'date-fns';
 
 const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string; secretKey: string; initialMessage: string }) => {
   const [transcript, setTranscript] = useState('');
@@ -76,13 +77,13 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
 
       audioRef.current.src = audioUrl;
       isPlayingRef.current = true;
+      setIsCalling(false);
 
       audioRef.current.onended = () => {
         isPlayingRef.current = false;
         setIsInitialMessagePlaying(false);
         URL.revokeObjectURL(audioUrl);
         addMessage(initialMessage, 'system');
-        setIsCalling(false);
         startTranscription();
       };
       if (isCallActive) {
@@ -296,6 +297,7 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
 
       const responseBody = await response.json();
       console.log(responseBody, "responseBody");
+      const model_reply=responseBody?.model_text;
 
       if (responseBody && responseBody.chat_id && !chatIdRef.current) {
         const newChatId = String(responseBody.chat_id);
@@ -314,7 +316,8 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
         isPlayingRef.current = false;
         URL.revokeObjectURL(audioUrl);
       };
-
+      addMessage(model_reply, 'system');
+        
       if (isCallActive) {
 
         await audioRef.current.play();
@@ -356,7 +359,7 @@ return (
           <div className="w-[300px] min-w-[300px] h-full flex flex-col items-center justify-center p-4 border-r">
             <div className="relative w-28 h-28 mb-8">
               <div className={`absolute w-28 h-28 rounded-full flex items-center justify-center ${
-                (isMicOn || isInitialMessagePlaying) ? "bg-blue-500" : "bg-red-500"
+                (isMicOn || isInitialMessagePlaying) ? "bg-blue-500" : "bg-mediumDynamic"
               } shadow-lg`}>
                 {(isMicOn || isInitialMessagePlaying) && (
                   <>
@@ -416,10 +419,10 @@ return (
                     <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                       <div className={`relative max-w-[80%] ${
                         message.sender === 'user'
-                          ? 'bg-white border-r-4 border-gray-200 border border-r-blue-500 shadow rounded-[5px]'
-                          : 'bg-white border-l-4 border-gray-200 border border-l-blue-500 rounded-[5px] shadow-sm'
+                          ? 'bg-white border-r-4 border-gray-200 border border-r-mediumDynamic shadow rounded-[5px]'
+                          : 'bg-white border-l-4 border-gray-200 border border-l-mediumDynamic rounded-[5px] shadow-sm'
                       } px-4 py-3`}>
-                        <p className="text-sm leading-relaxed">{message.content}</p>
+                        <p className="text-sm leading-relaxed">{message?.content}</p>
                       </div>
                     </div>
                   </div>

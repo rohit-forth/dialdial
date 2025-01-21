@@ -26,7 +26,11 @@ interface GlobalContextType {
   setIsCallActive:any,
   isCallActive:any,
   getAgentName:any,
-  agentDetails:any
+  agentDetails:any,
+  showForm:any,
+  setShowForm:any,
+  chatId:any,
+  setChatId:any
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -40,7 +44,8 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(initialUserInfo || null);
   const [isCallActive, setIsCallActive] = useState(false);
-
+  const [showForm, setShowForm] = useState(true);
+  const [chatId,setChatId]=useState("");
 
   const [agentDetails,setAgentDetails]=useState({
     agent_name:"",
@@ -244,6 +249,10 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
 
   const contextValue: GlobalContextType = {
     logout,
+    chatId,
+    setChatId,
+    showForm,
+    setShowForm,
     isCallActive,
     setIsCallActive,
     setUserInfo,
