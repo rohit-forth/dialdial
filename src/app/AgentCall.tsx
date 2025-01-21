@@ -47,11 +47,11 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
     }]);
   };
 
-  useEffect(()=>{
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  },[messages]);
+  // useEffect(()=>{
+  //   if (scrollRef.current) {
+  //     scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // },[messages]);
 
 
   console.log(chatId, "chatId23");
