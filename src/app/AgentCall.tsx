@@ -14,7 +14,7 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
   const [isMicOn, setIsMicOn] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isInitialMessagePlaying, setIsInitialMessagePlaying] = useState(false);
-  const { isCallActive, setIsCallActive, companyDetails, agentDetails } = useGlobalContext();
+  const { isCallActive, setIsCallActive, companyDetails, agentDetails, formData } = useGlobalContext();
 
   const connectionRef = useRef<ListenLiveClient | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -29,6 +29,27 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
     content: any;
     sender: any;
   }
+
+  useEffect(() => {
+    if (formData) {
+      console.log(formData, "formData");
+    }
+    const payload = {
+      email: formData.email,
+      name: formData.name || null,
+      phone_no: formData.phoneNumber || null,
+      country_code: formData.countryCode || null,
+      type: "VOICE_CHAT"
+    }
+
+    if(chatId){
+      try {
+        henceforthApi.SuperAdmin.submitChatProfile(chatId,payload)
+      } catch (error) {
+        console.error('Error submitting chat profile:', error);
+      }
+    }
+  }, [chatId]);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isCalling, setIsCalling] = useState(true);
@@ -47,11 +68,11 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
     }]);
   };
 
-  // useEffect(()=>{
-  //   if (scrollRef.current) {
-  //     scrollRef.current.scrollIntoView({ behavior: 'smooth' });
-  //   }
-  // },[messages]);
+  useEffect(()=>{
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  },[messages]);
 
 
   console.log(chatId, "chatId23");
@@ -232,6 +253,13 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
       isPlayingRef.current = false;
     }
     await stopTranscription();
+    try{
+      await henceforthApi.SuperAdmin.endChat(chatId);
+      setMessages([])
+      setChatId("")
+    }catch(err){
+      console.error(err);
+    }
     setIsCallActive(false);
     setIsMicOn(false);
   };
@@ -297,7 +325,7 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
 
       const responseBody = await response.json();
       console.log(responseBody, "responseBody");
-      const model_reply=responseBody?.model_text;
+      const model_reply = responseBody?.model_text;
 
       if (responseBody && responseBody.chat_id && !chatIdRef.current) {
         const newChatId = String(responseBody.chat_id);
@@ -317,7 +345,7 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
         URL.revokeObjectURL(audioUrl);
       };
       addMessage(model_reply, 'system');
-        
+
       if (isCallActive) {
 
         await audioRef.current.play();
@@ -330,83 +358,106 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
 
 
 
-return (
-  <div className="flex h-full">
-    <AnimatePresence>
-      {isCalling ? (
-        <motion.div
-          className="flex items-center justify-center w-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center relative">
-            <Phone className="w-8 h-8 text-white animate-pulse" />
-            <div className="absolute w-full h-full rounded-full border-4 border-blue-400 animate-ripple" />
-            <div className="absolute w-full h-full rounded-full border-4 border-blue-400 animate-ripple-delayed" />
-          </div>
-          <p className="mt-3 ml-4 text-lg font-medium text-gray-700">Connecting call...</p>
-        </motion.div>
-      ) : (
-        <motion.div
-          className="flex w-full h-[calc(100vh-100px)]"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.5 }}
-        >
-          {/* Speaker Section */}
-          <div className="w-[300px] min-w-[300px] h-full flex flex-col items-center justify-center p-4 border-r">
-            <div className="relative w-28 h-28 mb-8">
-              <div className={`absolute w-28 h-28 rounded-full flex items-center justify-center ${
-                (isMicOn || isInitialMessagePlaying) ? "bg-blue-500" : "bg-mediumDynamic"
-              } shadow-lg`}>
-                {(isMicOn || isInitialMessagePlaying) && (
-                  <>
-                    <div className="absolute w-28 h-28 rounded-full border-4 border-blue-400 animate-ripple" />
-                    <div className="absolute w-28 h-28 rounded-full border-4 border-blue-400 animate-ripple-delayed" />
-                  </>
-                )}
-                {(isMicOn || isInitialMessagePlaying) ? (
-                  <Phone className="text-white w-12 h-12 relative z-10" />
-                ) : (
-                  <PhoneOff className="text-white w-12 h-12 relative z-10" />
-                )}
+  return (
+    <div className="flex h-full">
+      <AnimatePresence>
+        {isCalling ? (
+          <motion.div
+            className="flex items-center justify-center w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center relative">
+              <Phone className="w-8 h-8 text-white animate-pulse" />
+              <div className="absolute w-full h-full rounded-full border-4 border-blue-400 animate-ripple" />
+              <div className="absolute w-full h-full rounded-full border-4 border-blue-400 animate-ripple-delayed" />
+            </div>
+            <p className="mt-3 ml-4 text-lg font-medium text-gray-700">Connecting call...</p>
+          </motion.div>
+        ) : (
+          <motion.div
+            className="flex w-full h-[calc(100vh-100px)]"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Speaker Section */}
+            <div className="w-[300px] min-w-[300px] h-full flex flex-col items-center justify-center p-2 border-r">
+              <div className="relative w-28 h-28 mb-8">
+                <div className={`absolute w-28 h-28 rounded-full flex items-center justify-center ${(isMicOn || isInitialMessagePlaying) ? "bg-blue-500" : "bg-mediumDynamic"
+                  } shadow-lg`}>
+                  {(isMicOn || isInitialMessagePlaying) && (
+                    <>
+                      <div className="absolute w-28 h-28 rounded-full border-4 border-blue-400 animate-ripple" />
+                      <div className="absolute w-28 h-28 rounded-full border-4 border-blue-400 animate-ripple-delayed" />
+                    </>
+                  )}
+                  {(isMicOn || isInitialMessagePlaying) ? (
+                    <Phone className="text-white w-12 h-12 relative z-10" />
+                  ) : (
+                    <PhoneOff className="text-white w-12 h-12 relative z-10" />
+                  )}
+                </div>
+              </div>
+
+              <div className="flex gap-6">
+                <motion.button
+                  className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center shadow-lg hover:shadow-xl focus:outline-none"
+                  onClick={toggleMic}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  {(isMicOn || isInitialMessagePlaying) ? (
+                    <Mic className="text-green-500 w-6 h-6" />
+                  ) : (
+                    <MicOff className="text-red-500 w-6 h-6" />
+                  )}
+                </motion.button>
+
+                <motion.button
+                  className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center shadow-lg hover:shadow-xl focus:outline-none"
+                  onClick={onEndCall}
+                  whileTap={{ scale: 0.9, rotate: -15 }}
+                >
+                  <PhoneOff className="text-red-500 w-6 h-6" />
+                </motion.button>
               </div>
             </div>
 
-            <div className="flex gap-6">
-              <motion.button
-                className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center shadow-lg hover:shadow-xl focus:outline-none"
-                onClick={toggleMic}
-                whileTap={{ scale: 0.9 }}
-              >
-                {(isMicOn || isInitialMessagePlaying) ? (
-                  <Mic className="text-green-500 w-6 h-6" />
-                ) : (
-                  <MicOff className="text-red-500 w-6 h-6" />
-                )}
-              </motion.button>
+            {/* Chat Section */}
+            <div className="flex-1 h-full overflow-hidden">
+              <ScrollArea className="h-full px-4 py-2">
+                <div className="space-y-8">
+                  {messages?.map((message) => (
+                    <div key={message.id} className="relative">
+                      {message.sender === 'system' && (
+                        <div className="absolute -top-[53px] mt-4 mb-2 left-0">
+                          <div className="w-8 h-8 border-2 rounded-lg overflow-hidden">
+                            <img
+                              src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, "")}
+                              alt="AI"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        </div>
+                      )}
 
-              <motion.button
-                className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center shadow-lg hover:shadow-xl focus:outline-none"
-                onClick={onEndCall}
-                whileTap={{ scale: 0.9, rotate: -15 }}
-              >
-                <PhoneOff className="text-red-500 w-6 h-6" />
-              </motion.button>
-            </div>
-          </div>
-
-          {/* Chat Section */}
-          <div className="flex-1 h-full overflow-hidden">
-            <ScrollArea className="h-full px-4 py-6">
-              <div className="space-y-8">
-                {messages?.map((message) => (
-                  <div key={message.id} className="relative">
-                    {message.sender === 'system' && (
-                      <div className="absolute -top-10 left-0">
-                        <div className="w-8 h-8 border-2 rounded-lg overflow-hidden">
+                      <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`relative max-w-[80%] ${message.sender === 'user'
+                            ? 'bg-white border-r-4 border-gray-200 border border-r-mediumDynamic shadow rounded-[5px]'
+                            : 'bg-white border-l-4 border-gray-200 border border-l-mediumDynamic rounded-[5px] shadow-sm'
+                          } px-4 py-3`}>
+                          <p className="text-sm leading-relaxed">{message?.content}</p>
+                        </div>
+                      </div>
+                      <div ref={scrollRef} />
+                    </div>
+                  ))}
+                  {isProcessing && (
+                    <div className="relative">
+                      <div className="absolute -top-7 left-0 mb-5">
+                        <div className="w-6 h-6 rounded-full overflow-hidden">
                           <img
                             src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, "")}
                             alt="AI"
@@ -414,45 +465,20 @@ return (
                           />
                         </div>
                       </div>
-                    )}
-
-                    <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`relative max-w-[80%] ${
-                        message.sender === 'user'
-                          ? 'bg-white border-r-4 border-gray-200 border border-r-mediumDynamic shadow rounded-[5px]'
-                          : 'bg-white border-l-4 border-gray-200 border border-l-mediumDynamic rounded-[5px] shadow-sm'
-                      } px-4 py-3`}>
-                        <p className="text-sm leading-relaxed">{message?.content}</p>
+                      <div className="bg-gray-100 shadow-sm rounded-3xl mt-2 px-4 py-3 inline-block">
+                        <div className="flex gap-1">
+                          <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" />
+                          <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-100" />
+                          <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-200" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-                {isProcessing && (
-                  <div className="relative">
-                    <div className="absolute -top-7 left-0 mb-5">
-                      <div className="w-6 h-6 rounded-full overflow-hidden">
-                        <img
-                          src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, "")}
-                          alt="AI"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
-                    <div className="bg-gray-100 shadow-sm rounded-3xl mt-2 px-4 py-3 inline-block">
-                      <div className="flex gap-1">
-                        <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" />
-                        <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-100" />
-                        <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-200" />
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {/* <div ref={scrollRef} /> */}
-              </div>
-            </ScrollArea>
-          </div>
-
-          <style jsx>{`
+                  )}
+                </div>
+              </ScrollArea>
+            </div>
+   
+            <style jsx>{`
             @keyframes ripple {
               0% {
                 transform: scale(1);
@@ -472,11 +498,11 @@ return (
               animation: ripple 2s linear infinite 1s;
             }
           `}</style>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-);
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 export default DeepgramCall;

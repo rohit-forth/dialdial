@@ -12,6 +12,13 @@ interface UserInfo {
   access_token?: string;
   [key: string]: any;
 }
+interface ChatMessage {
+  id: string;
+  content: string;
+  sender: 'user' | 'ai' | 'system' | 'inactivity';
+  timestamp: number;
+  actions?: 'end_chat' | 'continue_chat' | null;
+}
 
 interface GlobalContextType {
   logout: () => Promise<void>;
@@ -30,7 +37,11 @@ interface GlobalContextType {
   showForm:any,
   setShowForm:any,
   chatId:any,
-  setChatId:any
+  setChatId:any,
+  formData:any,
+  setFormData:any,
+  messages: ChatMessage[];
+  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -39,6 +50,8 @@ interface GlobalProviderProps {
   children: ReactNode;
   userInfo?: UserInfo;
 }
+
+
 type ToastFunction = (msg: any) => void;
 export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalProviderProps) {
   const router = useRouter();
@@ -51,14 +64,22 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     agent_name:"",
     agent_voice:"",
     agent_prompt:"",
-    first_message:""
+    first_message:"",
+    agent_image:""
   })
   console.log(initialUserInfo, "initialUserInfo");
 
   if (userInfo?.access_token) {
     henceforthApi.setToken(userInfo.access_token);
   }
+ const [messages, setMessages] = useState<ChatMessage[]>([]);
 
+    const [formData, setFormData] = useState({
+      name: '',
+      countryCode: '+91',
+      phoneNumber: '',
+      email: '',
+    });
  
 
   const stopSpaceEnter = (event: React.KeyboardEvent): boolean => {
@@ -172,6 +193,7 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
         agent_name: response?.data?.name,
         agent_voice: response?.data?.voice,
         agent_prompt: response?.data?.prompt,
+        agent_image: response?.data?.image,
         first_message: response?.data?.first_message
       });
     } catch (error) {
@@ -248,7 +270,11 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
    }
 
   const contextValue: GlobalContextType = {
+    messages,
+    setMessages,
     logout,
+    formData,
+    setFormData,
     chatId,
     setChatId,
     showForm,

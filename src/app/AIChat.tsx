@@ -34,14 +34,14 @@ interface ChatMessage {
 }
 
 const AIChat: React.FC = () => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   // const [showForm, setShowForm] = useState(true);
   // const [chatId, setChatId] = useState<string | null>(null);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [connecting,setConnecting] = useState(false);
-    const {companyDetails,getThemeColor,isCallActive,setIsCallActive,getAgentName,agentDetails,showForm,setShowForm,chatId,setChatId} = useGlobalContext();
+  const {messages,setMessages,companyDetails,getThemeColor,isCallActive,setIsCallActive,getAgentName,agentDetails,showForm,setShowForm,chatId,setChatId,formData,setFormData} = useGlobalContext();
+  // const [messages, setMessages] = useState<ChatMessage[]>([]);
   const searchParams=useSearchParams();
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -53,12 +53,7 @@ const AIChat: React.FC = () => {
   const [countdownTime, setCountdownTime] = useState<number | null>(null);
   
   // Function to format time remaining
-  const formatTimeRemaining = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
+ 
   useEffect(() => {
     const systemMessage = messages.find(
       msg => msg.sender === 'system' && msg.actions === 'end_chat'
@@ -95,12 +90,6 @@ const AIChat: React.FC = () => {
     return adminImages[Math.floor(Math.random() * adminImages.length)].src;
   }
 
-  const [formData, setFormData] = useState({
-    name: '',
-    countryCode: '+91',
-    phoneNumber: '',
-    email: ''
-  });
 
   // Reset inactivity timer
   const resetInactivityTimer = useCallback(() => {
@@ -154,7 +143,7 @@ const AIChat: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev:any) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -337,7 +326,8 @@ const AIChat: React.FC = () => {
       email: formData.email,
       name: formData.name || null,
       phone_no: formData.phoneNumber || null,
-      country_code: formData.countryCode || null
+      country_code: formData.countryCode || null,
+      type:"CHAT"
     }
     if(chatId){
       try {
@@ -373,7 +363,7 @@ const AIChat: React.FC = () => {
           <div className="px-4 py-6 md:px-7 ">
             {showForm ? (
           <div className="flex justify-center mt-[50px] items-center">
-          <Card className="w-full border-2 max-w-[600px] p-8 bg-white rounded-2xl shadow-md">
+          <Card className="w-full border-2 max-w-[500px] xl:max-w-[600px] p-8 bg-white rounded-2xl shadow-md">
             <form onSubmit={handleSubmit} className="space-y-6">
               <h2 className="text-[32px] font-bold text-center text-lightDynamic mb-8">
                 Start chatting
@@ -410,7 +400,7 @@ const AIChat: React.FC = () => {
                 <Select
                   value={formData.countryCode}
                   onValueChange={(value) => {
-                    setFormData(prev => ({ ...prev, countryCode: value }));
+                    setFormData((prev:any) => ({ ...prev, countryCode: value }));
                   }}
                 >
                   <SelectTrigger className="w-[90px] h-12 border-gray-200 ">
@@ -477,7 +467,7 @@ const AIChat: React.FC = () => {
               <div className="flex-1 flex flex-col mx-auto ">
               <ScrollArea className="flex-1 px-4 py-4">
                 <div className="space-y-16 mt-10">
-                  {messages.map(message => (
+                  {messages?.map(message => (
                     <div key={message.id} className="relative ">
                       {message.sender !== 'user' && (
                         <div className="absolute -top-10 left-0 ">

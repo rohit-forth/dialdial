@@ -1,6 +1,5 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Sidebar,
   SidebarContent,
@@ -25,8 +24,8 @@ import { useGlobalContext } from '../providers/Provider';
 import henceforthApi from '@/utils/henceforthApi';
 import gladiatorIcon from "@/app/assets/images/hf_logo.png";
 import { ArrowUpRight, MessageCircleOff, Phone, PhoneCall, Scroll, Share, Share2, Shield } from 'lucide-react';
-import { Icons } from '../icons';
 import { Button } from '../ui/button';
+
 
 export default function AppSidebar({
   children
@@ -34,10 +33,10 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [mounted, setMounted] = React.useState(false);
-  const { companyDetails,isCallActive,setIsCallActive,agentDetails,Toast,showForm,setShowForm,chatId,setChatId } = useGlobalContext();
+  const { companyDetails,setMessages,isCallActive,setIsCallActive,agentDetails,Toast,showForm,setShowForm,chatId,setChatId } = useGlobalContext();
   const router = useRouter();
   const pathname = usePathname();
-
+  const [isEndingChat, setIsEndingChat] = React.useState(false);
   React.useEffect(() => {
     setMounted(true);
   }, []);
@@ -60,6 +59,7 @@ export default function AppSidebar({
       // If microphone exists, try to access it
       await navigator.mediaDevices.getUserMedia({ audio: true });
       setIsCallActive(!isCallActive);
+      
       console.log('Microphone access granted');
     } catch (err) {
       console.error('Microphone access denied', err);
@@ -68,16 +68,20 @@ export default function AppSidebar({
     }
   }
 
+  
+
   async function handleEndChat() {
+    setIsEndingChat(true);
     try{
       await henceforthApi?.SuperAdmin.endChat(chatId);
-      
+      setMessages([])
       setShowForm(true);
 
     }catch(err){
       console.error(err);
     }finally{
       setChatId("")
+      setIsEndingChat(false);
       setShowForm(true);
     }
   }
@@ -155,7 +159,8 @@ export default function AppSidebar({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              {!showForm && <Button
+              { <Button
+              disabled={showForm}
               onClick={() =>handleCall()}
               className={`flex whitespace-nowrap items-center gap-2 font-normal px-4 py-2 text-black rounded-lg transition-colors duration-200 ${
                 isCallActive ? "bg-green-500" : "bg-white"
@@ -173,7 +178,7 @@ export default function AppSidebar({
                 >
                   <Button onClick={()=>handleEndChat()} className='whitespace-nowrap flex items-center gap-2 font-normal px-4 py-2 bg-white text-black rounded-lg transition-colors duration-200'>
                     <MessageCircleOff size={18} />
-                    <span>End</span>
+                    {isEndingChat ? "Ending Chat.." : "End Chat"}
                   </Button>
                 </motion.div>
                 <Button className='flex whitespace-nowrap items-center gap-2 font-normal px-4 py-2 bg-white text-black rounded-lg transition-colors duration-200'>
