@@ -473,7 +473,7 @@ const AIChat: React.FC = () => {
                         <div className="absolute -top-10 left-0 ">
                           <div className="w-8 h-8 border-2 rounded-lg overflow-hidden">
                             <img 
-                              src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, gladiatorIcon.src)} 
+                              src={henceforthApi?.FILES?.imageOriginal(agentDetails?.agent_image, gladiatorIcon.src)} 
                               alt="AI"
                               className="w-full h-full object-cover"
                             />
