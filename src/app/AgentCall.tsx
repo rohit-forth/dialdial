@@ -301,7 +301,7 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
         chat_id?: string;
       } = {
         query: transcript,
-        prompt: agentDetails?.agent_prompt,
+        prompt: agentDetails?.call_prompt,
         voice: agentDetails?.agent_voice,
         agent_id: agentId,
         secret_key: secretKey,

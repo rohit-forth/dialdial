@@ -306,7 +306,7 @@ const AIChat: React.FC = () => {
           // const apiRes = await henceforthApi.SuperAdmin.getInitialMessage(String(decodedToken?.agent_id))
           const aiMessage: ChatMessage = {
             id: generateId(),
-            content: agentDetails?.first_message,
+            content: agentDetails?.chat_first_message,
             sender: 'ai',
             timestamp: Date.now()
           };
@@ -353,7 +353,7 @@ const AIChat: React.FC = () => {
       <DeepgramCall 
         agentId={decodedToken?.agent_id} 
         secretKey={decodedToken?.secret_key} 
-        initialMessage={agentDetails?.first_message}
+        initialMessage={agentDetails?.call_first_message}
       />
         ):
         <>
