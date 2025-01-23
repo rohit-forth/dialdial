@@ -5,10 +5,10 @@ import { Mic, MicOff, Phone, PhoneOff } from 'lucide-react';
 import { createClient, ListenLiveClient } from '@deepgram/sdk';
 import henceforthApi from '@/utils/henceforthApi';
 
-import { SpeakerLoudIcon, SpeakerOffIcon } from '@radix-ui/react-icons';
+// import { SpeakerLoudIcon, SpeakerOffIcon } from '@radix-ui/react-icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { add } from 'date-fns';
-
+// import { add } from 'date-fns';
+import gladiatorIcon from "@/app/assets/images/hf_logo.png"
 const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string; secretKey: string; initialMessage: string }) => {
   const [transcript, setTranscript] = useState('');
   const [isMicOn, setIsMicOn] = useState(false);
@@ -435,7 +435,7 @@ const DeepgramCall = ({ agentId, secretKey, initialMessage }: { agentId: string;
                         <div className="absolute -top-[53px] mt-4 mb-2 left-0">
                           <div className="w-8 h-8 border-2 rounded-lg overflow-hidden">
                             <img
-                              src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, "")}
+                              src={henceforthApi?.FILES?.imageOriginal(companyDetails?.company_logo, gladiatorIcon.src)}
                               alt="AI"
                               className="w-full h-full object-cover"
                             />
