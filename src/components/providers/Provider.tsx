@@ -42,6 +42,8 @@ interface GlobalContextType {
   setFormData:any,
   messages: ChatMessage[];
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+  panelSwitch:boolean,
+  setPanelSwitch:any
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -70,6 +72,7 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     agent_image:""
   })
   console.log(initialUserInfo, "initialUserInfo");
+  const [panelSwitch, setPanelSwitch] = useState(false);
 
   if (userInfo?.access_token) {
     henceforthApi.setToken(userInfo.access_token);
@@ -295,7 +298,9 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     Toast,
     companyDetails,
     getAgentName,
-    agentDetails
+    agentDetails,
+    panelSwitch,
+    setPanelSwitch
   };
 
   return (
