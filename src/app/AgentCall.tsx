@@ -393,7 +393,7 @@ const DeepgramCall = ({ ...props }: DeepgramCallProps) => {
       };
 
       const response = await fetch(
-        "https://dev.qixs.ai:3003/knowledge-base/landing/page/ai",
+        "https://qixs.ai:3001/knowledge-base/landing/page/ai",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
