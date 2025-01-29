@@ -6,10 +6,18 @@ import { destroyCookie } from "nookies";
 import henceforthApi from "@/utils/henceforthApi";
 import { formatDuration } from "date-fns";
 import toast from "react-hot-toast";
+// import { company } from "../layout/app-sidebar";
 
 interface UserInfo {
   access_token?: string;
   [key: string]: any;
+}
+interface ChatMessage {
+  id: string;
+  content: string;
+  sender: 'user' | 'ai' | 'system' | 'inactivity';
+  timestamp: number;
+  actions?: 'end_chat' | 'continue_chat' | null;
 }
 
 interface GlobalContextType {
@@ -20,7 +28,22 @@ interface GlobalContextType {
   getProfile: () => Promise<void>;
   formatDuration: (seconds: number) => string;
   Toast:any,
-  companyDetails:any
+  companyDetails:any,
+  getThemeColor:any,
+  setIsCallActive:any,
+  isCallActive:any,
+  getAgentName:any,
+  agentDetails:any,
+  showForm:any,
+  setShowForm:any,
+  chatId:any,
+  setChatId:any,
+  formData:any,
+  setFormData:any,
+  messages: ChatMessage[];
+  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+  panelSwitch:boolean,
+  setPanelSwitch:any
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -29,19 +52,40 @@ interface GlobalProviderProps {
   children: ReactNode;
   userInfo?: UserInfo;
 }
+
+
 type ToastFunction = (msg: any) => void;
 export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalProviderProps) {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(initialUserInfo || null);
+  const [isCallActive, setIsCallActive] = useState(false);
+  const [showForm, setShowForm] = useState(true);
+  const [chatId,setChatId]=useState("");
+
+  const [agentDetails,setAgentDetails]=useState({
+    agent_name:"",
+    agent_voice:"",
+    chat_prompt:"",
+    call_first_message:"",
+    call_prompt:"",
+    chat_first_message:"",
+    agent_image:""
+  })
   console.log(initialUserInfo, "initialUserInfo");
+  const [panelSwitch, setPanelSwitch] = useState(false);
 
   if (userInfo?.access_token) {
     henceforthApi.setToken(userInfo.access_token);
   }
+ const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  useEffect(() => { 
-    getThemeColor()
-  },[])
+    const [formData, setFormData] = useState({
+      name: '',
+      countryCode: '+91',
+      phoneNumber: '',
+      email: '',
+    });
+ 
 
   const stopSpaceEnter = (event: React.KeyboardEvent): boolean => {
     if (event.target instanceof HTMLInputElement) {
@@ -144,15 +188,39 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
      
     }
   };
+  const getAgentName = async (agent_id:string) => {
+    try {
+      const apiRes = await fetch(`https://dev.qixs.ai:3003/agent/${agent_id}`,{method:"GET"});
+      const response = await apiRes.json();
+      console.log(response, "response");
+      setAgentDetails({
+        ...agentDetails,
+        agent_name: response?.data?.name,
+        agent_voice: response?.data?.voice,
+       
+        agent_image: response?.data?.image,
+        chat_prompt: response?.data?.chat_prompt,
+        call_first_message: response?.data?.call_first_message,
+        call_prompt: response?.data?.call_prompt,
+        chat_first_message: response?.data?.chat_first_message
+      });
+    } catch (error) {
+      console.error('Profile fetch error:', error);
+      
+     
+    }
+  }
 
   const [companyDetails,setCompanyDetails]=useState({
     company_color:"",
     company_logo:"",
     company_name:"",
-    company_url:""
+    company_url:"",
+    company_description:""
   })
 
   const hexToRgb = (hex:string) => {
+    hex=hex?hex:"#F0BB78";
     const bigint = parseInt(hex.slice(1), 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
@@ -186,18 +254,19 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
     };
   }
   
-  const getThemeColor = async() => {
+  const getThemeColor = async(script_id:any) => {
     try {
-      const apiRes = await henceforthApi.Company.profile();
+      const apiRes = await henceforthApi.SuperAdmin.getConfigFromScriptId(script_id);
       console.log(apiRes, "apiRes");
       setCompanyDetails({
         ...companyDetails,
-        company_color: apiRes?.data?.company_color,
-        company_logo: apiRes?.data?.company_logo,
-        company_name: apiRes?.data?.company_name,
-        company_url: apiRes?.data?.company_url
+        company_color: apiRes?.data?.colour,
+        company_logo: apiRes?.data?.image,
+        company_name: apiRes?.data?.title,
+        company_url: apiRes?.data?.url ?? "https://www.henceforthsolutions.com/",
+        company_description: apiRes?.data?.description
       });
-      const rgbColor = hexToRgb(apiRes?.data?.company_color);
+      const rgbColor = hexToRgb(apiRes?.data?.colour);
       console.log(rgbColor, "rgbColor");
       const colorAccents =  generateColorAccents(rgbColor);
       document.documentElement.style.setProperty("--dynamic-color", colorAccents?.originalColor);
@@ -209,14 +278,29 @@ export function GlobalProvider({ children, userInfo: initialUserInfo }: GlobalPr
    }
 
   const contextValue: GlobalContextType = {
+    messages,
+    setMessages,
     logout,
+    formData,
+    setFormData,
+    chatId,
+    setChatId,
+    showForm,
+    setShowForm,
+    isCallActive,
+    setIsCallActive,
     setUserInfo,
     userInfo,
+    getThemeColor,
     stopSpaceEnter,
     getProfile,
     formatDuration,
     Toast,
-    companyDetails
+    companyDetails,
+    getAgentName,
+    agentDetails,
+    panelSwitch,
+    setPanelSwitch
   };
 
   return (

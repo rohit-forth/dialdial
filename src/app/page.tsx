@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import AIChat from '@/app/AIChat';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import "@/app/globals.css";  
 type Message = {
   id: number;
   content: string;
@@ -28,7 +29,7 @@ const Dashboard = () => {
   return (
   
       
-<div className='m-6 mt-3'> <AIChat/></div>
+<div className='pt-1'> <AIChat/></div>
            
 
   );

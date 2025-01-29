@@ -6,10 +6,9 @@ const SuperagentPromise = require("superagent-promise");
 const superagent = SuperagentPromise(_superagent, global.Promise);
 
 // export const API_ROOT = "https://dev.qixs.ai:3003/";
-export const BUCKET_ROOT = "https://demoserver3.sgp1.digitaloceanspaces.com/uploads/images";
+export const BUCKET_ROOT =
+  "https://demoserver3.sgp1.digitaloceanspaces.com/uploads/images";
 export const API_ROOT = "https://qixs.ai:3001/";
-
-
 
 const API_FILE_ROOT_MEDIUM = `${BUCKET_ROOT}/medium/`;
 const API_FILE_ROOT_ORIGINAL = `${BUCKET_ROOT}/original/`;
@@ -67,22 +66,24 @@ const Department = {
   delete: (id: string) => requests.del(`departments/${id}`),
   edit: (info: any, id: string) => requests.patch(`departments/${id}`, info),
   request: (info: any) => requests.post("departments/request", info),
-  listing: (type?: any) => requests.get(type ? `departments?${type}` : `departments`),
+  listing: (type?: any) =>
+    requests.get(type ? `departments?${type}` : `departments`),
   signUp: (info: any) => requests.post("user/signUp", info),
   selectCompanyDepartment: (id: string, info: any) =>
     requests.patch(`departments/company-admin-department/${id}`, info),
-  requestpatch: (id: string, info: any) => requests.patch(`departments/request/${id}`, info)
+  requestpatch: (id: string, info: any) =>
+    requests.patch(`departments/request/${id}`, info),
 };
 
 const Alert_Activity = {
   add: (info: any) => requests.post("departments", info),
   request: (info: any) => requests.post("departments/request", info),
-  listing: (type?: any) => requests.get(type ? `alert-activity?${type}` : `alert-activity`),
+  listing: (type?: any) =>
+    requests.get(type ? `alert-activity?${type}` : `alert-activity`),
   markread: (id?: string, info?: any) =>
     requests.patch(`notification/read`, info),
-  deleteAlert: (id?: string, info?: any) =>
-    requests.patch(`alert/${id}`, info),
-}
+  deleteAlert: (id?: string, info?: any) => requests.patch(`alert/${id}`, info),
+};
 
 const Comment = {
   add: (id: string, info: any) => requests.post(`process/comment/${id}`, info),
@@ -97,8 +98,7 @@ const Comment = {
 const page = {
   add: (info: any) => requests.post(`admin/pages`, info),
   listing: (q: string) => requests.get(`admin/pages?type=${q}`),
-  update: (id: string, info: any) =>
-    requests.patch(`admin/pages/${id}`, info),
+  update: (id: string, info: any) => requests.patch(`admin/pages/${id}`, info),
   doNothing: (id: string, info: any) =>
     requests.patch(`process/comment/do-nothing/${id}`, info),
   delete: (id: string) => requests.del(`process/comment/${id}`),
@@ -107,20 +107,28 @@ const page = {
 const SuperAdmin = {
   login: (info: any) => requests.post("admin/login", info),
   setupCompProfile: (info: any) => requests.post("admin/company", info),
-  getSystems:(search?:any)=>requests.get(search?`system?search=${search}`:"system?limit=200"),
+  getSystems: (search?: any) =>
+    requests.get(search ? `system?search=${search}` : "system?limit=200"),
   changePassword: (info: any) => requests.put("admin/password", info),
-  profile: (type?: any) => requests.get(type ? `admin/profile?${type}` : `admin/profile`),
+  profile: (type?: any) =>
+    requests.get(type ? `admin/profile?${type}` : `admin/profile`),
   updateProfile: (info: any) => requests.put("admin/profile", info),
   callListing: (q: any) => requests.get(`admin/call${q ? `?${q}` : ""}`),
-  dashboardCards: (type?:any) => requests.get(type?`admin/dashboard?type=${type}`:"admin/dashboard"),
+  dashboardCards: (type?: any) =>
+    requests.get(type ? `admin/dashboard?type=${type}` : "admin/dashboard"),
   getTranscription: (id: string) => requests.get(`admin/call/${id}/transcript`),
   callDetail: (id: string) => requests.get(`admin/call/${id}`),
-  submitPhoneNumber:(info:any)=>requests.post(`twilio/send-call-vendor`,info),
-  sendMessage:(info:any)=>requests.post(`chat`,info),
-  submitChatProfile:(id:any,info:any)=>requests.put(`chat/${id}/user-detail`,info),
-  endChat:(id:any)=>requests.put(`chat/${id}`,{}),
+  submitPhoneNumber: (info: any) =>
+    requests.post(`twilio/send-call-vendor`, info),
+  sendMessage: (info: any) => requests.post(`chat`, info),
+  submitChatProfile: (id: any, info: any) =>
+    requests.put(`chat/${id}/user-detail`, info),
+  endChat: (id: any) => requests.put(`chat/${id}`, {}),
 
-  getInitialMessage:()=>requests.get(`admin/initial-message`),
+  getInitialMessage: (agent_id: any) => requests.get(`agent/${atob(agent_id)}`),
+
+  getConfigFromScriptId: (id: any) =>
+    requests.get(`vendor/workspace-script/${id}`),
 };
 const Company = {
   add: (info: any) => requests.post("admin/company", info),
@@ -139,20 +147,21 @@ const Team = {
   updateCompany: (id: string, info: any) =>
     requests.patch(`admin/company/${id}`, info),
   addTeamMember: (info: any) => requests.post(`user/team-admin`, info),
-  editTeamMember: (info: any, id: string) => requests.patch(`user/teammates/access/profile/${id}`, info),
+  editTeamMember: (info: any, id: string) =>
+    requests.patch(`user/teammates/access/profile/${id}`, info),
   teammatesList: (q?: any) => requests.get(`user/teammates${q ? `?${q}` : ""}`),
   teamMateDetails: (id: any) => requests.get(`user/teammates/${id}`),
-  deleteArchiev: (id: any, info: any) => requests.patch(`user/teammate/process/${id}`, info)
-
+  deleteArchiev: (id: any, info: any) =>
+    requests.patch(`user/teammate/process/${id}`, info),
 };
 
-const Systems={
-  get:(q?: any) => requests.get(`system${q ? `?${q}` : ""}`),
-  create:(info:any)=>requests.post("system",info),
-  update:(id:string,info:any)=>requests.patch(`system/${id}`,info),
-  delete:(id:string)=>requests.del(`system/${id}`),
-  getOne:(id:string)=>requests.get(`system/${id}`)
-}
+const Systems = {
+  get: (q?: any) => requests.get(`system${q ? `?${q}` : ""}`),
+  create: (info: any) => requests.post("system", info),
+  update: (id: string, info: any) => requests.patch(`system/${id}`, info),
+  delete: (id: string) => requests.del(`system/${id}`),
+  getOne: (id: string) => requests.get(`system/${id}`),
+};
 const Auth = {
   login: (info: any) => requests.post("user/login", info),
   signUp: (info: any) => requests.post("user/signUp", info),
@@ -189,19 +198,23 @@ const Chat = {
   list: (q?: any) => requests.get(`chat${q ? `?${q}` : ""}`),
   del: (id: string) => requests.del(`chat/${id}`),
   delMultiple: (q: any) => requests.del(`chat${q ? `?${q}` : ""}`),
-
 };
 const User = {
   dashboard: (q?: any) => requests.get(`user/dashbord${q ? `?${q}` : ""}`),
   workload: (q: any) => requests.get(`user/work-load?type=${q}`),
   organization: (type: any) => requests.get(`user/organization?type=${type}`),
   teammatesDetails: (id: string) => requests.get(`user/teammates/${id}`),
-  notificationList: (type: string) => requests.get(`admin/notifications/settings?type=${type}`),
-  notificationListUpdate: (info: any) => requests.patch("admin/notifications/settings", info),
+  notificationList: (type: string) =>
+    requests.get(`admin/notifications/settings?type=${type}`),
+  notificationListUpdate: (info: any) =>
+    requests.patch("admin/notifications/settings", info),
   previlege: (info: any) => requests.get(`user/previlege?${info}`),
-  update: (id: string, info: any) => requests.patch(`user/teammates/access/profile/${id}`, info),
-  alertAccept: (id: string, info: any) => requests.patch(`user/alert/accept/reject/${id}`, info),
-  scheduleUpdate: (id: string, info: any) => requests.patch(`user/schedule/accept-reject/${id}`, info),
+  update: (id: string, info: any) =>
+    requests.patch(`user/teammates/access/profile/${id}`, info),
+  alertAccept: (id: string, info: any) =>
+    requests.patch(`user/alert/accept/reject/${id}`, info),
+  scheduleUpdate: (id: string, info: any) =>
+    requests.patch(`user/schedule/accept-reject/${id}`, info),
 };
 
 const Demo = {
@@ -216,24 +229,25 @@ const Demo = {
     requests.patch(`defaut/process/${id}`, info),
 };
 const Process = {
-  generateAI: (id: any, info: any) => requests.post(`process/genrate-description/${id}`, info),
+  generateAI: (id: any, info: any) =>
+    requests.post(`process/genrate-description/${id}`, info),
   create: (info: any) => requests.post("process", info),
   getById: (id: string) => requests.get(`process/${id}`),
   delete: (id: string) => requests.del(`process/delete/${id}`),
-  deleteMultiple: (items: any) => requests.patch(`process/bulk/delete/archive`, items),
+  deleteMultiple: (items: any) =>
+    requests.patch(`process/bulk/delete/archive`, items),
   flowChartUpdate: (id: any, payload: any) =>
     requests.patch(`process/update_flowchart/${id}`, payload),
   updateProcessAfterCreate: (id: string, info: any) =>
     requests.patch(`process/${id}`, info),
   processUpdate: (id: string, info: any) =>
     requests.patch(`process/details/${id}`, info),
-  editProcess:(id:string,info:any)=>requests.patch(`process/${id}`,info)
-  ,
+  editProcess: (id: string, info: any) => requests.patch(`process/${id}`, info),
   archieved: (id: string, info: any) =>
     requests.patch(`process/archive/${id}`, info),
-  assign: (info: any) =>
-    requests.patch(`process/assign`, info),
-  assignProcess: (id: any, info: any) => requests.post(`user/teammates/assign/processess/${id}`, info),
+  assign: (info: any) => requests.patch(`process/assign`, info),
+  assignProcess: (id: any, info: any) =>
+    requests.post(`user/teammates/assign/processess/${id}`, info),
   processComplete: (id: string, info: any) =>
     requests.patch(`process/complete/${id}`, info),
   processUploadVideo: (id: string, info: any) =>
@@ -252,11 +266,12 @@ const Process = {
 /${id}`),
   updateVideoContent: (id: string, info: any) =>
     requests.patch(`defaut/process/${id}`, info),
-  importexport: (q: string) =>
-    requests.get(`process/import-export?${q}`),
-  getTriggers:()=>requests.get(`user/processes/names`),
-  shareInternalUsers:()=>requests.get(`user/internal-external?type=INTERNAL`),
-  shareExternalUsers:()=>requests.get(`user/internal-external?type=EXTERNAL`)
+  importexport: (q: string) => requests.get(`process/import-export?${q}`),
+  getTriggers: () => requests.get(`user/processes/names`),
+  shareInternalUsers: () =>
+    requests.get(`user/internal-external?type=INTERNAL`),
+  shareExternalUsers: () =>
+    requests.get(`user/internal-external?type=EXTERNAL`),
 };
 const FILES = {
   audio: (filename: string) =>
@@ -286,12 +301,12 @@ const FILES = {
         : `${API_FILE_ROOT_SMALL}${filename}`
       : alt,
 
-      document:(filename: string, alt?: any) =>
-        filename
-          ? filename?.startsWith("http")
-            ? filename
-            : `${API_FILE_ROOT_DOCUMENTS}${filename}`
-          : alt,
+  document: (filename: string, alt?: any) =>
+    filename
+      ? filename?.startsWith("http")
+        ? filename
+        : `${API_FILE_ROOT_DOCUMENTS}${filename}`
+      : alt,
 };
 
 const henceforthApi = {
