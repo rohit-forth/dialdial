@@ -1,23 +1,23 @@
 // app/layout.tsx
 // import { auth } from '@/auth';
 //import { Toaster } from '@/components/ui/sonner';
-import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
-import NextTopLoader from 'nextjs-toploader';
-import './globals.css';
-import { GlobalProvider } from '@/components/providers/Provider';
-import henceforthApi from '@/utils/henceforthApi';
-import { cookies } from 'next/headers';
-import { Toaster } from 'react-hot-toast';
+import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
+import "./globals.css";
+import { GlobalProvider } from "@/components/providers/Provider";
+import henceforthApi from "@/utils/henceforthApi";
+import { cookies } from "next/headers";
+import { Toaster } from "react-hot-toast";
 export const metadata: Metadata = {
-  title: 'QIXS',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: "QIXS",
+  description: "Basic dashboard with Next.js and Shadcn",
 };
 
 const rubik = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap'
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export default async function RootLayout({
@@ -35,7 +35,7 @@ export default async function RootLayout({
       const apiRes = await henceforthApi.SuperAdmin.profile();
       userInfo = { ...apiRes.data, access_token: accessToken };
     } catch (error) {
-      console.error('Error fetching user info:', error);
+      console.error("Error fetching user info:", error);
       // Consider redirecting to login or handling the error appropriately
     }
   }
@@ -43,17 +43,11 @@ export default async function RootLayout({
   // const session = await auth();
 
   return (
-    <html
-      lang="en"
-      className={rubik.className}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={rubik.className} suppressHydrationWarning>
       <body className="overflow-hidden">
-        <NextTopLoader showSpinner={false} />
-        <GlobalProvider userInfo={userInfo}>
-          {children}
-        </GlobalProvider>
-          <Toaster />
+        <NextTopLoader color="#000" showSpinner={false} />
+        <GlobalProvider userInfo={userInfo}>{children}</GlobalProvider>
+        <Toaster />
       </body>
     </html>
   );

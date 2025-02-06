@@ -2,23 +2,14 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Send, Loader2, X, Check } from "lucide-react";
 import { LiveClient as ListenLiveClient } from "@deepgram/sdk";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card } from "@/components/ui/card";
+
 import henceforthApi from "@/utils/henceforthApi";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import countryCode from "@/utils/countryCode.json";
+
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { useGlobalContext } from "@/components/providers/Provider";
 import gladiatorIcon from "@/app/assets/images/hf_logo.png";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import DeepgramCall from "./AgentCall";
 
 interface ChatMessage {
@@ -37,12 +28,12 @@ const AIChat: React.FC = () => {
   const {
     messages,
     setMessages,
-    companyDetails,
-    getThemeColor,
+
     isCallActive,
-    setIsCallActive,
+
     panelSwitch,
-    getAgentName,
+    decodedToken,
+    setDecodedToken,
     agentDetails,
     showForm,
     setShowForm,
@@ -145,20 +136,11 @@ const AIChat: React.FC = () => {
     };
   }, [resetInactivityTimer]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev: any) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowForm(false);
-    setIsInputDisabled(false);
-  };
-
-  const generateId = () => {
-    return `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  };
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setShowForm(false);
+  //   setIsInputDisabled(false);
+  // };
 
   const continueChat = () => {
     setMessages((prev) => prev.filter((msg) => msg.sender !== "system"));
@@ -166,6 +148,7 @@ const AIChat: React.FC = () => {
     setCountdownTime(null);
     resetInactivityTimer();
   };
+  const router = useRouter();
 
   // Modify your endChat function to reset the countdown
   const endChat = async () => {
@@ -181,44 +164,16 @@ const AIChat: React.FC = () => {
     setChatId(null);
     setIsInputDisabled(false);
     setCountdownTime(null);
+    const link = document.createElement("a");
+    link.href = "/form";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
-  const [decodedToken, setDecodedToken] = useState<any | null>({
-    agent_id: "",
-    script_id: "",
-    secret_key: "",
-  });
-
-  useEffect(() => {
-    function decodeToken(token: string) {
-      try {
-        // Replace URL-safe characters back
-        const normalizedToken = token.replace(/-/g, "+").replace(/_/g, "/");
-
-        // Add padding if needed
-        const padding = normalizedToken.length % 4;
-        const paddedToken = padding
-          ? normalizedToken + "=".repeat(4 - padding)
-          : normalizedToken;
-
-        // Decode
-        const decoded = Buffer.from(paddedToken, "base64").toString();
-        const data = JSON.parse(decoded);
-        // console.log(data,"fdchuwgyufvwiubfkiwrbog")
-        getAgentName(data?.agent_id);
-        getThemeColor(data?.script_id);
-        setDecodedToken(data);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-        return null;
-      }
-    }
-
-    const token = searchParams.get("token") || "";
-    if (token) {
-      decodeToken(token);
-    }
-  }, []);
+  const generateId = () => {
+    return Math.random().toString(36).substr(2, 9);
+  };
 
   const handleSendMessage = async () => {
     const trimmedMessage = inputMessage.trim();
@@ -300,28 +255,34 @@ const AIChat: React.FC = () => {
   }, [messages]);
 
   useEffect(() => {
-    if (!showForm && decodedToken?.agent_id) {
-      const getInitial = async () => {
-        // setIsLoading(true);
-        setConnecting(true);
-        try {
-          // const apiRes = await henceforthApi.SuperAdmin.getInitialMessage(String(decodedToken?.agent_id))
-          const aiMessage: ChatMessage = {
-            id: generateId(),
-            content: agentDetails?.chat_first_message,
-            sender: "ai",
-            timestamp: Date.now(),
-          };
-          setMessages((prev) => [...prev, aiMessage]);
-        } catch (error) {
-          console.error("Error fetching initial message:", error);
-        } finally {
-          setConnecting(false);
-        }
-      };
-      getInitial();
+    const sendInitialMessage = async () => {
+      try {
+        const aiMessage: ChatMessage = {
+          id: generateId(),
+          content: agentDetails?.chat_first_message,
+          sender: "ai",
+          timestamp: Date.now(),
+        };
+        setMessages((prev) => [...prev, aiMessage]);
+      } catch (error) {
+        console.error("Error fetching initial message:", error);
+      }
+    };
+
+    if (!showForm && decodedToken?.agent_id && messages?.length === 0) {
+      const timeoutId = setTimeout(sendInitialMessage, 1000);
+      return () => clearTimeout(timeoutId);
     }
-  }, [showForm]);
+
+    return () => {
+      // localStorage.removeItem("token");
+    };
+  }, [
+    showForm,
+    decodedToken?.agent_id,
+    messages?.length,
+    agentDetails?.chat_first_message,
+  ]);
 
   useEffect(() => {
     const payload = {
@@ -446,112 +407,7 @@ const AIChat: React.FC = () => {
             <div className="flex-1 relative right-1 h-full w-full mx-auto overflow-hidden  ">
               <ScrollArea className="h-full flex items-center">
                 <div className="px-4 py-6 md:px-7 ">
-                  {showForm ? (
-                    <div className="flex justify-center mt-[50px] items-center">
-                      <Card className="w-full border-2 max-w-[500px] xl:max-w-[600px] p-8 bg-white rounded-2xl shadow-md">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                          <h2 className="text-[32px] font-bold text-center text-lightDynamic mb-8">
-                            Start chatting
-                          </h2>
-
-                          <div className="space-y-5">
-                            <div>
-                              <Label
-                                htmlFor="name"
-                                className="text-lightDynamic font-medium text-base mb-2 block"
-                              >
-                                Name
-                              </Label>
-                              <Input
-                                type="text"
-                                id="name"
-                                name="name"
-                                placeholder="Enter your name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="w-full h-12 px-4 border border-gray-200 rounded-lg  placeholder:text-gray-400"
-                              />
-                            </div>
-
-                            <div>
-                              <Label
-                                htmlFor="phoneNumber"
-                                className="text-lightDynamic font-medium text-base mb-2 block"
-                              >
-                                Phone number
-                              </Label>
-                              <div className="relative flex">
-                                <div className="flex flex-grow gap-2">
-                                  <Select
-                                    value={formData.countryCode}
-                                    onValueChange={(value) => {
-                                      setFormData((prev: any) => ({
-                                        ...prev,
-                                        countryCode: value,
-                                      }));
-                                    }}
-                                  >
-                                    <SelectTrigger className="w-[90px] h-12 border-gray-200 ">
-                                      <SelectValue placeholder="+91" />
-                                    </SelectTrigger>
-                                    <SelectContent className="bg-white max-h-[250px]">
-                                      <SelectGroup>
-                                        {countryCode.map((country) => (
-                                          <SelectItem
-                                            key={country.code}
-                                            value={country.dial_code}
-                                            className="cursor-pointer hover:bg-gray-100"
-                                          >
-                                            {country.dial_code}
-                                          </SelectItem>
-                                        ))}
-                                      </SelectGroup>
-                                    </SelectContent>
-                                  </Select>
-
-                                  <Input
-                                    type="text"
-                                    id="phoneNumber"
-                                    name="phoneNumber"
-                                    placeholder="Enter your phone number"
-                                    value={formData.phoneNumber}
-                                    onChange={handleChange}
-                                    className="h-12  px-4 border border-gray-200 rounded-lg  placeholder:text-gray-400"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-
-                            <div>
-                              <Label
-                                htmlFor="email"
-                                className="text-lightDynamic font-medium text-base mb-2 block"
-                              >
-                                Email <span className="text-red-500">*</span>
-                              </Label>
-                              <Input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="Enter your email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                                className="w-full h-12 px-4 border border-gray-200 rounded-lg   placeholder:text-gray-400"
-                              />
-                            </div>
-                          </div>
-
-                          <Button
-                            type="submit"
-                            className="w-full h-12 mt-8 bg-lightDynamic text-white font-medium rounded-lg transition-colors"
-                          >
-                            Start chat
-                          </Button>
-                        </form>
-                      </Card>
-                    </div>
-                  ) : (
+                  {
                     <div className="flex-1 flex flex-col mx-auto ">
                       <ScrollArea className="flex-1 px-4 py-4">
                         <div className="space-y-16 mt-10">
@@ -691,7 +547,7 @@ const AIChat: React.FC = () => {
                         </div>
                       </ScrollArea>
                     </div>
-                  )}
+                  }
                 </div>
               </ScrollArea>
             </div>
