@@ -150,11 +150,7 @@ const AIAgentCard = () => {
       setIsOpen(false);
       setTimeout(() => {
         setIsLoading(false);
-        const link = document.createElement("a");
-        link.href = "/";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        router.replace("/");
       }, 1000);
     }
   };

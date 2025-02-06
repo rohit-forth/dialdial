@@ -99,11 +99,7 @@ export default function AppSidebar({
       setChatId("");
       setIsEndingChat(false);
       setShowForm(true);
-      const link = document.createElement("a");
-      link.href = "/form";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      router.replace("/form");
     }
   }
 
