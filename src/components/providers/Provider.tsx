@@ -50,6 +50,8 @@ interface GlobalContextType {
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
   panelSwitch: boolean;
   setPanelSwitch: any;
+  decodedToken: any;
+  setDecodedToken: any;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -92,10 +94,14 @@ export function GlobalProvider({
   const [formData, setFormData] = useState({
     name: "",
     countryCode: "+91",
-    phoneNumber: "",
+    phone: "",
     email: "",
   });
-
+  const [decodedToken, setDecodedToken] = useState<any | null>({
+    agent_id: "",
+    script_id: "",
+    secret_key: "",
+  });
   const stopSpaceEnter = (event: React.KeyboardEvent): boolean => {
     if (event.target instanceof HTMLInputElement) {
       if (event.target.value.length === 0 && event.key === " ") {
@@ -296,6 +302,9 @@ export function GlobalProvider({
   const contextValue: GlobalContextType = {
     messages,
     setMessages,
+    decodedToken,
+    setDecodedToken,
+
     logout,
     formData,
     setFormData,

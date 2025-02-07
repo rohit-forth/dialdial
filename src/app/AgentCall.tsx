@@ -7,6 +7,7 @@ import henceforthApi from "@/utils/henceforthApi";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import gladiatorIcon from "@/app/assets/images/hf_logo.png";
 import { set } from "date-fns";
+import { useRouter } from "next/navigation";
 
 interface DeepgramCallProps {
   agentId: string;
@@ -51,7 +52,7 @@ const DeepgramCall = ({ ...props }: DeepgramCallProps) => {
   const {
     isCallActive,
     setIsCallActive,
-    companyDetails,
+
     agentDetails,
     formData,
   } = useGlobalContext();
@@ -59,7 +60,7 @@ const DeepgramCall = ({ ...props }: DeepgramCallProps) => {
     agentId,
     secretKey,
     initialMessage,
-    chatId,
+    chatId = null,
     setChatId,
     messages,
     setMessages,
@@ -99,7 +100,9 @@ const DeepgramCall = ({ ...props }: DeepgramCallProps) => {
 
   useEffect(() => {
     // chatIdRef.current = chatId;
-    refs.chatId = chatId;
+    if (refs && chatId) {
+      refs.chatId = chatId;
+    }
   }, [chatId]);
 
   const addMessage = (content: any, sender: any) => {
@@ -325,7 +328,7 @@ const DeepgramCall = ({ ...props }: DeepgramCallProps) => {
       await stopTranscription();
     }
   };
-
+  const router = useRouter();
   const onEndCall = async () => {
     await cleanup();
     try {
