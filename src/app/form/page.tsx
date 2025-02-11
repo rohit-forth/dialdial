@@ -58,7 +58,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import henceforthApi from "@/utils/henceforthApi";
 import { time } from "console";
 import { parseCookies, setCookie } from "nookies";
-
+import gladiatorIcon from "@/app/assets/images/hf_logo.png";
+import { Meteors } from "@/components/common/Meteors";
 const AIAgentCardSkeleton = () => {
   return (
     <Card className="transform flex border-0 shadow-xl items-center transition-transform hover:scale-105">
@@ -103,6 +104,7 @@ const AIAgentCard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [formType, setFormType] = useState<"call" | "chat">("call");
   const router = useRouter();
+  const { companyDetails } = useGlobalContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isAgentLoading, setIsAgentLoading] = useState(true);
@@ -177,6 +179,7 @@ const AIAgentCard = () => {
     function decodeToken(token: string) {
       setCookie(null, "token", token, {
         maxAge: 2 * 60 * 60,
+        path: "/", // the cookie will be available on all routes
       });
       try {
         // Replace URL-safe characters back
@@ -191,12 +194,7 @@ const AIAgentCard = () => {
         // Decode
         const decoded = Buffer.from(paddedToken, "base64").toString();
         const data = JSON.parse(decoded);
-        // console.log(data,"fdchuwgyufvwiubfkiwrbog")
-        // const [decodedToken, setDecodedToken] = useState<any | null>({
-        //     agent_id: "",
-        //     script_id: "",
-        //     secret_key: "",
-        //   });
+
         setDecodedToken({
           agent_id: data?.agent_id,
           script_id: data?.script_id,
@@ -224,27 +222,20 @@ const AIAgentCard = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center w-full bg-gray-50">
+    <div className="flex items-center justify-center w-full ">
+      {/* <Meteors number={100} /> */}
       {isAgentLoading ? (
         <AIAgentCardSkeleton />
       ) : (
-        <Card className=" transform flex border-0 shadow-xl items-center transition-transform hover:scale-105">
-          <CardContent className="p-6 w-96 ">
+        <Card className=" transform  flex border-0 bg-lightDynamic shadow-xl items-center transition-transform hover:scale-105">
+          <CardContent className="p-6 w-96 text-fontDynamic">
             <div className="flex flex-col items-center space-y-4">
-              {/* AI Agent Image */}
-              {/* <div className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-              <img
-                src="/api/placeholder/96/96"
-                alt="AI Agent"
-                className="w-20 h-20 rounded-full object-cover"
-              />
-            </div> */}
               <Avatar className="w-24 h-24 border-4  border-white shadow-xl">
                 <AvatarImage
                   className="object-cover"
                   src={henceforthApi?.FILES?.imageOriginal(
                     agentDetails?.agent_image,
-                    ""
+                    gladiatorIcon?.src
                   )}
                   alt="AI Agent"
                 />
@@ -254,14 +245,24 @@ const AIAgentCard = () => {
               </Avatar>
 
               {/* Agent Name */}
-              <h2 className="text-xl font-semibold text-gray-800">
+              <h2 className="text-xl font-semibold ">
                 {agentDetails?.agent_name}
               </h2>
+
+              {/* Company Title and Description */}
+              <div className="text-center text-lightFontDynamic">
+                <p className="text-md font-semibold ">
+                  {companyDetails?.company_name}
+                </p>
+                <p className="text-xs ">
+                  {companyDetails?.company_description}
+                </p>
+              </div>
 
               {/* Action Buttons */}
               <div className="flex space-x-3 w-full">
                 <Button
-                  className="flex-1 text-white bg-purple-600 hover:bg-purple-700"
+                  className="flex-1 text-lightFontDynamic bg-dynamic"
                   onClick={() => {
                     setFormType("call");
                     setIsOpen(true);
@@ -271,7 +272,7 @@ const AIAgentCard = () => {
                   Call
                 </Button>
                 <Button
-                  className="flex-1 text-white bg-pink-600 hover:bg-pink-700"
+                  className="flex-1 text-lightFontDynamic bg-dynamic"
                   onClick={() => {
                     setFormType("chat");
                     setIsOpen(true);

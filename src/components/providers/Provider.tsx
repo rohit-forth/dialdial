@@ -203,7 +203,7 @@ export function GlobalProvider({
   };
   const getAgentName = async (agent_id: string) => {
     try {
-      const apiRes = await fetch(`https://qixs.ai:3001/agent/${agent_id}`, {
+      const apiRes = await fetch(`https://dev.qixs.ai:3003/agent/${agent_id}`, {
         method: "GET",
       });
       const response = await apiRes.json();
@@ -275,7 +275,7 @@ export function GlobalProvider({
       setCompanyDetails({
         ...companyDetails,
         company_color: apiRes?.data?.colour,
-        company_logo: apiRes?.data?.image,
+        // company_logo: apiRes?.data?.image,
         company_name: apiRes?.data?.title,
         company_url:
           apiRes?.data?.url ?? "https://www.henceforthsolutions.com/",

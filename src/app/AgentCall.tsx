@@ -335,11 +335,13 @@ const DeepgramCall = ({ ...props }: DeepgramCallProps) => {
       await henceforthApi.SuperAdmin.endChat(chatId);
       setMessages([]);
       setChatId("");
+      router.replace("/form");
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsCallActive(false);
+      state.isMicOn = false;
     }
-    setIsCallActive(false);
-    state.isMicOn = false;
   };
 
   useEffect(() => {
@@ -489,7 +491,7 @@ const DeepgramCall = ({ ...props }: DeepgramCallProps) => {
                     <img
                       src={henceforthApi?.FILES?.imageOriginal(
                         agentDetails?.agent_image,
-                        ""
+                        gladiatorIcon?.src
                       )}
                       className="w-24 h-24 rounded-full object-cover"
                     />

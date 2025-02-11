@@ -118,7 +118,7 @@ export default function AppSidebar({
                     <img
                       className="w-full h-full object-cover"
                       src={henceforthApi?.FILES?.imageOriginal(
-                        companyDetails?.company_logo,
+                        agentDetails?.agent_image,
                         gladiatorIcon?.src
                       )}
                       alt="logo"

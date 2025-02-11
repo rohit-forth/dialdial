@@ -19,7 +19,7 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [mounted, setMounted] = React.useState(false);
-  const { companyDetails } = useGlobalContext();
+  const { companyDetails, agentDetails } = useGlobalContext();
   const [isEndingChat, setIsEndingChat] = React.useState(false);
   React.useEffect(() => {
     setMounted(true);
@@ -42,7 +42,7 @@ export default function AppSidebar({
                     <img
                       className="w-full h-full object-cover"
                       src={henceforthApi?.FILES?.imageOriginal(
-                        companyDetails?.company_logo,
+                        agentDetails?.agent_image,
                         gladiatorIcon?.src
                       )}
                       alt="logo"
