@@ -32,7 +32,7 @@ export default function AppSidebar({
       <SidebarProvider className="relative">
         <Sidebar
           collapsible="icon"
-          className="ml-5 mt-5 mb-5 text-white rounded-xl w-[264px] overflow-hidden h-[calc(100vh-2.5rem)] "
+          className="ml-5 mt-5 mb-5 text-fontDynamic rounded-xl w-[264px] overflow-hidden h-[calc(100vh-2.5rem)] "
         >
           <div className="flex flex-col h-full bg-inherit rounded-r-3xl">
             <SidebarHeader className="flex-none p-6 group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-3">

@@ -282,8 +282,24 @@ export function GlobalProvider({
         company_description: apiRes?.data?.description,
       });
       const rgbColor = hexToRgb(apiRes?.data?.colour);
-      console.log(rgbColor, "rgbColor");
       const colorAccents = generateColorAccents(rgbColor);
+      const fontRGBColor = hexToRgb(apiRes?.data?.font_colour);
+      const fontColorAccents = generateColorAccents(fontRGBColor);
+      //font accent colors
+      document.documentElement.style.setProperty(
+        "--dynamic-font-color",
+        fontColorAccents?.originalColor
+      );
+      document.documentElement.style.setProperty(
+        "--light-dynamic-font-color",
+        fontColorAccents?.lightColor
+      );
+      document.documentElement.style.setProperty(
+        "--medium-dynamic-font-color",
+        fontColorAccents?.mediumColor
+      );
+
+      //project accent colors
       document.documentElement.style.setProperty(
         "--dynamic-color",
         colorAccents?.originalColor

@@ -17,6 +17,7 @@ interface ChatMessage {
   content: string;
   sender: "user" | "ai" | "system" | "inactivity";
   timestamp: number;
+  color?: boolean;
   actions?: "end_chat" | "continue_chat" | null;
 }
 
@@ -216,11 +217,11 @@ const AIChat: React.FC = () => {
       };
 
       setMessages((prev) => [...prev, aiMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error in AI response:", error);
       const errorMessage: ChatMessage = {
         id: generateId(),
-        content: "Sorry, something went wrong. Please try again.",
+        content: error?.response?.body?.message,
         sender: "ai",
         timestamp: Date.now(),
       };
@@ -436,13 +437,21 @@ const AIChat: React.FC = () => {
                                 }`}
                               >
                                 <div
-                                  className={`relative max-w-[80%] ${
-                                    message.sender === "user"
-                                      ? "bg-white border-r-4 border-gray-200 border border-r-dynamic shadow rounded-[5px]"
-                                      : "bg-white border-l-4 border-gray-200 border border-l-dynamic rounded-[5px] shadow-sm"
-                                  } px-4 py-3 `}
+                                  className={`relative max-w-[80%]
+                                    
+                                    ${
+                                      message.sender === "user"
+                                        ? "bg-white border-r-4 border-gray-200 border border-r-dynamic shadow rounded-[5px]"
+                                        : "bg-white border-l-4 border-gray-200 border border-l-dynamic rounded-[5px] shadow-sm"
+                                    } px-4 py-3 `}
                                 >
-                                  <p className="text-sm leading-relaxed">
+                                  <p
+                                    className={`text-sm leading-relaxed ${
+                                      message.content?.includes("subscription")
+                                        ? "text-red-500"
+                                        : ""
+                                    }`}
+                                  >
                                     {message.content}
                                   </p>
 
