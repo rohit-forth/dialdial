@@ -223,7 +223,7 @@ const AIAgentCard = () => {
 
   return (
     <div className="flex items-center justify-center w-full ">
-      {/* <Meteors number={100} /> */}
+      <Meteors number={100} />
       {isAgentLoading ? (
         <AIAgentCardSkeleton />
       ) : (
