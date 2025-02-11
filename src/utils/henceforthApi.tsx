@@ -5,10 +5,10 @@ import _superagent, { search } from "superagent";
 const SuperagentPromise = require("superagent-promise");
 const superagent = SuperagentPromise(_superagent, global.Promise);
 
-// export const API_ROOT = "https://dev.qixs.ai:3003/";
+export const API_ROOT = "https://dev.qixs.ai:3003/";
 export const BUCKET_ROOT =
   "https://demoserver3.sgp1.digitaloceanspaces.com/uploads/images";
-export const API_ROOT = "https://qixs.ai:3001/";
+// export const API_ROOT = "https://qixs.ai:3001/";
 
 const API_FILE_ROOT_MEDIUM = `${BUCKET_ROOT}/medium/`;
 const API_FILE_ROOT_ORIGINAL = `${BUCKET_ROOT}/original/`;
