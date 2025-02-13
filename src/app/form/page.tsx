@@ -21,13 +21,7 @@ import countryCode from "@/utils/countryCode.json";
 import "flag-icons/css/flag-icons.min.css";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import {
   Phone,
   MessageSquare,
@@ -62,9 +56,10 @@ import gladiatorIcon from "@/app/assets/images/hf_logo.png";
 
 const AIAgentCardSkeleton = () => {
   return (
-    <Card className="transform flex border-0 shadow-xl items-center transition-transform hover:scale-105">
+
+    <Card className="transform flex border-0 shadow-xl items-center transition-transform hover:scale-105 relative border-white/10 bg-zinc-900/60 backdrop-blur-xl border-beam">
       <CardContent className="p-6 w-96">
-        <div className="flex flex-col items-center space-y-4">
+        <div className="flex flex-col items-center space-y-10">
           <div className="relative w-24 h-24 rounded-full overflow-hidden">
             <div className="animate-pulse bg-gray-200 w-full h-full" />
           </div>
@@ -82,6 +77,8 @@ const AIAgentCardSkeleton = () => {
         </div>
       </CardContent>
     </Card>
+
+
   );
 };
 const AIAgentCard = () => {
@@ -200,7 +197,7 @@ const AIAgentCard = () => {
         await getAgentandScriptDetails(data?.agent_id);
         timeout = setTimeout(() => {
           setIsAgentLoading(false);
-        }, 1000);
+        }, 100);
       } catch (error) {
         console.error("Error decoding token:", error);
         return null;
@@ -222,22 +219,25 @@ const AIAgentCard = () => {
       {isAgentLoading ? (
         <AIAgentCardSkeleton />
       ) : (
-        <Card className=" transform  flex border-0 bg-mediumDynamic shadow-xl items-center transition-transform hover:scale-105">
+        <Card className=" transform  flex backdrop-blur-xl opacity-90 border-0 bg-dynamic shadow-xl items-center transition-transform hover:scale-105">
           <CardContent className="p-6 w-96 text-fontDynamic">
             <div className="flex flex-col items-center space-y-4">
-              <Avatar className="w-24 h-24 border-4  border-white shadow-xl">
-                <AvatarImage
-                  className="object-cover"
-                  src={henceforthApi?.FILES?.imageOriginal(
-                    agentDetails?.agent_image,
-                    gladiatorIcon?.src
-                  )}
-                  alt="AI Agent"
-                />
-                <AvatarFallback delayMs={500}>
-                  <User className="w-10 h-10" />
-                </AvatarFallback>
-              </Avatar>
+              <div className="p-3 border-2 rounded-full bg-white/15 border-fontDynamic">
+
+                <Avatar className="w-24 h-24 border border-fontDynamic shadow-xl">
+                  <AvatarImage
+                    className="object-cover"
+                    src={henceforthApi?.FILES?.imageOriginal(
+                      agentDetails?.agent_image,
+                      gladiatorIcon?.src
+                    )}
+                    alt="AI Agent"
+                  />
+                  <AvatarFallback delayMs={500}>
+                    <User className="w-10 h-10" />
+                  </AvatarFallback>
+                </Avatar>
+              </div>
 
               {/* Agent Name */}
               <h2 className="text-xl font-semibold ">
@@ -255,17 +255,19 @@ const AIAgentCard = () => {
               {/* Action Buttons */}
               <div className="flex space-x-3 w-full">
                 <Button
-                  className="flex-1 text-mediumDynamic bg-lightDynamic"
+                  className="relative flex-1 text-black/90 bg-lightFontDynamic overflow-hidden py-5 font-semibold rounded-lg transition-all duration-300 ease-out active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-700"
                   onClick={() => {
                     setFormType("call");
                     setIsOpen(true);
                   }}
                 >
-                  <Phone className="w-4 h-4 mr-2" />
-                  Call
+                  <div className="flex items-center justify-center space-x-2">
+                    <Phone className="w-4 h-4 " />
+                    <span>Call</span>
+                  </div>
                 </Button>
                 <Button
-                  className="flex-1 text-mediumDynamic bg-lightDynamic"
+                  className="relative flex-1 text-black/90 bg-lightFontDynamic overflow-hidden py-5 font-semibold rounded-lg transition-all duration-300 ease-out active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-700"
                   onClick={() => {
                     setFormType("chat");
                     setIsOpen(true);
@@ -281,7 +283,7 @@ const AIAgentCard = () => {
       )}
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-lg ">
+        <DialogContent className="sm:max-w-lg text-dynamic">
           <DialogHeader>
             <DialogTitle>Contact Form</DialogTitle>
             <DialogDescription>
@@ -437,7 +439,7 @@ const AIAgentCard = () => {
 
             <Button
               type="submit"
-              className="relative w-full overflow-hidden py-5 bg-gradient-to-r from-lightDynamic via-mediumDynamic to-mediumFontDynamic text-white font-semibold rounded-lg 
+              className="relative w-full overflow-hidden py-5 bg-gradient-to-br bg-fontDynamic text-black/80 font-semibold rounded-lg 
               transition-all duration-300 ease-out
              
               active:scale-95
@@ -450,11 +452,10 @@ const AIAgentCard = () => {
                 {isLoading && <Loader2 className="w-5 h-5 animate-spin" />}
                 <span className="text-md">
                   {isLoading
-                    ? `${
-                        formType === "call"
-                          ? "Initiating Call"
-                          : "Initiating Chat"
-                      }...`
+                    ? `${formType === "call"
+                      ? "Initiating Call"
+                      : "Initiating Chat"
+                    }...`
                     : "Submit"}
                 </span>
               </div>

@@ -109,11 +109,11 @@ export default function AppSidebar({
           collapsible="icon"
           className="ml-5 mt-5 mb-5 text-fontDynamic rounded-xl w-[264px] overflow-hidden h-[calc(100vh-2.5rem)] "
         >
-          <div className="flex flex-col h-full bg-inherit rounded-r-3xl">
+          <div className="flex flex-col h-full rounded-r-3xl">
             <SidebarHeader className="flex-none p-6 group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-3">
               <div className="flex flex-col items-center space-y-4">
-                <div className="p-4 border-white border-2 rounded-full overflow-hidden bg-white/10">
-                  <div className="w-[144px] h-[144px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-[50px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[50px] border-white border rounded-full overflow-hidden bg-white/10">
+                <div className="p-4 border-mediumFontDynamic border-2 rounded-full overflow-hidden bg-white/10">
+                  <div className="w-[144px] h-[144px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-[50px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[50px] border-lightFontDynamic border rounded-full overflow-hidden bg-white/10">
                     <img
                       className="w-full h-full object-cover"
                       src={henceforthApi?.FILES?.imageOriginal(
@@ -137,7 +137,7 @@ export default function AppSidebar({
                   href={
                     agentDetails?.page_url ?? "https://henceforthsolutions.com"
                   }
-                  className="px-8 w-full flex gap-[10px] fs-16 py-[8px] bg-dynamic  rounded-[5px] border border-current text-sm hover:opacity-80 transition-opacity group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:border-transparent group-has-[[data-collapsible=icon]]/sidebar-wrapper:bg-white/10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:rounded-full group-has-[[data-collapsible=icon]]/sidebar-wrapper:justify-center"
+                  className="px-8 w-full flex gap-[10px] fs-16 py-[8px] bg-transparent  rounded-[5px] border border-fontDynamic text-sm hover:opacity-80 transition-opacity group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:border-transparent group-has-[[data-collapsible=icon]]/sidebar-wrapper:bg-white/10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:rounded-full group-has-[[data-collapsible=icon]]/sidebar-wrapper:justify-center"
                 >
                   <span className="flex  w-full  items-center gap-[10px] ml-[10px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">
                     Visit Website <ArrowUpRight size={18} />
@@ -154,7 +154,7 @@ export default function AppSidebar({
             {/* Empty flex-grow div to push footer to bottom */}
             <div className="flex-grow"></div>
 
-            <SidebarFooter className="flex-none p-4 border-t border-white/10">
+            <SidebarFooter className="flex-none p-4 ">
               <div className="space-y-2 flex items-left group-has-[[data-collapsible=icon]]/sidebar-wrapper:items-center flex-col">
                 <Link
                   href="/privacy-policy"
@@ -186,9 +186,8 @@ export default function AppSidebar({
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger />
             </div>
-            <h1 className="fs-20 font-semibold hidden lg:block">{`Hi, I’m ${
-              agentDetails?.agent_name ?? "A"
-            }. Your AI Agent!`}</h1>
+            <h1 className="fs-20 font-semibold hidden lg:block">{`Hi, I’m ${agentDetails?.agent_name ?? "A"
+              }. Your AI Agent!`}</h1>
             <div className="px-4 flex gap-5 ml-auto">
               <motion.div
                 whileTap={{ scale: 0.95 }}
@@ -200,9 +199,8 @@ export default function AppSidebar({
                   <Button
                     disabled={showForm}
                     onClick={() => handleCall()}
-                    className={`flex whitespace-nowrap items-center gap-2 font-normal px-4 py-2 text-black rounded-lg transition-colors duration-200 ${
-                      isCallActive ? "bg-green-500" : "bg-white"
-                    }`}
+                    className={`flex whitespace-nowrap items-center gap-2 font-normal px-4 py-2 text-black rounded-lg transition-colors duration-200 ${isCallActive ? "bg-green-500" : "bg-white"
+                      }`}
                   >
                     <Phone size={18} />
                     <span>{isCallActive ? "On Call" : "Call"}</span>
@@ -213,7 +211,7 @@ export default function AppSidebar({
                 <>
                   <motion.div
                     whileHover={{ scale: 1.1 }}
-                    // whileTap={{ scale: 0.95 }}
+                  // whileTap={{ scale: 0.95 }}
                   >
                     <Button
                       onClick={() => handleEndChat()}
