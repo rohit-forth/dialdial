@@ -1,60 +1,38 @@
-"use client";
-
+import React from "react";
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
 
 interface MeteorsProps {
   number?: number;
-  minDelay?: number;
-  maxDelay?: number;
-  minDuration?: number;
-  maxDuration?: number;
-  angle?: number;
   className?: string;
 }
 
-export const Meteors = ({
-  number = 20,
-  minDelay = 0.2,
-  maxDelay = 1.2,
-  minDuration = 2,
-  maxDuration = 10,
-  angle = 215,
-  className,
-}: MeteorsProps) => {
-  const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>(
-    []
-  );
-
-  useEffect(() => {
-    const styles = [...new Array(number)].map(() => ({
-      "--angle": angle + "deg",
-      top: -5,
-      left: `calc(-50% + ${Math.floor(Math.random() * window.innerWidth)}px)`,
-      animationDelay: Math.random() * (maxDelay - minDelay) + minDelay + "s",
-      animationDuration:
-        Math.floor(Math.random() * (maxDuration - minDuration) + minDuration) +
-        "s",
-    }));
-    setMeteorStyles(styles);
-  }, [number, minDelay, maxDelay, minDuration, maxDuration, angle]);
+const Meteors = ({ number = 20, className }: MeteorsProps) => {
+  const meteors = Array.from({ length: number }, (_, i) => i);
 
   return (
-    <>
-      {[...meteorStyles].map((style, idx) => (
-        // Meteor Head
+    <div
+      className={cn(
+        "fixed inset-0 overflow-hidden pointer-events-none",
+        className
+      )}
+    >
+      {meteors.map((_, idx) => (
         <span
           key={idx}
-          style={{ ...style }}
           className={cn(
-            "pointer-events-none absolute size-0.5 rotate-[var(--angle)] animate-meteor rounded-full bg-red-500 shadow-[0_0_0_1px_#ffffff10]",
-            className
+            "absolute h-0.5 w-0.5 rotate-[215deg] animate-meteor rounded-[9999px] bg-mediumDynamic shadow-[0_0_0_1px_#ffffff10]",
+            "before:absolute before:top-1/2 before:h-[1px] before:w-[50px] before:-translate-y-1/2 before:bg-gradient-to-r before:from-lightFontDynamic before:to-transparent before:content-['']"
           )}
-        >
-          {/* Meteor Tail */}
-          <div className="pointer-events-none absolute top-1/2 -z-10 h-px w-[50px] -translate-y-1/2 bg-gradient-to-r from-red-500 to-transparent" />
-        </span>
+          style={{
+            top: Math.random() * 100 + "%",
+            left: Math.random() * 100 + "%",
+            animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
+            animationDuration: Math.random() * (10 - 2) + 2 + "s",
+          }}
+        />
       ))}
-    </>
+    </div>
   );
 };
+
+export default Meteors;

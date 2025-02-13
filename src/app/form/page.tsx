@@ -59,7 +59,7 @@ import henceforthApi from "@/utils/henceforthApi";
 import { time } from "console";
 import { parseCookies, setCookie } from "nookies";
 import gladiatorIcon from "@/app/assets/images/hf_logo.png";
-import { Meteors } from "@/components/common/Meteors";
+
 const AIAgentCardSkeleton = () => {
   return (
     <Card className="transform flex border-0 shadow-xl items-center transition-transform hover:scale-105">
@@ -92,9 +92,7 @@ const AIAgentCard = () => {
     setPanelSwitch,
     decodedToken,
     setDecodedToken,
-    getAgentName,
-    getThemeColor,
-    showForm,
+    getAgentandScriptDetails,
     setShowForm,
     agentDetails,
     setMessages,
@@ -104,7 +102,6 @@ const AIAgentCard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [formType, setFormType] = useState<"call" | "chat">("call");
   const router = useRouter();
-  const { companyDetails } = useGlobalContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isAgentLoading, setIsAgentLoading] = useState(true);
@@ -176,7 +173,7 @@ const AIAgentCard = () => {
 
   let timeout: any;
   useEffect(() => {
-    function decodeToken(token: string) {
+    async function decodeToken(token: string) {
       setCookie(null, "token", token, {
         maxAge: 2 * 60 * 60,
         path: "/", // the cookie will be available on all routes
@@ -197,11 +194,10 @@ const AIAgentCard = () => {
 
         setDecodedToken({
           agent_id: data?.agent_id,
-          script_id: data?.script_id,
-          secret_key: data?.secret_key,
         });
-        getAgentName(data?.agent_id);
-        getThemeColor(data?.script_id);
+        // getAgentName(data?.agent_id);
+        // getThemeColor(data?.script_id);
+        await getAgentandScriptDetails(data?.agent_id);
         timeout = setTimeout(() => {
           setIsAgentLoading(false);
         }, 1000);
@@ -219,15 +215,14 @@ const AIAgentCard = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, []);
+  }, [agentDetails?._id]);
 
   return (
-    <div className="flex items-center justify-center w-full ">
-      <Meteors number={100} />
+    <div className="flex items-center justify-center w-full border-0">
       {isAgentLoading ? (
         <AIAgentCardSkeleton />
       ) : (
-        <Card className=" transform  flex border-0 bg-lightDynamic shadow-xl items-center transition-transform hover:scale-105">
+        <Card className=" transform  flex border-0 bg-mediumDynamic shadow-xl items-center transition-transform hover:scale-105">
           <CardContent className="p-6 w-96 text-fontDynamic">
             <div className="flex flex-col items-center space-y-4">
               <Avatar className="w-24 h-24 border-4  border-white shadow-xl">
@@ -252,17 +247,15 @@ const AIAgentCard = () => {
               {/* Company Title and Description */}
               <div className="text-center text-lightFontDynamic">
                 <p className="text-md font-semibold ">
-                  {companyDetails?.company_name}
+                  {agentDetails?.page_title}
                 </p>
-                <p className="text-xs ">
-                  {companyDetails?.company_description}
-                </p>
+                <p className="text-xs ">{agentDetails?.page_description}</p>
               </div>
 
               {/* Action Buttons */}
               <div className="flex space-x-3 w-full">
                 <Button
-                  className="flex-1 text-lightFontDynamic bg-dynamic"
+                  className="flex-1 text-mediumDynamic bg-lightDynamic"
                   onClick={() => {
                     setFormType("call");
                     setIsOpen(true);
@@ -272,7 +265,7 @@ const AIAgentCard = () => {
                   Call
                 </Button>
                 <Button
-                  className="flex-1 text-lightFontDynamic bg-dynamic"
+                  className="flex-1 text-mediumDynamic bg-lightDynamic"
                   onClick={() => {
                     setFormType("chat");
                     setIsOpen(true);
@@ -444,14 +437,27 @@ const AIAgentCard = () => {
 
             <Button
               type="submit"
-              className="w-full text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              className="relative w-full overflow-hidden py-5 bg-gradient-to-r from-lightDynamic via-mediumDynamic to-mediumFontDynamic text-white font-semibold rounded-lg 
+              transition-all duration-300 ease-out
+             
+              active:scale-95
+              disabled:opacity-50 disabled:cursor-not-allowed
+              before:absolute before:inset-0
+              before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent
+              before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-700"
             >
-              {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              {isLoading
-                ? `${
-                    formType === "call" ? "Initiating Call" : "Initiating Chat"
-                  }`
-                : "Submit"}
+              <div className="flex items-center justify-center space-x-2">
+                {isLoading && <Loader2 className="w-5 h-5 animate-spin" />}
+                <span className="text-md">
+                  {isLoading
+                    ? `${
+                        formType === "call"
+                          ? "Initiating Call"
+                          : "Initiating Chat"
+                      }...`
+                    : "Submit"}
+                </span>
+              </div>
             </Button>
           </form>
         </DialogContent>

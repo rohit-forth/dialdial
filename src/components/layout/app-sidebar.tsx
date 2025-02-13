@@ -33,7 +33,6 @@ export default function AppSidebar({
 }) {
   const [mounted, setMounted] = React.useState(false);
   const {
-    companyDetails,
     setMessages,
     isCallActive,
     setIsCallActive,
@@ -127,18 +126,16 @@ export default function AppSidebar({
                 </div>
                 <div className="text-center  group-has-[[data-collapsible=icon]]/sidebar-wrapper:hidden">
                   <h1 className="text-xl font-semibold ">
-                    {companyDetails?.company_name ?? "Chat with Amy"}
+                    {agentDetails?.page_title ?? "Chat with Amy"}
                   </h1>
                   <p className="text-sm opacity-70">
-                    {companyDetails?.company_description ??
-                      "This is Amy Chatbot"}
+                    {agentDetails?.page_description ?? "This is Amy Chatbot"}
                   </p>
                 </div>
                 <Link
                   target="_blank"
                   href={
-                    companyDetails?.company_url ??
-                    "https://henceforthsolutions.com"
+                    agentDetails?.page_url ?? "https://henceforthsolutions.com"
                   }
                   className="px-8 w-full flex gap-[10px] fs-16 py-[8px] bg-dynamic  rounded-[5px] border border-current text-sm hover:opacity-80 transition-opacity group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-2 group-has-[[data-collapsible=icon]]/sidebar-wrapper:border-transparent group-has-[[data-collapsible=icon]]/sidebar-wrapper:bg-white/10 group-has-[[data-collapsible=icon]]/sidebar-wrapper:rounded-full group-has-[[data-collapsible=icon]]/sidebar-wrapper:justify-center"
                 >

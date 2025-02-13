@@ -34,11 +34,10 @@ interface GlobalContextType {
   getProfile: () => Promise<void>;
   formatDuration: (seconds: number) => string;
   Toast: any;
-  companyDetails: any;
-  getThemeColor: any;
+
   setIsCallActive: any;
   isCallActive: any;
-  getAgentName: any;
+  getAgentandScriptDetails: any;
   agentDetails: any;
   showForm: any;
   setShowForm: any;
@@ -82,6 +81,10 @@ export function GlobalProvider({
     call_prompt: "",
     chat_first_message: "",
     agent_image: "",
+    page_title: "",
+    page_description: "",
+    page_url: "",
+    secret_key: "",
   });
   console.log(initialUserInfo, "initialUserInfo");
   const [panelSwitch, setPanelSwitch] = useState(false);
@@ -99,8 +102,6 @@ export function GlobalProvider({
   });
   const [decodedToken, setDecodedToken] = useState<any | null>({
     agent_id: "",
-    script_id: "",
-    secret_key: "",
   });
   const stopSpaceEnter = (event: React.KeyboardEvent): boolean => {
     if (event.target instanceof HTMLInputElement) {
@@ -201,90 +202,22 @@ export function GlobalProvider({
       console.error("Profile fetch error:", error);
     }
   };
-  const getAgentName = async (agent_id: string) => {
+
+  const getAgentandScriptDetails = async (agentId: string) => {
     try {
-      const apiRes = await fetch(`https://dev.qixs.ai:3003/agent/${agent_id}`, {
+      const apiRes = await fetch(`https://dev.qixs.ai:3003/agent/${agentId}`, {
         method: "GET",
       });
       const response = await apiRes.json();
-      console.log(response, "response");
-      setAgentDetails({
-        ...agentDetails,
-        agent_name: response?.data?.name,
-        agent_voice: response?.data?.voice,
 
-        agent_image: response?.data?.image,
-        chat_prompt: response?.data?.chat_prompt,
-        call_first_message: response?.data?.call_first_message,
-        call_prompt: response?.data?.call_prompt,
-        chat_first_message: response?.data?.chat_first_message,
-      });
-    } catch (error) {
-      console.error("Profile fetch error:", error);
-    }
-  };
-
-  const [companyDetails, setCompanyDetails] = useState({
-    company_color: "",
-    company_logo: "",
-    company_name: "",
-    company_url: "",
-    company_description: "",
-  });
-
-  const hexToRgb = (hex: string) => {
-    hex = hex ? hex : "#F0BB78";
-    const bigint = parseInt(hex.slice(1), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-
-    console.log(r, g, b, "rgb");
-    return `${r},${g},${b}`;
-  };
-  function generateColorAccents(rgbString: string) {
-    // Parse the input RGB string into separate color components
-    console.log(rgbString, "rgbString");
-    const [r, g, b] = rgbString.split(",").map(Number);
-    console.log(r, g, b, "rgbString");
-
-    // Function to ensure color values stay within 0-255 range
-    const clamp = (value: number) => Math.min(255, Math.max(0, value));
-
-    // Original color (unchanged)
-    const originalColor = `${r}, ${g}, ${b}`;
-
-    // Light accent (increase brightness)
-    const lightColor = `${clamp(r + 30)}, ${clamp(g + 30)}, ${clamp(b + 30)}`;
-
-    // Medium accent (slightly darker)
-    const mediumColor = `${clamp(r - 30)}, ${clamp(g - 30)}, ${clamp(b - 30)}`;
-
-    return {
-      originalColor,
-      lightColor,
-      mediumColor,
-    };
-  }
-
-  const getThemeColor = async (script_id: any) => {
-    try {
-      const apiRes =
-        await henceforthApi.SuperAdmin.getConfigFromScriptId(script_id);
-      console.log(apiRes, "apiRes");
-      setCompanyDetails({
-        ...companyDetails,
-        company_color: apiRes?.data?.colour,
-        // company_logo: apiRes?.data?.image,
-        company_name: apiRes?.data?.title,
-        company_url:
-          apiRes?.data?.url ?? "https://www.henceforthsolutions.com/",
-        company_description: apiRes?.data?.description,
-      });
-      const rgbColor = hexToRgb(apiRes?.data?.colour);
-      const colorAccents = generateColorAccents(rgbColor);
-      const fontRGBColor = hexToRgb(apiRes?.data?.font_colour);
-      const fontColorAccents = generateColorAccents(fontRGBColor);
+      const rgbColor = await hexToRgb(response?.data?.script_data?.colour);
+      const colorAccents = await generateColorAccents(rgbColor);
+      const fontRGBColor = await hexToRgb(
+        response?.data?.script_data?.font_colour
+      );
+      const fontColorAccents = await generateColorAccents(fontRGBColor);
+      console.log(colorAccents, "colorAccents");
+      console.log(fontColorAccents, "fontColorAccents");
       //font accent colors
       document.documentElement.style.setProperty(
         "--dynamic-font-color",
@@ -312,8 +245,60 @@ export function GlobalProvider({
         "--medium-dynamic-color",
         colorAccents?.mediumColor
       );
-    } catch (error) {}
+      setAgentDetails({
+        ...agentDetails,
+        agent_name: response?.data?.name,
+        agent_voice: response?.data?.voice,
+
+        agent_image: response?.data?.image,
+        chat_prompt: response?.data?.chat_prompt,
+        call_first_message: response?.data?.call_first_message,
+        call_prompt: response?.data?.call_prompt,
+        chat_first_message: response?.data?.chat_first_message,
+        page_title: response?.data?.script_data?.title,
+        page_description: response?.data?.script_data?.description,
+        page_url: response?.data?.script_data?.url,
+        secret_key: response?.data?.script_data?.key,
+      });
+    } catch (error) {
+      console.error("Profile fetch error:", error);
+    }
   };
+
+  const hexToRgb = async (hex: string) => {
+    hex = hex ? hex : "#F0BB78";
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    console.log(r, g, b, "rgb");
+    return `${r},${g},${b}`;
+  };
+  async function generateColorAccents(rgbString: string) {
+    // Parse the input RGB string into separate color components
+    console.log(rgbString, "rgbString");
+    const [r, g, b] = rgbString.split(",").map(Number);
+    console.log(r, g, b, "rgbString");
+
+    // Function to ensure color values stay within 0-255 range
+    const clamp = (value: number) => Math.min(255, Math.max(0, value));
+
+    // Original color (unchanged)
+    const originalColor = `${r}, ${g}, ${b}`;
+
+    // Light accent (increase brightness)
+    const lightColor = `${clamp(r + 30)}, ${clamp(g + 30)}, ${clamp(b + 30)}`;
+
+    // Medium accent (slightly darker)
+    const mediumColor = `${clamp(r - 30)}, ${clamp(g - 30)}, ${clamp(b - 30)}`;
+
+    return {
+      originalColor,
+      lightColor,
+      mediumColor,
+    };
+  }
 
   const contextValue: GlobalContextType = {
     messages,
@@ -332,13 +317,12 @@ export function GlobalProvider({
     setIsCallActive,
     setUserInfo,
     userInfo,
-    getThemeColor,
+
     stopSpaceEnter,
     getProfile,
     formatDuration,
     Toast,
-    companyDetails,
-    getAgentName,
+    getAgentandScriptDetails,
     agentDetails,
     panelSwitch,
     setPanelSwitch,

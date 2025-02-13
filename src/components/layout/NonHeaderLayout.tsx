@@ -1,5 +1,6 @@
 import AppSidebar from "@/components/layout/app-sidebar-no-inset";
 import type { Metadata } from "next";
+import Meteors from "../common/Meteors";
 
 // export const metadata: Metadata = {
 //   title: 'Next Shadcn Dashboard Starter',
@@ -13,7 +14,10 @@ export default function NoHeaderLayout({
 }) {
   return (
     <>
-      <AppSidebar>{children}</AppSidebar>
+      <div className="bg-gradient-to-br  from-mediumDynamic via-lightDynamic  to-lightFontDynamic h-screen flex">
+        <Meteors number={30} />
+        <AppSidebar>{children}</AppSidebar>
+      </div>
     </>
   );
 }

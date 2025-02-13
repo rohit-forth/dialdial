@@ -198,13 +198,13 @@ const AIChat: React.FC = () => {
           text: trimmedMessage,
           chat_id: chatId,
           agent_id: decodedToken?.agent_id,
-          secret_key: decodedToken?.secret_key,
+          secret_key: agentDetails?.secret_key,
         });
       } else {
         aiResponse = await henceforthApi?.SuperAdmin.sendMessage({
           text: trimmedMessage,
           agent_id: decodedToken?.agent_id,
-          secret_key: decodedToken?.secret_key,
+          secret_key: agentDetails?.secret_key,
         });
         setChatId(aiResponse?.data?.chat_id);
       }
@@ -389,7 +389,7 @@ const AIChat: React.FC = () => {
         {isCallActive && panelSwitch ? (
           <DeepgramCall
             agentId={decodedToken?.agent_id}
-            secretKey={decodedToken?.secret_key}
+            secretKey={agentDetails?.secret_key}
             initialMessage={agentDetails?.call_first_message}
             chatId={callId}
             setChatId={setCallId}

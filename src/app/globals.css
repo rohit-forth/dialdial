@@ -3,17 +3,15 @@
 @tailwind utilities;
 /* @use "typography" as *; */
 
-
-
 @layer base {
   :root {
-     --dynamic-color: 0, 0, 0;
-     --light-dynamic-color: 0, 0, 0;
-     --medium-dynamic-color: 0, 0, 0;
+    --dynamic-color: 0, 0, 0;
+    --light-dynamic-color: 0, 0, 0;
+    --medium-dynamic-color: 0, 0, 0;
     --scrollbar-width: 12px;
-    --scrollbar-thumb-color: theme('colors.blue.500');
-    --scrollbar-track-color: theme('colors.gray.200');
-    --scrollbar-track-radius: theme('borderRadius.lg');
+    --scrollbar-thumb-color: theme("colors.blue.500");
+    --scrollbar-track-color: theme("colors.gray.200");
+    --scrollbar-track-radius: theme("borderRadius.lg");
     --background: 0, 0%, 100%, 1;
     --foreground: 20 51% 4%;
     --muted: 43deg 18.99% 16.33% / 14%;
@@ -49,12 +47,9 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
     /* --sidebar-foreground: 240 5.3% 26.1%; */
     --sidebar-primary-foreground: 0 0% 98%;
-    --primary-color: #2563EB;
+    --primary-color: #2563eb;
     --border-radius: 16px;
     --message-radius: 20px;
-
-
-
   }
 
   .dark {
@@ -91,8 +86,6 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
-  
 }
 
 @layer base {
@@ -129,8 +122,6 @@
   }
 }
 
-
-
 /* ...............typography................ */
 .header {
   background-color: hsla(236, 24%, 26%, 1);
@@ -141,27 +132,26 @@
 }
 
 .grey {
-  color: #BBBBBB;
+  color: #bbbbbb;
 }
 
 .bg-primary {
-  background-color: #F1F6FF;
+  background-color: #f1f6ff;
 }
 
 .common-bg {
-  background-color: #2878F7;
+  background-color: #2878f7;
 }
 .border-primary {
-  border-color: #2878F7
+  border-color: #2878f7;
 }
 
 .border-common {
-  border-color: #E1E9F6;
+  border-color: #e1e9f6;
 }
 
-
 .text-primary {
-  color: #2878F7;
+  color: #2878f7;
 }
 
 .text-gray {
@@ -172,17 +162,17 @@
   color: #333333;
 }
 
-.text-danger{
-  color: #FF4545 ;
+.text-danger {
+  color: #ff4545;
 }
 
 .heading {
   font-size: 24px;
   font-weight: 600;
-  color: #1C1D22;
+  color: #1c1d22;
 }
 
-.fs-10{
+.fs-10 {
   font-size: 10px;
 }
 
@@ -191,7 +181,6 @@
 /* .bg-dynamic{
   background-color:  hsla(236, 24%, 26%, 1);
 } */
-
 
 /* profile card */
 .profile-card {
@@ -216,7 +205,7 @@
 }
 body {
   pointer-events: auto !important;
-  }
+}
 
 .auth-page {
   background-image: url("../../public/images/background.png");
@@ -239,14 +228,12 @@ main {
 
 /* Global styles */
 
-
 /* Customize the scrollbar */
 
 input[type="file"] {
   padding-top: 6px;
   padding-right: 5.7rem !important;
 }
-
 
 .typing-indicator {
   display: flex;
@@ -275,7 +262,9 @@ input[type="file"] {
 }
 
 @keyframes bounce {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
   }
   30% {
@@ -283,19 +272,22 @@ input[type="file"] {
   }
 }
 
-
 /* ...............typography................ */
-.fs-22{
+.fs-22 {
   font-size: 22px;
 }
 
-.fs-14{
+.fs-14 {
   font-size: 14px;
 }
 
-.fs-16{
+.fs-16 {
   font-size: 16px;
 }
-.fs-20{
+.fs-20 {
   font-size: 20px;
+}
+
+.group[data-side="left"] .group-data-\[side\=left\]\:border-r {
+  border-right: 0px !important;
 }
