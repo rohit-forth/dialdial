@@ -37,7 +37,7 @@ export default function AppSidebar({
             <SidebarHeader className="flex-none p-6 group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-3">
               <div className="flex flex-col items-center space-y-4">
                 <div className="p-4 border-mediumFontDynamic border-2 rounded-full overflow-hidden bg-white/10">
-                  <div className="w-[144px] h-[144px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-[50px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[50px] border-lightFontDynamic border rounded-full overflow-hidden bg-white/10">
+                  <div className="w-[144px] h-[144px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-[50px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[50px] border-lightFontDynamic border-2 rounded-full overflow-hidden bg-white/10">
                     <img
                       className="w-full h-full object-cover"
                       src={henceforthApi?.FILES?.imageOriginal(

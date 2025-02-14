@@ -56,7 +56,6 @@ import gladiatorIcon from "@/app/assets/images/hf_logo.png";
 
 const AIAgentCardSkeleton = () => {
   return (
-
     <Card className="transform flex border-0 shadow-xl items-center transition-transform hover:scale-105 relative border-white/10 bg-zinc-900/60 backdrop-blur-xl border-beam">
       <CardContent className="p-6 w-96">
         <div className="flex flex-col items-center space-y-10">
@@ -77,8 +76,6 @@ const AIAgentCardSkeleton = () => {
         </div>
       </CardContent>
     </Card>
-
-
   );
 };
 const AIAgentCard = () => {
@@ -223,8 +220,7 @@ const AIAgentCard = () => {
           <CardContent className="p-6 w-96 text-fontDynamic">
             <div className="flex flex-col items-center space-y-4">
               <div className="p-3 border-2 rounded-full bg-white/15 border-fontDynamic">
-
-                <Avatar className="w-24 h-24 border border-fontDynamic shadow-xl">
+                <Avatar className="w-24 h-24 border-2 border-fontDynamic shadow-xl">
                   <AvatarImage
                     className="object-cover"
                     src={henceforthApi?.FILES?.imageOriginal(
@@ -452,10 +448,11 @@ const AIAgentCard = () => {
                 {isLoading && <Loader2 className="w-5 h-5 animate-spin" />}
                 <span className="text-md">
                   {isLoading
-                    ? `${formType === "call"
-                      ? "Initiating Call"
-                      : "Initiating Chat"
-                    }...`
+                    ? `${
+                        formType === "call"
+                          ? "Initiating Call"
+                          : "Initiating Chat"
+                      }...`
                     : "Submit"}
                 </span>
               </div>

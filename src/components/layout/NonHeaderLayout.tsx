@@ -15,7 +15,7 @@ export default function NoHeaderLayout({
   return (
     <>
       <div className="bg-gradient-to-br  from-mediumDynamic via-lightDynamic  to-lightFontDynamic h-screen flex">
-        <Meteors number={20} />
+        <Meteors number={30} />
         <AppSidebar>{children}</AppSidebar>
       </div>
     </>

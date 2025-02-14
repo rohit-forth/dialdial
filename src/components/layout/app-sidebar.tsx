@@ -113,7 +113,7 @@ export default function AppSidebar({
             <SidebarHeader className="flex-none p-6 group-has-[[data-collapsible=icon]]/sidebar-wrapper:p-3">
               <div className="flex flex-col items-center space-y-4">
                 <div className="p-4 border-mediumFontDynamic border-2 rounded-full overflow-hidden bg-white/10">
-                  <div className="w-[144px] h-[144px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-[50px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[50px] border-lightFontDynamic border rounded-full overflow-hidden bg-white/10">
+                  <div className="w-[144px] h-[144px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:w-[50px] group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[50px] border-lightFontDynamic border-2 rounded-full overflow-hidden bg-white/10">
                     <img
                       className="w-full h-full object-cover"
                       src={henceforthApi?.FILES?.imageOriginal(
@@ -186,8 +186,9 @@ export default function AppSidebar({
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger />
             </div>
-            <h1 className="fs-20 font-semibold hidden lg:block">{`Hi, I’m ${agentDetails?.agent_name ?? "A"
-              }. Your AI Agent!`}</h1>
+            <h1 className="fs-20 font-semibold hidden lg:block">{`Hi, I’m ${
+              agentDetails?.agent_name ?? "A"
+            }. Your AI Agent!`}</h1>
             <div className="px-4 flex gap-5 ml-auto">
               <motion.div
                 whileTap={{ scale: 0.95 }}
@@ -199,8 +200,9 @@ export default function AppSidebar({
                   <Button
                     disabled={showForm}
                     onClick={() => handleCall()}
-                    className={`flex whitespace-nowrap items-center gap-2 font-normal px-4 py-2 text-black rounded-lg transition-colors duration-200 ${isCallActive ? "bg-green-500" : "bg-white"
-                      }`}
+                    className={`flex whitespace-nowrap items-center gap-2 font-normal px-4 py-2 text-black rounded-lg transition-colors duration-200 ${
+                      isCallActive ? "bg-green-500" : "bg-white"
+                    }`}
                   >
                     <Phone size={18} />
                     <span>{isCallActive ? "On Call" : "Call"}</span>
@@ -211,7 +213,7 @@ export default function AppSidebar({
                 <>
                   <motion.div
                     whileHover={{ scale: 1.1 }}
-                  // whileTap={{ scale: 0.95 }}
+                    // whileTap={{ scale: 0.95 }}
                   >
                     <Button
                       onClick={() => handleEndChat()}

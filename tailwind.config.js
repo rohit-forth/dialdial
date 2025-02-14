@@ -97,25 +97,25 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        "border-beam": 'border-beam 2s linear infinite',
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "border-beam": "border-beam 2s linear infinite",
         rotate: "rotate 10s linear infinite",
       },
       keyframes: {
-        'border-beam': {
-          '0%, 100%': {
-            transform: 'rotate(0deg) translate(0px, -500%)',
+        "border-beam": {
+          "0%, 100%": {
+            transform: "rotate(0deg) translate(0px, -500%)",
           },
-          '25%': {
-            transform: 'rotate(90deg) translate(0px, -500%)',
+          "25%": {
+            transform: "rotate(90deg) translate(0px, -500%)",
           },
-          '50%': {
-            transform: 'rotate(180deg) translate(0px, -500%)',
+          "50%": {
+            transform: "rotate(180deg) translate(0px, -500%)",
           },
-          '75%': {
-            transform: 'rotate(270deg) translate(0px, -500%)',
-          }
+          "75%": {
+            transform: "rotate(270deg) translate(0px, -500%)",
+          },
         },
         rotate: {
           "0%": { transform: "rotate(0deg) scale(10)" },
