@@ -3,7 +3,7 @@ import { useGlobalContext } from "@/components/providers/Provider";
 import { AnimatePresence, motion } from "framer-motion";
 import { Mic, MicOff, Phone, PhoneOff } from "lucide-react";
 import { createClient, ListenLiveClient } from "@deepgram/sdk";
-import henceforthApi from "@/utils/henceforthApi";
+import henceforthApi, { API_ROOT } from "@/utils/henceforthApi";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import gladiatorIcon from "@/app/assets/images/hf_logo.png";
 import { set } from "date-fns";
@@ -398,7 +398,7 @@ const DeepgramCall = ({ ...props }: DeepgramCallProps) => {
       };
 
       const response = await fetch(
-        "https://dev.qixs.ai:3003/knowledge-base/landing/page/ai",
+        `https://${API_ROOT}knowledge-base/landing/page/ai`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

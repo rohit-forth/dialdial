@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation"; // Updated to next/navigation
 import { destroyCookie } from "nookies";
-import henceforthApi from "@/utils/henceforthApi";
+import henceforthApi, { API_ROOT } from "@/utils/henceforthApi";
 import { formatDuration } from "date-fns";
 import toast from "react-hot-toast";
 // import { company } from "../layout/app-sidebar";
@@ -205,7 +205,7 @@ export function GlobalProvider({
 
   const getAgentandScriptDetails = async (agentId: string) => {
     try {
-      const apiRes = await fetch(`https://dev.qixs.ai:3003/agent/${agentId}`, {
+      const apiRes = await fetch(`https://${API_ROOT}agent/${agentId}`, {
         method: "GET",
       });
       const response = await apiRes.json();
